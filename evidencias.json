@@ -1,0 +1,58 @@
+[
+  {
+    "test": "Default 30 kVA / 380 V",
+    "current": 45.5802844097073,
+    "section": 10,
+    "breaker": 50,
+    "drop": 2.2835239612188367
+  },
+  {
+    "test": "Unsupported installation/grouping",
+    "result": "Selection remains pending as expected"
+  },
+  {
+    "test": "Invalid I2/In accepted",
+    "input": "",
+    "breaker": 50,
+    "issues": []
+  },
+  {
+    "test": "Invalid I2/In accepted",
+    "input": 0,
+    "breaker": 50,
+    "issues": []
+  },
+  {
+    "test": "Invalid I2/In accepted",
+    "input": -1,
+    "breaker": 50,
+    "issues": []
+  },
+  {
+    "test": "Backup ignores reactance",
+    "exportedReactance": 0.5,
+    "importedReactance": 0.08,
+    "beforeSection": 50,
+    "afterSection": 35,
+    "beforeDrop": 2.7079927313019394,
+    "afterDrop": 2.287239319351009
+  },
+  {
+    "test": "Reload loses editing identity",
+    "circuitsAfterSave": 2,
+    "descriptions": [
+      "TR-01",
+      "Edited before reload"
+    ]
+  },
+  {
+    "test": "Balanced three-phase permits two loaded conductors",
+    "issues": [],
+    "section": 10,
+    "baselineSection": 16
+  },
+  {
+    "test": "Single HTML vs separate assets",
+    "result": "JS, CSS and tables match"
+  }
+]
