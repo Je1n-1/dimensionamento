@@ -30,11 +30,11 @@ class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
         route = urlsplit(self.path).path
         if route == '/api/health':
-            return self.json(200, {'status': 'ok', 'engine': 'python', 'reference': 'NBR 5410:1997'})
+            return self.json(200, {'status': 'ok', 'engine': 'python', 'version': 3, 'reference': 'NBR 5410:1997'})
         if route == '/tables.js':
             return self.send(200, 'window.NBR1997=' + json.dumps(TABLES, ensure_ascii=False) + ';', 'text/javascript; charset=utf-8')
         name = 'index.html' if route in ('/', '/VoltCalc_Guiado_Abrir.html') else route.lstrip('/')
-        if name not in ('index.html', 'app.js', 'styles.css', 'preview.png'):
+        if name not in ('index.html', 'ui.js', 'model.js', 'help.js', 'illustrations.js', 'styles.css', 'updates.css', 'preview.png'):
             return self.json(404, {'error': 'Arquivo não encontrado.'})
         mime = mimetypes.guess_type(name)[0] or 'application/octet-stream'
         if name.endswith('.js'):
@@ -59,7 +59,7 @@ class Handler(BaseHTTPRequestHandler):
             circuits = payload.get('circuits')
             if not isinstance(circuits, list) or not 1 <= len(circuits) <= 301:
                 raise ValueError('Envie entre 1 e 301 circuitos.')
-            results = [calculate(c, payload.get('reactance', 0.08)) for c in circuits]
+            results = [calculate(c, payload.get('reactance', 0.08), payload.get('supply')) for c in circuits]
             self.json(200, {'results': results})
         except (ValueError, TypeError, KeyError, OverflowError, RecursionError) as exc:
             self.json(400, {'error': str(exc) or 'Dados inválidos.'})
