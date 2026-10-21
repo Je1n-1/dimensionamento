@@ -4,6 +4,8 @@ import math
 from pathlib import Path
 
 from circuits import number, profile, voltage_trace
+from validation import diagnostics
+from corrections import temperature_correction, grouping_correction
 
 TABLES = json.loads((Path(__file__).parent / 'data' / 'nbr1997.json').read_text(encoding='utf-8'))
 BREAKERS = (6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000)
@@ -43,26 +45,30 @@ def calculate(c, reactance=.08, supply=None):
                  wall=('masonry', 'thermal'), installation=('embedded', 'conduit', 'surface', 'buried', 'tray', 'overhead'),
                  groupLayout=('bundle', 'spaced', 'unknown'), methodOverride=('', 'A1', 'A2', 'B1', 'B2', 'C', 'D'),
                  type=('lighting', 'sockets', 'motor', 'shower', 'transformer', 'other'))
+    field_labels = dict(metal='material do condutor', insulation='isolação do cabo',
+                        cableForm='construção do cabo', wall='material da parede',
+                        installation='forma de instalação', groupLayout='disposição do agrupamento',
+                        methodOverride='método de referência', type='tipo do circuito')
     for key, options in enums.items():
         if c.get(key) not in options:
-            issues.append(f'Valor inválido para {key}.')
+            issues.append(f"Preencha ou confira: {field_labels[key]}.")
     if not isinstance(c.get('unknownInstallation', False), bool):
         issues.append('Identificação de instalação inválida.')
     method = method_of(c) if c.get('installation') in enums['installation'] else None
     insulation = 'PVC' if c.get('insulation') == 'PVC' else 'EPR_XLPE'
     soil = method == 'D'
-    temp_key = str(int(temp)) if temp is not None and temp.is_integer() else ''
-    fct = TABLES['temperature']['soil' if soil else 'air'][insulation].get(temp_key) if method else None
-    fca = 1 if group == 1 else None
-    if method and not soil and c.get('groupLayout') == 'bundle' and group is not None and group.is_integer():
-        fca = TABLES['group1'].get(str(int(group)))
+    thermal = temperature_correction(TABLES, method, insulation, temp)
+    grouping = grouping_correction(TABLES, method, group, c.get('groupLayout'))
+    fct, fca = thermal['factor'], grouping['factor']
     loaded = electrical['loaded']
     column = f'{method}/{int(loaded)}' if loaded in (2, 3) else ''
     col = TABLES['meta']['columns'].index(column) if column in TABLES['meta']['columns'] else -1
     if not method:
         notices.append('Método não determinado ou fora das tabelas implementadas. A seção fica pendente.')
     if method and fct is None:
-        notices.append('Temperatura fora das entradas explícitas da tabela. Não foi feita interpolação.')
+        notices.append(thermal['message'])
+    elif thermal['adopted'] != temp:
+        notices.append(thermal['message'])
     if method and fca is None:
         notices.append('Agrupamento não coberto para essa disposição. O fator fica pendente.')
     if soil:
@@ -133,9 +139,13 @@ def calculate(c, reactance=.08, supply=None):
     factor = fct * fca if fct is not None and fca is not None else None
     required = ib / factor if ib is not None and factor else None
     details = trace(reference['section']) if reference else dict(segments=[], endpoints=[])
-    return dict(c=c, method=method, ib=ib, voltage=electrical['voltage'], phase=electrical['phase'], loaded=loaded,
+    result = dict(c=c, method=method, ib=ib, voltage=electrical['voltage'], phase=electrical['phase'], loaded=loaded,
                 connection=electrical['connection'], totals=electrical['totals'], loadResults=electrical['loads'],
                 routeMode=electrical['routeMode'], segments=details['segments'], endpoints=details['endpoints'],
                 fct=fct, fca=fca, combinedFactor=factor, requiredAmpacity=required, eligible=eligible, all=rows,
                 smallest=smallest, cableCandidate=cable, chosen=chosen, shortOk=short_ok, protection=protection,
                 criteria=criteria, determining=determining, issues=issues, notices=notices, table=31 if insulation=='PVC' else 32)
+    result['corrections'] = dict(temperature=thermal, grouping=grouping)
+    result['diagnostics'] = diagnostics(c, result, supply)
+    result['selectionBlockers'] = [d for d in result['diagnostics'] if d['blocksSelection']]
+    return result

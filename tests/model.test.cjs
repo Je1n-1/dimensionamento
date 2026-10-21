@@ -25,3 +25,14 @@ assert.throws(()=>M.readProject({...old,reactance:''},true));
 assert.throws(()=>M.readProject({...old,circuits:[old.circuits[0],old.circuits[0]]},true));
 assert.throws(()=>M.readProject({...old,format:'unknown'},true));
 console.log('OK: migração v2, backup v3, cargas e distâncias, alimentação, vínculo de edição e isolamento do rascunho.');
+const imported=M.readProject({...old,format:'VoltCalcGuiado-v3',importInfo:{generalBreaker:32,warnings:['Divergência original']},circuits:[{
+ ...M.newCircuit(),number:'8',source:{kind:'csv',filename:'exemplo.csv',p:5500,s:5500,breaker:32},
+ loads:[{...M.newLoad(),description:'Carga total importada',distance:''}],temperature:'',metal:'',groupCount:''
+}]},true);
+const roundtrip=M.readProject(JSON.parse(JSON.stringify(M.projectData(imported))),true);
+assert.deepEqual(roundtrip,imported);
+assert.equal(roundtrip.circuits[0].loads[0].distance,'');
+assert.equal(roundtrip.circuits[0].metal,'');
+roundtrip.draft.source.p=7000;
+assert.equal(roundtrip.circuits[0].source.p,5500);
+console.log('OK: valores originais CSV, identificação, pendências e metadados preservados no backup.');

@@ -49,7 +49,7 @@ class EngineTests(unittest.TestCase):
 
     def test_unsupported_conditions(self):
         for updates in [dict(installation='tray'), dict(installation='overhead'),
-                        dict(installation='buried', groupCount=2), dict(temperature=32),
+                        dict(installation='buried', groupCount=2), dict(temperature=81),
                         dict(groupLayout='spaced', groupCount=2), dict(unknownInstallation=True)]:
             with self.subTest(updates=updates):
                 self.assertIsNone(calculate(circuit(**updates))['chosen'])

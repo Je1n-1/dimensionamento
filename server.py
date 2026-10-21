@@ -1,5 +1,6 @@
 """Servidor local VoltCalc: python server.py --open (somente biblioteca padrão)."""
 import argparse
+import csv
 import json
 import mimetypes
 import webbrowser
@@ -8,6 +9,8 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 from engine import TABLES, calculate
+from csv_import import import_csv
+from panel import build_panel
 
 WEB = Path(__file__).parent / 'VoltCalc_Guiado'
 
@@ -31,10 +34,13 @@ class Handler(BaseHTTPRequestHandler):
         route = urlsplit(self.path).path
         if route == '/api/health':
             return self.json(200, {'status': 'ok', 'engine': 'python', 'version': 3, 'reference': 'NBR 5410:1997'})
+        if route == '/api/example':
+            example = Path(__file__).parent / 'examples' / 'residencia.csv'
+            return self.json(200, import_csv(example.read_text(encoding='utf-8-sig'), 'Residência — 8 circuitos.csv'))
         if route == '/tables.js':
             return self.send(200, 'window.NBR1997=' + json.dumps(TABLES, ensure_ascii=False) + ';', 'text/javascript; charset=utf-8')
         name = 'index.html' if route in ('/', '/VoltCalc_Guiado_Abrir.html') else route.lstrip('/')
-        if name not in ('index.html', 'ui.js', 'model.js', 'help.js', 'illustrations.js', 'styles.css', 'updates.css', 'preview.png'):
+        if name not in ('index.html', 'ui.js', 'technical.js', 'model.js', 'help.js', 'board.js', 'illustrations.js', 'styles.css', 'updates.css', 'preview.png'):
             return self.json(404, {'error': 'Arquivo não encontrado.'})
         mime = mimetypes.guess_type(name)[0] or 'application/octet-stream'
         if name.endswith('.js'):
@@ -42,7 +48,8 @@ class Handler(BaseHTTPRequestHandler):
         self.send(200, (WEB / name).read_bytes(), mime + ('; charset=utf-8' if mime.startswith('text/') else ''))
 
     def do_POST(self):
-        if urlsplit(self.path).path != '/api/calculate':
+        route = urlsplit(self.path).path
+        if route not in ('/api/calculate', '/api/panel', '/api/import-csv'):
             return self.json(404, {'error': 'Rota não encontrada.'})
         origin = self.headers.get('Origin')
         if origin and origin not in (f'http://127.0.0.1:{self.server.server_port}', f'http://localhost:{self.server.server_port}'):
@@ -56,12 +63,16 @@ class Handler(BaseHTTPRequestHandler):
             payload = json.loads(self.rfile.read(length), parse_constant=lambda value: (_ for _ in ()).throw(ValueError('Número inválido.')))
             if not isinstance(payload, dict):
                 raise ValueError('Envie um objeto JSON.')
+            if route == '/api/import-csv':
+                return self.json(200, import_csv(payload.get('text'), payload.get('filename', 'Quadro.csv')))
             circuits = payload.get('circuits')
-            if not isinstance(circuits, list) or not 1 <= len(circuits) <= 301:
+            if not isinstance(circuits, list) or not (0 if route == '/api/panel' else 1) <= len(circuits) <= 301:
                 raise ValueError('Envie entre 1 e 301 circuitos.')
+            if route == '/api/panel':
+                return self.json(200, build_panel(circuits, payload.get('supply')))
             results = [calculate(c, payload.get('reactance', 0.08), payload.get('supply')) for c in circuits]
             self.json(200, {'results': results})
-        except (ValueError, TypeError, KeyError, OverflowError, RecursionError) as exc:
+        except (ValueError, TypeError, KeyError, OverflowError, RecursionError, csv.Error) as exc:
             self.json(400, {'error': str(exc) or 'Dados inválidos.'})
 
 

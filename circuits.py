@@ -85,7 +85,9 @@ def profile(c, supply=None):
             continue
         if distance is None or distance < 0:
             issues.append(f'{label}: distância deve ser finita e maior ou igual a zero.')
-            continue
+            # A distância pendente impede seção/queda, mas não a corrente nominal.
+            if item.get('distance') not in ('', None):
+                continue
         if unit not in ('W', 'kW', 'VA', 'kVA', 'CV', 'HP'):
             issues.append(f'{label}: unidade inválida.')
             continue

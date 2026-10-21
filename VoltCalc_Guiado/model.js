@@ -4,7 +4,7 @@
 const id=()=>crypto.randomUUID();
 const supplyDefaults=()=>({phases:'tri',network:'127/220',phaseVoltage:127,lineVoltage:220});
 const newLoad=()=>({id:id(),description:'Equipamento',quantity:1,power:100,unit:'W',powerFactor:1,efficiency:.9,distance:10});
-const newCircuit=()=>({id:id(),description:'',type:'lighting',connection:'fn',phaseSet:'A',voltageMode:'auto',voltage:127,legacyLoaded:null,
+const newCircuit=()=>({id:id(),number:'',source:null,description:'',type:'lighting',connection:'fn',phaseSet:'A',voltageMode:'auto',voltage:127,legacyLoaded:null,
  loads:[newLoad()],routeMode:'linear',installation:'embedded',wall:'masonry',cableForm:'single',conduitType:'PVC',
  methodOverride:'',insulation:'PVC',metal:'Cu',groupCount:1,groupLayout:'bundle',temperature:30,maxDrop:4,
  breakerMode:'auto',breakerCurrent:10,breakerCurve:'C',i2Factor:1.45,breakingCapacityType:'Icn',breakerIcu:'',shortIk:'',
@@ -23,6 +23,8 @@ function cleanCircuit(data){
  for(const key of Object.keys(result))if(Object.hasOwn(data,key))result[key]=data[key];
  result.id=typeof result.id==='string'&&result.id.length<80?result.id:id();
  result.description=String(result.description??'').slice(0,70);
+ result.number=String(result.number??'').slice(0,30);
+ result.source=result.source&&typeof result.source==='object'?JSON.parse(JSON.stringify(result.source)):null;
  if(!Object.hasOwn(data,'loads')){
   result.loads=[cleanLoad({description:data.description||'Carga original',quantity:data.quantity??1,power:data.power??100,
    unit:data.unit||'W',powerFactor:data.powerFactor??1,efficiency:data.efficiency??.9,distance:data.length??0})];
@@ -51,10 +53,10 @@ function readProject(data,requireFormat=false){
  return {projectName:String(data.projectName||'Meu projeto').slice(0,60),circuits,
   draft:data.draft?cleanCircuit(data.draft):cleanCircuit(circuits[0]||newCircuit()),
   editingId:circuits.some(c=>c.id===data.editingId)?data.editingId:null,selected:data.selected||null,
-  supply:cleanSupply(data.supply),reactance};
+  supply:cleanSupply(data.supply),reactance,importInfo:data.importInfo?JSON.parse(JSON.stringify(data.importInfo)):null};
 }
 function projectData(state){return {format:'VoltCalcGuiado-v3',schemaVersion:3,reference:'NBR5410:1997',
  projectName:state.projectName,circuits:state.circuits,draft:state.draft,editingId:state.editingId,selected:state.selected,
- supply:state.supply,reactance:state.reactance};}
+ supply:state.supply,reactance:state.reactance,importInfo:state.importInfo||null};}
 root.VoltModel={id,newLoad,newCircuit,supplyDefaults,cleanCircuit,readProject,projectData};
 })(typeof window==='undefined'?globalThis:window);
