@@ -1,6 +1,6 @@
 // Testes de migração e round-trip; o motor de cálculo é testado em Python.
 const assert=require('node:assert/strict');
-require('../VoltCalc_Guiado/model.js');
+require('node:vm').runInThisContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../frontend/js/model.js'),'utf8'));
 const M=globalThis.VoltModel;
 const old={format:'VoltCalcGuiado-v2',projectName:'Original',reactance:.5,circuits:[{
  id:'legacy',description:'Circuito antigo',type:'lighting',phase:'mono',voltage:220,quantity:15,power:100,

@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from circuits import profile, voltage_trace
+from voltcalc.calculations.circuits import profile, voltage_trace
 from engine import calculate
 from test_engine import circuit
 

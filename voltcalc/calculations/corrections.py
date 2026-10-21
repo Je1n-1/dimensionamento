@@ -1,5 +1,5 @@
 """Resolve supported correction factors with explicit provenance and limits."""
-from circuits import number
+from voltcalc.calculations.circuits import number
 
 
 def temperature_correction(tables, method, insulation, value):

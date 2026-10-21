@@ -1,6 +1,6 @@
 import unittest
-from corrections import temperature_correction
-from sizing import TABLES, calculate
+from voltcalc.calculations.corrections import temperature_correction
+from voltcalc.calculations.sizing import TABLES, calculate
 from test_distributed import mixed, load, SUPPLY
 
 

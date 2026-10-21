@@ -1,6 +1,6 @@
 """Field locations for calculation diagnostics; no second electrical engine."""
 import re
-from circuits import number
+from voltcalc.calculations.circuits import number
 
 
 def diagnostics(c, result, supply=None):

@@ -7,7 +7,7 @@ import cmath
 import copy
 import math
 
-from circuits import number, profile
+from voltcalc.calculations.circuits import number, profile
 
 PHASES = dict(A='R', B='S', C='T')
 VECTORS = {p: cmath.rect(1, a) for p, a in zip('ABC', (0, -2*math.pi/3, 2*math.pi/3))}

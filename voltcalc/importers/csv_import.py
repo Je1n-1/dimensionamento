@@ -5,7 +5,7 @@ import re
 import unicodedata
 import uuid
 
-from panel import build_panel
+from voltcalc.calculations.panel import build_panel
 
 
 def normalized(value):

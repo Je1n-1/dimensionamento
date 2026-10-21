@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
-const root = path.join(__dirname, 'original_html');
+const root = path.join(__dirname, '..', 'archive', 'original_html');
 const source = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const table = fs.readFileSync(path.join(root, 'tables.js'), 'utf8');
 function session(storage = new Map()) {
@@ -70,7 +70,7 @@ async function main() {
   assert.ok(oneFile.includes(table.trim()));
   assert.ok(oneFile.includes(fs.readFileSync(path.join(root, 'styles.css'), 'utf8').trim()));
   evidence.push({ test: 'Single HTML vs separate assets', result: 'JS, CSS and tables match' });
-  fs.writeFileSync(path.join(__dirname, 'evidencias.json'), JSON.stringify(evidence, null, 2));
+  fs.writeFileSync(path.join(__dirname, '..', 'docs', 'analysis', 'evidencias.json'), JSON.stringify(evidence, null, 2));
   console.log(JSON.stringify(evidence, null, 2));
 }
 main().catch(error => { console.error(error); process.exitCode = 1; });

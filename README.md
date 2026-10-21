@@ -12,22 +12,21 @@ python server.py --open
 
 O site abre em http://127.0.0.1:8000/. Mantenha o terminal aberto durante o uso. Para encerrar, pressione Ctrl+C. Se a porta estiver ocupada, use `python server.py --port 8001 --open`.
 
-Abrir o HTML diretamente não executa o motor Python. O arquivo `VoltCalc_Guiado_Abrir.html` agora explica como iniciar o servidor. Esta distribuição é para uso local, não para publicar diretamente na internet.
+Abrir o HTML diretamente não executa o motor Python. Os HTMLs das distribuições anteriores ficam em `archive/`; use o atalho na raiz ou o comando acima. Esta distribuição é para uso local, não para publicar diretamente na internet.
 
-## Arquivos
+## Organização dos arquivos
 
-- `server.py`: servidor HTTP local, arquivos da interface e API `/api/calculate`.
-- `engine.py`: entrada compatível do motor Python.
-- `circuits.py`: cargas diferentes, ligação, potência ativa/reativa e percursos.
-- `sizing.py`: fatores, seleção de seção/disjuntor e explicação dos critérios.
-- `data/nbr1997.json`: base histórica de tabelas, carregada pelo Python e fornecida à interface para consulta.
-- `VoltCalc_Guiado/ui.js`: interface conectada ao Python; `model.js` mantém dados e migra backups; `help.js` contém as explicações dos pontos de interrogação.
-- `VoltCalc_Guiado/illustrations.js` e `updates.css`: ilustrações e ajustes visuais. O antigo `app.js` não é mais carregado nem servido.
-- `original_html/`: cópia preservada da versão anterior, com cálculo em JavaScript.
-- `tests/test_engine.py`: testes de cálculo, entradas inválidas e API.
-- `ANALISE.md` e `evidencias.json`: análise e evidências da **versão original**, anteriores a esta conversão.
+- `voltcalc/calculations/`: cálculos elétricos, fatores, seleção e validação.
+- `voltcalc/importers/`: leitura e validação de CSV.
+- `voltcalc/web/`: servidor HTTP, rotas da API e lista de arquivos públicos.
+- `frontend/`: HTML, estilos, imagens e módulos JavaScript separados em `core/`, `views/` e `features/`.
+- `data/` e `examples/`: tabelas históricas e arquivos de exemplo.
+- `tests/`: testes automatizados; `scripts/`: ferramentas de auditoria.
+- `docs/`: documentação, análises e capturas de tela.
+- `archive/`: versões anteriores preservadas, sem participação no site ativo.
+- `server.py`, `engine.py` e `Iniciar_VoltCalc.bat`: entradas compatíveis mantidas na raiz.
 
-O arquivo `VoltCalc_Guiado/tables.js` é uma cópia legada. O servidor gera a rota `/tables.js` a partir de `data/nbr1997.json`, que é a fonte usada pela versão Python.
+Consulte [o mapa de pastas e funções](docs/ARCHITECTURE.md) para localizar cada responsabilidade. O servidor continua gerando `/tables.js` a partir de `data/nbr1997.json`. Também é possível iniciar com `python -m voltcalc --open`.
 
 ## Mudanças nesta versão
 
@@ -58,15 +57,15 @@ Os projetos ainda ficam no armazenamento local do navegador, não em banco de da
 python -m unittest discover -s tests -v
 ```
 
-São 47 testes Python, incluindo casos analíticos de queda por trecho, cargas com fatores de potência diferentes, ligações, disjuntor informado, quadro por fase, importação CSV, API e compatibilidade com o motor anterior. Para os testes adicionais de migração, backups e preservação dos dados importados, com Node.js instalado: `node tests/model.test.cjs`.
+Os testes Python incluem casos analíticos de queda por trecho, cargas com fatores de potência diferentes, ligações, disjuntor informado, quadro por fase, importação CSV, API e compatibilidade com o motor anterior. Para os testes adicionais de migração, backups e preservação dos dados importados, com Node.js instalado: `node tests/model.test.cjs`.
 
 ## Quadro de cargas e CSV
 
 Em **Quadro de cargas**, cada circuito apresenta ligação, tensão, VA, W, FP, fases, corrente e disjuntor informado ou sugerido. Os cartões mostram potência atribuída e corrente por fase R/S/T (equivalentes a A/B/C), maior corrente e diferença entre maior e menor. A tabela detalhada mostra a contribuição de cada circuito. O quadro também integra o memorial imprimível.
 
-- `panel.py`: resumo elétrico do projeto, calculado em Python, sem depender dos dados térmicos ou das distâncias que ainda faltam.
-- `csv_import.py`: leitura e conferência do modelo CSV; `examples/residencia.csv` preserva o exemplo fornecido com oito circuitos.
-- `VoltCalc_Guiado/board.js`: apresentação do quadro, sem fórmulas elétricas.
+- `voltcalc/calculations/panel.py`: resumo elétrico do projeto, calculado em Python, sem depender dos dados térmicos ou das distâncias que ainda faltam.
+- `voltcalc/importers/csv_import.py`: leitura e conferência do modelo CSV; `examples/residencia.csv` preserva o exemplo fornecido com oito circuitos.
+- `frontend/js/board.js`: apresentação do quadro, sem fórmulas elétricas.
 - `/api/panel`, `/api/import-csv` e `/api/example`: endpoints locais de resumo, prévia de importação e exemplo.
 
 Use **Importar CSV** ou **Exemplo de 8 circuitos**. A prévia mostra os circuitos e divergências antes de abrir um novo projeto. O projeto anterior fica no armazenamento local para restauração; a próxima importação substitui essa cópia de restauração. Exporte JSON para arquivamento permanente. O CSV permanece um registro de origem e não acompanha mudanças posteriores no editor.

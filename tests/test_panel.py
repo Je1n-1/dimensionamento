@@ -6,9 +6,9 @@ import unittest
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from csv_import import import_csv
+from voltcalc.importers.csv_import import import_csv
 from engine import calculate
-from panel import build_panel
+from voltcalc.calculations.panel import build_panel
 from test_distributed import mixed, load
 import test_engine
 

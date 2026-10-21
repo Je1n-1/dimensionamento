@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict');
-require('../VoltCalc_Guiado/model.js');
+require('node:vm').runInThisContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../frontend/js/model.js'),'utf8'));
 global.window=globalThis;
-require('../VoltCalc_Guiado/technical.js');
+require('node:vm').runInThisContext(require('node:fs').readFileSync(require('node:path').join(__dirname,'../frontend/js/technical.js'),'utf8'));
 const M=VoltModel,G=VoltGrid;
 const first=M.newCircuit();first.description='Original';
 const rows=G.paste([first],'loads',0,0,'C1\tRua\tfn\tA\t15\t100\tW\t1\t50\r\nC2\tGaragem\tff\tAB\t2\t200\tW\t0,97\t20\r\n');

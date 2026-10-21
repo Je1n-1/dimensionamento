@@ -1,13 +1,13 @@
 """Seleção preliminar de seção e proteção com rastreabilidade dos critérios."""
 import json
 import math
-from pathlib import Path
+from voltcalc.paths import DATA
 
-from circuits import number, profile, voltage_trace
-from validation import diagnostics
-from corrections import temperature_correction, grouping_correction
+from voltcalc.calculations.circuits import number, profile, voltage_trace
+from voltcalc.calculations.validation import diagnostics
+from voltcalc.calculations.corrections import temperature_correction, grouping_correction
 
-TABLES = json.loads((Path(__file__).parent / 'data' / 'nbr1997.json').read_text(encoding='utf-8'))
+TABLES = json.loads((DATA / 'nbr1997.json').read_text(encoding='utf-8'))
 BREAKERS = (6, 10, 13, 16, 20, 25, 32, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630, 800, 1000)
 
 
