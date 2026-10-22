@@ -1,4 +1,10 @@
-import { calc, prepare } from "../core/api.js";
+import { circuitMetrics, phaseSummary, phaseBadge, icon } from "../views/visuals.js";
+import {
+  technicalSummary,
+  circuitFilterBar,
+  filterCircuitRows,
+} from "../views/dashboard.js";
+import { calc, prepare, prepareBoard } from "../core/api.js";
 import { closeModal, modal, toast } from "../core/dom.js";
 import {
   G,
@@ -79,8 +85,8 @@ export function gridCell(c, column, row, j) {
   return `<td>${input}<span id="grid-diagnostic-${row}-${j}" class="grid-cell-error" data-grid-error="${row}-${j}"></span></td>`;
 }
 
-export function technicalView() {
-  return `<section class="panel card-section grid-panel"><div class="card-title"><div><span class="eyebrow">Modo técnico</span><h2>Planilha de circuitos</h2><p>Edição salva neste navegador. Resultados recalculados pelo Python.</p></div><div class="head-actions"><button class="btn secondary small" data-action="export">Backup JSON</button><button class="btn secondary small" data-page="loads">Quadro de cargas</button><button class="btn primary small" data-grid-action="add">+ Circuito</button></div></div>${supplyView()}<div class="grid-toolbar"><div class="grid-tabs">${[
+function technicalEditorView() {
+  return `<section class="panel card-section grid-panel"><div class="card-title"><div><h2>Circuitos (${state.circuits.length})</h2><p>Edite as células para recalcular os resultados do projeto.</p></div><div class="head-actions"><button class="btn secondary small" data-action="export">Backup JSON</button><button class="btn primary small" data-grid-action="add">+ Circuito</button></div></div><p class="hint">A alimentação geral é definida em <button class="btn ghost small" data-page="project">Projeto</button>. As ligações e fases abaixo pertencem a cada circuito.</p><div class="grid-toolbar"><div class="grid-tabs">${[
     ["loads", "Cargas"],
     ["installation", "Instalação"],
     ["conditions", "Condições e proteção"],
@@ -91,13 +97,41 @@ export function technicalView() {
     )
     .join(
       "",
-    )}</div><div class="grid-tabs"><button class="btn secondary small" data-grid-action="duplicate">Duplicar selecionados</button><button class="btn secondary small" data-grid-action="bulk">Aplicar condições…</button></div></div><p class="hint">Role a tabela para ver todas as colunas. Cole células do Excel a partir de uma célula (sem cabeçalho, números sem separador de milhar). Tab avança; Enter desce. A aba Cargas edita o grupo único; vários grupos ficam em Detalhes. In informado só é usado em Verificar.</p><div class="table-wrap grid-scroll"><table class="circuit-grid"><caption class="sr-only">Circuitos editáveis — ${state.circuits.length} linhas</caption><thead><tr><th><input type="checkbox" data-grid-all aria-label="Selecionar todos os circuitos" ${state.circuits.length && state.circuits.every((c) => ui.gridSelection.has(c.id)) ? "checked" : ""}></th><th>Editar</th>${G.columns[ui.gridTab].map((c) => `<th>${esc(c.label)}</th>`).join("")}<th>Pré-dimensionamento</th></tr></thead><tbody>${state.circuits.map((c, i) => `<tr class="${state.editingId === c.id ? "grid-active" : ""}"><td><input type="checkbox" data-grid-select="${esc(c.id)}" aria-label="Selecionar circuito ${i + 1}" ${ui.gridSelection.has(c.id) ? "checked" : ""}></td><td><button class="btn secondary small" data-grid-open="${i}" data-grid-detail="2">Detalhes</button><button class="btn ghost small" data-grid-open="${i}" data-grid-detail="6">Resultado</button></td>${G.columns[ui.gridTab].map((column, j) => gridCell(c, column, i, j)).join("")}<td class="grid-result" data-grid-result="${i}">${gridResult(c)}</td></tr>`).join("")}</tbody></table></div><p class="hint">As condições iniciais são hipóteses editáveis. Corrija as células destacadas; instalações fora das tabelas permanecem pendentes.</p></section>${ui.gridDetails ? `<section class="panel card-section grid-detail"><div class="card-title"><h2>${esc(state.draft.number || "Circuito")} · ${esc(state.draft.description || "Sem nome")}</h2><button class="btn secondary small" data-grid-detail="0">Fechar detalhes</button></div><div class="grid-tabs">${LABELS.map((label, i) => `<button class="btn small ${ui.gridDetails === i + 1 ? "primary" : "secondary"}" data-grid-detail="${i + 1}">${label}</button>`).join("")}</div><div class="grid-detail-body">${[circuitView, () => connectionView() + equipmentView() + routeView(), installationView, groupingView, conditionsView, resultView][ui.gridDetails - 1]()}</div></section>` : ""}`;
+    )}</div><div class="grid-tabs"><button class="btn secondary small" data-grid-action="duplicate">Duplicar selecionados</button><button class="btn secondary small" data-grid-action="bulk">Aplicar condições…</button></div></div><p class="hint">Role a tabela para ver todas as colunas. Cole células do Excel a partir de uma célula (sem cabeçalho, números sem separador de milhar). Tab avança; Enter desce. A aba Cargas edita o grupo único; vários grupos ficam em Detalhes. In informado só é usado em Verificar.</p><div class="table-wrap grid-scroll"><table class="circuit-grid"><caption class="sr-only">Circuitos editáveis — ${state.circuits.length} linhas</caption><thead><tr><th><input type="checkbox" data-grid-all aria-label="Selecionar todos os circuitos" ${state.circuits.length && state.circuits.every((c) => ui.gridSelection.has(c.id)) ? "checked" : ""}></th><th>Editar</th>${G.columns[ui.gridTab].map((c) => `<th>${esc(c.label)}</th>`).join("")}<th>Pré-dimensionamento</th></tr></thead><tbody>${state.circuits.map((c, i) => `<tr data-circuit-id="${esc(c.id)}" class="${state.editingId === c.id ? "grid-active" : ""}"><td><input type="checkbox" data-grid-select="${esc(c.id)}" aria-label="Selecionar circuito ${i + 1}" ${ui.gridSelection.has(c.id) ? "checked" : ""}></td><td><button class="btn secondary small" data-grid-open="${i}" data-grid-detail="2">Detalhes</button><button class="btn ghost small" data-grid-open="${i}" data-grid-detail="6">Resultado</button></td>${G.columns[ui.gridTab].map((column, j) => gridCell(c, column, i, j)).join("")}<td class="grid-result" data-grid-result="${i}">${gridResult(c)}</td></tr>`).join("")}</tbody></table></div><p class="hint">As condições iniciais são hipóteses editáveis. Corrija as células destacadas; instalações fora das tabelas permanecem pendentes.</p></section>${ui.gridDetails ? `<section class="panel card-section grid-detail"><div class="card-title"><h2>${esc(state.draft.number || "Circuito")} · ${esc(state.draft.description || "Sem nome")}</h2><button class="btn secondary small" data-grid-detail="0">Fechar detalhes</button></div><div class="grid-tabs">${LABELS.map((label, i) => `<button class="btn small ${ui.gridDetails === i + 1 ? "primary" : "secondary"}" data-grid-detail="${i + 1}">${label}</button>`).join("")}</div><div class="grid-detail-body">${[circuitView, () => connectionView() + equipmentView() + routeView(), installationView, groupingView, conditionsView, resultView][ui.gridDetails - 1]()}</div></section>` : ""}`;
+}
+
+export function technicalView() {
+  const c =
+    state.circuits.find((c) => c.id === state.editingId) || state.circuits[0];
+  return `<div data-circuit-metrics>${circuitMetrics()}</div>${circuitFilterBar()}<div class="technical-shell"><div class="technical-main">${ui.gridOverview === false ? `<button class="btn secondary small overview-return" data-grid-action="overview">← Visão dos circuitos</button>${technicalEditorView()}` : technicalOverview()}<section class="panel design-card"><h2>Resumo por fase</h2><div data-phase-summary>${phaseSummary()}</div></section></div><aside id="technicalAside" class="panel design-card technical-aside">${technicalSummary(c)}</aside></div>`;
+}
+
+function technicalOverview() {
+  return `<section class="panel technical-overview"><div class="card-title"><div><h2>Circuitos (${state.circuits.length})</h2><p>Selecione um circuito para ver seus dados e verificações.</p></div><div class="head-actions"><button class="btn secondary small" data-grid-action="edit">${icon('edit')} Editar em planilha</button><button class="btn primary small" data-grid-action="add">${icon('plus')} Novo circuito</button></div></div><div class="table-wrap"><table class="data-table technical-summary-table"><thead><tr><th>Circuito</th><th>Ligação</th><th>Fase</th><th>Potência<br>(W)</th><th>Corrente<br>(A)</th><th>Maior distância<br>de ida (m)</th><th>Cabo<br>(mm²)</th><th>Disjuntor<br>(A)</th><th>Queda<br>(%)</th><th>Status</th><th>Ações</th></tr></thead><tbody>${state.circuits.map((c,i)=>{const r=calc(c);return `<tr data-circuit-id="${esc(c.id)}" class="${c.id===state.editingId?'selected-row':''}"><td><button class="circuit-name" data-grid-open="${i}" data-grid-detail="0"><strong>${esc(c.number)}. ${esc(c.description||'Sem nome')}</strong><small>${c.loads.length} grupo(s) de cargas</small></button></td><td>${{fn:'Fase + neutro',ff:'Fase + fase',tri:'Trifásica'}[c.connection]||'Pendente'}</td><td>${phaseBadge(c.phaseSet)}</td><td>${fmt(r.totals.p)}</td><td>${fmt(r.ib)}</td><td>${r.endpoints?.length?fmt(Math.max(...r.endpoints.map(e=>e.distance))):'—'}</td><td>${fmt(r.chosen?.section)}</td><td>${fmt(r.protection?.nominal)}</td><td>${fmt(r.chosen?.dvPct)}</td><td><span class="status-pill ${r.chosen&&!r.protection.failed?'partial':'pending'}">${r.chosen&&!r.protection.failed?'Parcial':'Revisar'}</span></td><td><div class="row-actions"><button data-grid-open="${i}" data-grid-detail="2" aria-label="Editar ${esc(c.description)}">${icon('edit')}</button><button data-result-id="${esc(c.id)}" aria-label="Resultado de ${esc(c.description)}">${icon('report')}</button></div></td></tr>`}).join('')}</tbody></table></div><p id="filterEmpty" class="empty-state" hidden>Nenhum circuito encontrado.</p></section>`;
+}
+export function refreshTechnicalAside() {
+  const el = document.getElementById("technicalAside");
+  if (el)
+    el.innerHTML = technicalSummary(
+      state.circuits.find((c) => c.id === state.editingId) || state.circuits[0],
+    );
 }
 
 export async function refreshGrid() {
   const version = ++gridRefresh;
   await prepare(state.circuits);
-  if (version === gridRefresh) paintDiagnostics();
+  await prepareBoard();
+  if (version === gridRefresh) {
+    paintDiagnostics();
+    refreshTechnicalAside();
+    filterCircuitRows();
+    document
+      .querySelectorAll("[data-circuit-metrics]")
+      .forEach((el) => (el.innerHTML = circuitMetrics()));
+    document
+      .querySelectorAll("[data-phase-summary]")
+      .forEach((el) => (el.innerHTML = phaseSummary()));
+  }
 }
 
 export function selectGridRow(row) {
@@ -195,6 +229,8 @@ export async function gridClick(d) {
   if (d.gridOpen !== undefined) selectGridRow(+d.gridOpen);
   if (d.gridDetail !== undefined) {
     ui.gridDetails = +d.gridDetail;
+    if (ui.gridDetails > 0 && ui.gridDetails < 6) ui.gridOverview = false;
+    if (ui.gridDetails === 6) state.page = "result";
     persist();
     await requestRender();
     document
@@ -219,7 +255,18 @@ export async function gridClick(d) {
     return;
   }
   switch (d.gridAction) {
+    case "overview":
+      ui.gridOverview = true;
+      ui.gridDetails = 0;
+      requestRender();
+      break;
+    case "edit":
+      ui.gridOverview = false;
+      ui.gridDetails = 0;
+      requestRender();
+      break;
     case "add":
+      ui.gridOverview = false;
       if (state.circuits.length >= 300)
         return toast("Limite de 300 circuitos.");
       syncTechnical();

@@ -23,7 +23,7 @@ export function stepView(step) {
     [
       null,
       circuitView,
-      () => supplyView() + connectionView() + equipmentView() + routeView(),
+      () => connectionView() + equipmentView() + routeView(),
       installationView,
       groupingView,
       conditionsView,
@@ -41,7 +41,7 @@ export function savedResults() {
 }
 
 export function loadsView() {
-  return `<section class="panel card-section"><div class="card-title"><div><h2>Quadro de cargas ${helpButton("panelTotals")}</h2><p>Projeto: ${esc(state.projectName)} · rede ${esc(state.supply.network)} V · ${state.circuits.length} circuito(s).</p></div><div class="head-actions"><button class="btn secondary small" data-action="csvDialog">Importar CSV</button><button class="btn secondary small" data-action="example">Exemplo de 8 circuitos</button><button class="btn secondary small" data-action="export">Backup JSON</button><button class="btn primary small" data-action="new">+ Novo circuito</button></div></div><p class="hint">Fases R/S/T correspondem a A/B/C. Os totais utilizam os circuitos salvos; salve as alterações do editor para atualizar o quadro.</p>${window.VoltBoard.render(
+  return `<section class="panel card-section"><div class="card-title"><div><h2>Circuitos do projeto ${helpButton("panelTotals")}</h2><p>Projeto: ${esc(state.projectName)} · rede ${esc(state.supply.network)} V · ${state.circuits.length} circuito(s).</p></div><div class="head-actions"><button class="btn secondary small" data-action="csvDialog">Importar CSV</button><button class="btn secondary small" data-action="example">Exemplo de 8 circuitos</button><button class="btn secondary small" data-action="export">Backup JSON</button><button class="btn primary small" data-action="new">+ Novo circuito</button></div></div><p class="hint">Use Editar para revisar instalação e cargas, ou Resultado para consultar proteção, queda de tensão e pendências do circuito. Fases R/S/T correspondem a A/B/C. Os totais utilizam os circuitos salvos; salve as alterações do editor para atualizar o quadro.</p>${window.VoltBoard.render(
     ui.boardCache,
     state.circuits,
     savedResults().map((x) => x.r),

@@ -216,16 +216,7 @@ select:focus-visible {
   color: #fff;
 }
 .sidebar-art {
-  opacity: 0.12;
-  font-size: 36px;
-  margin-top: 27px;
-  color: #87baf5;
-  display: flex;
-  justify-content: space-between;
-  transform: rotate(-25deg);
-}
-.sidebar-art span {
-  font-size: 24px;
+  display: none;
 }
 .main {
   grid-column: 2;
@@ -1013,14 +1004,23 @@ select:focus-visible {
   background: white;
 }
 .help-btn {
-  width: 19px;
-  height: 19px;
+  /* The circle stays small; the reserved hit area does not overlap nearby inputs. */
+  width: 44px;
+  height: 44px;
   display: inline-grid;
   place-items: center;
+  vertical-align: middle;
+  flex-shrink: 0;
   color: #1b68dc;
-  border: 1px solid #95befb;
+  border: 0;
   border-radius: 50%;
-  background: white;
+  background: radial-gradient(
+    circle,
+    white 8px,
+    #95befb 8.5px,
+    #95befb 9.5px,
+    transparent 10px
+  );
   padding: 0;
   font-weight: 750;
   font-size: 11px;
@@ -1306,7 +1306,7 @@ select:focus-visible {
 }
 @media (max-width: 650px) {
   .app {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 66px auto 1fr;
   }
   .topbar {
@@ -1365,7 +1365,8 @@ select:focus-visible {
     padding: 0 0 12px;
   }
   .step-name {
-    font-size: 8px;
+    font-size: 10px;
+    overflow-wrap: anywhere;
   }
   .step-dot {
     width: 29px;

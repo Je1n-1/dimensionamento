@@ -22,6 +22,7 @@
     id: id(),
     number: "",
     source: null,
+    planningOrigin: null,
     description: "",
     type: "lighting",
     connection: "fn",
@@ -132,6 +133,62 @@
       lineVoltage: result.lineVoltage,
     };
   }
+  const contextDefaults = () => ({
+    propertyType: "house",
+    rooms: [],
+    equipment: [],
+    distribute: true,
+    conditions: { temperature: 30, groupCount: 1 },
+  });
+  function cleanContext(data) {
+    const result = contextDefaults();
+    if (data == null) return result;
+    if (typeof data !== "object" || Array.isArray(data))
+      throw Error("Contexto do projeto inválido.");
+    result.propertyType = [
+      "house",
+      "apartment",
+      "commercial",
+      "other",
+    ].includes(data.propertyType)
+      ? data.propertyType
+      : "other";
+    if (
+      !Array.isArray(data.rooms) ||
+      data.rooms.length > 100 ||
+      !Array.isArray(data.equipment) ||
+      data.equipment.length > 100
+    )
+      throw Error("Use até 100 ambientes e 100 grupos de equipamentos.");
+    result.rooms = data.rooms.map((room) => String(room).slice(0, 60));
+    const keys = [
+      "id",
+      "kind",
+      "name",
+      "room",
+      "quantity",
+      "power",
+      "powerFactor",
+      "distance",
+      "connection",
+    ];
+    result.equipment = data.equipment.map((item) => {
+      if (!item || typeof item !== "object")
+        throw Error("Equipamento do projeto inválido.");
+      return Object.fromEntries(
+        keys.map((key) => [
+          key,
+          String(item[key] ?? "").slice(0, key === "name" ? 70 : 80),
+        ]),
+      );
+    });
+    result.distribute = data.distribute !== false;
+    result.conditions = {
+      temperature: data.conditions?.temperature ?? 30,
+      groupCount: data.conditions?.groupCount ?? 1,
+    };
+    return result;
+  }
   function readProject(data, requireFormat = false) {
     if (!data || !Array.isArray(data.circuits) || data.circuits.length > 300)
       throw Error("Projeto inválido ou acima de 300 circuitos.");
@@ -159,6 +216,7 @@
     }
     return {
       projectName: String(data.projectName || "Meu projeto").slice(0, 60),
+      context: cleanContext(data.context),
       circuits,
       draft: data.draft
         ? cleanCircuit(data.draft)
@@ -180,6 +238,7 @@
       schemaVersion: 3,
       reference: "NBR5410:1997",
       projectName: state.projectName,
+      context: state.context || contextDefaults(),
       circuits: state.circuits,
       draft: state.draft,
       editingId: state.editingId,
@@ -197,5 +256,7 @@
     cleanCircuit,
     readProject,
     projectData,
+    contextDefaults,
+    cleanContext,
   };
 })(typeof window === "undefined" ? globalThis : window);

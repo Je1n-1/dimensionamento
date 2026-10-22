@@ -1,0 +1,1308 @@
+{
+  "basis": "SENAI PDFs, reviewed 2026-10-21; comparison only, production calculations unchanged",
+  "table_comparisons": {
+    "count": 152,
+    "matches": 152,
+    "discrepancies": []
+  },
+  "examples": {
+    "UE2_pp8_19_lighting_1000VA": {
+      "ib": 7.874015748031496,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 0.7,
+      "requiredAmpacity": 11.96658928272264,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 11.514999999999999,
+        "dv": 2.5987603149606295,
+        "dvPct": 2.046267964535929,
+        "breaker": 10,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "UE2_pp12_14_lighting_800W": {
+      "ib": 6.299212598425197,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 0.7,
+      "requiredAmpacity": 9.573271426178113,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 11.514999999999999,
+        "dv": 0,
+        "dvPct": 0.0,
+        "breaker": 10,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "UE2_pp12_14_sockets_1200W": {
+      "ib": 9.448818897637794,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 0.7,
+      "requiredAmpacity": 14.359907139267166,
+      "criteria": {
+        "minimum": 2.5,
+        "ampacity": 2.5,
+        "voltageDrop": 2.5,
+        "protection": 2.5
+      },
+      "chosen": {
+        "section": 2.5,
+        "itab": 24.0,
+        "iz": 15.791999999999998,
+        "dv": 0,
+        "dvPct": 0.0,
+        "breaker": 10,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "UE2_pp20_22_TUE1": {
+      "ib": 11.116257526632701,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 0.65,
+      "requiredAmpacity": 18.19354750676383,
+      "criteria": {
+        "minimum": 2.5,
+        "ampacity": 2.5,
+        "voltageDrop": 2.5,
+        "protection": 2.5
+      },
+      "chosen": {
+        "section": 2.5,
+        "itab": 24.0,
+        "iz": 14.664,
+        "dv": 3.921563880506574,
+        "dvPct": 3.0878455752020266,
+        "breaker": 13,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "UE2_pp20_22_TUE2": {
+      "ib": 10.695187165775401,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 0.65,
+      "requiredAmpacity": 17.504397979992472,
+      "criteria": {
+        "minimum": 2.5,
+        "ampacity": 2.5,
+        "voltageDrop": 2.5,
+        "protection": 2.5
+      },
+      "chosen": {
+        "section": 2.5,
+        "itab": 24.0,
+        "iz": 14.664,
+        "dv": 6.036831670597998,
+        "dvPct": 2.7440143957263627,
+        "breaker": 13,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    }
+  },
+  "probes": {
+    "minimum_lighting": {
+      "ib": 2.272727272727273,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 2.417794970986461,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 0.312540303030303,
+        "dvPct": 0.14206377410468318,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "minimum_sockets": {
+      "ib": 2.272727272727273,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 2.417794970986461,
+      "criteria": {
+        "minimum": 2.5,
+        "ampacity": 2.5,
+        "voltageDrop": 2.5,
+        "protection": 2.5
+      },
+      "chosen": {
+        "section": 2.5,
+        "itab": 24.0,
+        "iz": 22.56,
+        "dv": 0.18752418181818178,
+        "dvPct": 0.08523826446280991,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "minimum_motor": {
+      "ib": 2.272727272727273,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 2.417794970986461,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 0.312540303030303,
+        "dvPct": 0.14206377410468318,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "minimum_shower": {
+      "ib": 2.272727272727273,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 2.417794970986461,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 0.312540303030303,
+        "dvPct": 0.14206377410468318,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "minimum_transformer": {
+      "ib": 2.272727272727273,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 2.417794970986461,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 0.312540303030303,
+        "dvPct": 0.14206377410468318,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "minimum_other": {
+      "ib": 2.272727272727273,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 2.417794970986461,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 0.312540303030303,
+        "dvPct": 0.14206377410468318,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "voltage_drop_catalogue_boundary": {
+      "ib": 7.177033492822967,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 7.635142013641455,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 8.454723583345142,
+        "dvPct": 3.8430561742477916,
+        "breaker": 10,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": [],
+      "catalogue_1_5mm2_V_per_A_km": 27.6,
+      "catalogue_1_5mm2_drop_percent": 4.051761635493693
+    },
+    "terminal_limit_10_percent": {
+      "ib": 4.545454545454546,
+      "method": "B1",
+      "loaded": 2,
+      "fct": 0.94,
+      "fca": 1,
+      "requiredAmpacity": 4.835589941972922,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 17.5,
+        "iz": 16.45,
+        "dv": 20.002579393939392,
+        "dvPct": 9.092081542699724,
+        "breaker": 6,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "soil_1": {
+      "ib": 7.874015748031496,
+      "method": "D",
+      "loaded": 2,
+      "fct": 0.84,
+      "fca": 1,
+      "requiredAmpacity": 9.373828271466067,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 22.0,
+        "iz": 18.48,
+        "dv": 2.5987603149606295,
+        "dvPct": 2.046267964535929,
+        "breaker": 10,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    },
+    "soil_3": {
+      "ib": 7.874015748031496,
+      "method": "D",
+      "loaded": 2,
+      "fct": 0.84,
+      "fca": 1,
+      "requiredAmpacity": 9.373828271466067,
+      "criteria": {
+        "minimum": 1.5,
+        "ampacity": 1.5,
+        "voltageDrop": 1.5,
+        "protection": 1.5
+      },
+      "chosen": {
+        "section": 1.5,
+        "itab": 22.0,
+        "iz": 18.48,
+        "dv": 2.5987603149606295,
+        "dvPct": 2.046267964535929,
+        "breaker": 10,
+        "ampOk": true,
+        "dropOk": true
+      },
+      "issues": []
+    }
+  },
+  "manual_unit_drop_limits": {
+    "UE2_p16": 53.763333333333335,
+    "UE2_p18": 27.86666666666667,
+    "UE2_p22": 20.570000000000004
+  },
+  "comparisons": [
+    {
+      "label": "FCT air/PVC/10",
+      "expected": 1.22,
+      "actual": 1.22,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/15",
+      "expected": 1.17,
+      "actual": 1.17,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/20",
+      "expected": 1.12,
+      "actual": 1.12,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/25",
+      "expected": 1.06,
+      "actual": 1.06,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/35",
+      "expected": 0.94,
+      "actual": 0.94,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/40",
+      "expected": 0.87,
+      "actual": 0.87,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/45",
+      "expected": 0.79,
+      "actual": 0.79,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/50",
+      "expected": 0.71,
+      "actual": 0.71,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/55",
+      "expected": 0.61,
+      "actual": 0.61,
+      "matches": true
+    },
+    {
+      "label": "FCT air/PVC/60",
+      "expected": 0.5,
+      "actual": 0.5,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/10",
+      "expected": 1.15,
+      "actual": 1.15,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/15",
+      "expected": 1.12,
+      "actual": 1.12,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/20",
+      "expected": 1.08,
+      "actual": 1.08,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/25",
+      "expected": 1.04,
+      "actual": 1.04,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/35",
+      "expected": 0.96,
+      "actual": 0.96,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/40",
+      "expected": 0.91,
+      "actual": 0.91,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/45",
+      "expected": 0.87,
+      "actual": 0.87,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/50",
+      "expected": 0.82,
+      "actual": 0.82,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/55",
+      "expected": 0.76,
+      "actual": 0.76,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/60",
+      "expected": 0.71,
+      "actual": 0.71,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/65",
+      "expected": 0.65,
+      "actual": 0.65,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/70",
+      "expected": 0.58,
+      "actual": 0.58,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/75",
+      "expected": 0.5,
+      "actual": 0.5,
+      "matches": true
+    },
+    {
+      "label": "FCT air/EPR_XLPE/80",
+      "expected": 0.41,
+      "actual": 0.41,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/10",
+      "expected": 1.1,
+      "actual": 1.1,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/15",
+      "expected": 1.05,
+      "actual": 1.05,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/25",
+      "expected": 0.95,
+      "actual": 0.95,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/30",
+      "expected": 0.89,
+      "actual": 0.89,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/35",
+      "expected": 0.84,
+      "actual": 0.84,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/40",
+      "expected": 0.77,
+      "actual": 0.77,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/45",
+      "expected": 0.71,
+      "actual": 0.71,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/50",
+      "expected": 0.63,
+      "actual": 0.63,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/55",
+      "expected": 0.55,
+      "actual": 0.55,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/PVC/60",
+      "expected": 0.45,
+      "actual": 0.45,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/10",
+      "expected": 1.07,
+      "actual": 1.07,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/15",
+      "expected": 1.04,
+      "actual": 1.04,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/25",
+      "expected": 0.96,
+      "actual": 0.96,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/30",
+      "expected": 0.93,
+      "actual": 0.93,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/35",
+      "expected": 0.89,
+      "actual": 0.89,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/40",
+      "expected": 0.85,
+      "actual": 0.85,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/45",
+      "expected": 0.8,
+      "actual": 0.8,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/50",
+      "expected": 0.76,
+      "actual": 0.76,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/55",
+      "expected": 0.71,
+      "actual": 0.71,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/60",
+      "expected": 0.65,
+      "actual": 0.65,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/65",
+      "expected": 0.6,
+      "actual": 0.6,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/70",
+      "expected": 0.53,
+      "actual": 0.53,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/75",
+      "expected": 0.46,
+      "actual": 0.46,
+      "matches": true
+    },
+    {
+      "label": "FCT soil/EPR_XLPE/80",
+      "expected": 0.38,
+      "actual": 0.38,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/1",
+      "expected": 1,
+      "actual": 1,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/2",
+      "expected": 0.8,
+      "actual": 0.8,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/3",
+      "expected": 0.7,
+      "actual": 0.7,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/4",
+      "expected": 0.65,
+      "actual": 0.65,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/5",
+      "expected": 0.6,
+      "actual": 0.6,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/6",
+      "expected": 0.57,
+      "actual": 0.57,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/7",
+      "expected": 0.54,
+      "actual": 0.54,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/8",
+      "expected": 0.52,
+      "actual": 0.52,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/9",
+      "expected": 0.5,
+      "actual": 0.5,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/10",
+      "expected": 0.5,
+      "actual": 0.5,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/11",
+      "expected": 0.5,
+      "actual": 0.5,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/12",
+      "expected": 0.45,
+      "actual": 0.45,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/13",
+      "expected": 0.45,
+      "actual": 0.45,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/14",
+      "expected": 0.45,
+      "actual": 0.45,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/15",
+      "expected": 0.45,
+      "actual": 0.45,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/16",
+      "expected": 0.41,
+      "actual": 0.41,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/17",
+      "expected": 0.41,
+      "actual": 0.41,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/18",
+      "expected": 0.41,
+      "actual": 0.41,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/19",
+      "expected": 0.41,
+      "actual": 0.41,
+      "matches": true
+    },
+    {
+      "label": "FCA feixe/20",
+      "expected": 0.38,
+      "actual": 0.38,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/A1/2",
+      "expected": 7,
+      "actual": 7.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/A1/3",
+      "expected": 7,
+      "actual": 7.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/A2/2",
+      "expected": 7,
+      "actual": 7.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/A2/3",
+      "expected": 7,
+      "actual": 7.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/B1/2",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/B1/3",
+      "expected": 8,
+      "actual": 8.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/B2/2",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/B2/3",
+      "expected": 8,
+      "actual": 8.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/C/2",
+      "expected": 10,
+      "actual": 10.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/C/3",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/D/2",
+      "expected": 12,
+      "actual": 12.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.5/D/3",
+      "expected": 10,
+      "actual": 10.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/A1/2",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/A1/3",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/A2/2",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/A2/3",
+      "expected": 9,
+      "actual": 9.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/B1/2",
+      "expected": 11,
+      "actual": 11.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/B1/3",
+      "expected": 10,
+      "actual": 10.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/B2/2",
+      "expected": 11,
+      "actual": 11.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/B2/3",
+      "expected": 10,
+      "actual": 10.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/C/2",
+      "expected": 13,
+      "actual": 13.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/C/3",
+      "expected": 11,
+      "actual": 11.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/D/2",
+      "expected": 15,
+      "actual": 15.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/0.75/D/3",
+      "expected": 12,
+      "actual": 12.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/A1/2",
+      "expected": 11,
+      "actual": 11.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/A1/3",
+      "expected": 10,
+      "actual": 10.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/A2/2",
+      "expected": 11,
+      "actual": 11.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/A2/3",
+      "expected": 10,
+      "actual": 10.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/B1/2",
+      "expected": 14,
+      "actual": 14.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/B1/3",
+      "expected": 12,
+      "actual": 12.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/B2/2",
+      "expected": 13,
+      "actual": 13.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/B2/3",
+      "expected": 12,
+      "actual": 12.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/C/2",
+      "expected": 15,
+      "actual": 15.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/C/3",
+      "expected": 14,
+      "actual": 14.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/D/2",
+      "expected": 18,
+      "actual": 18.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.0/D/3",
+      "expected": 15,
+      "actual": 15.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/A1/2",
+      "expected": 14.5,
+      "actual": 14.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/A1/3",
+      "expected": 13.5,
+      "actual": 13.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/A2/2",
+      "expected": 14,
+      "actual": 14.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/A2/3",
+      "expected": 13,
+      "actual": 13.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/B1/2",
+      "expected": 17.5,
+      "actual": 17.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/B1/3",
+      "expected": 15.5,
+      "actual": 15.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/B2/2",
+      "expected": 16.5,
+      "actual": 16.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/B2/3",
+      "expected": 15,
+      "actual": 15.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/C/2",
+      "expected": 19.5,
+      "actual": 19.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/C/3",
+      "expected": 17.5,
+      "actual": 17.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/D/2",
+      "expected": 22,
+      "actual": 22.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/1.5/D/3",
+      "expected": 18,
+      "actual": 18.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/A1/2",
+      "expected": 19.5,
+      "actual": 19.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/A1/3",
+      "expected": 18,
+      "actual": 18.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/A2/2",
+      "expected": 18.5,
+      "actual": 18.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/A2/3",
+      "expected": 17.5,
+      "actual": 17.5,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/B1/2",
+      "expected": 24,
+      "actual": 24.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/B1/3",
+      "expected": 21,
+      "actual": 21.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/B2/2",
+      "expected": 23,
+      "actual": 23.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/B2/3",
+      "expected": 20,
+      "actual": 20.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/C/2",
+      "expected": 27,
+      "actual": 27.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/C/3",
+      "expected": 24,
+      "actual": 24.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/D/2",
+      "expected": 29,
+      "actual": 29.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/2.5/D/3",
+      "expected": 24,
+      "actual": 24.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/A1/2",
+      "expected": 26,
+      "actual": 26.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/A1/3",
+      "expected": 24,
+      "actual": 24.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/A2/2",
+      "expected": 25,
+      "actual": 25.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/A2/3",
+      "expected": 23,
+      "actual": 23.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/B1/2",
+      "expected": 32,
+      "actual": 32.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/B1/3",
+      "expected": 28,
+      "actual": 28.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/B2/2",
+      "expected": 30,
+      "actual": 30.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/B2/3",
+      "expected": 27,
+      "actual": 27.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/C/2",
+      "expected": 36,
+      "actual": 36.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/C/3",
+      "expected": 32,
+      "actual": 32.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/D/2",
+      "expected": 38,
+      "actual": 38.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/4.0/D/3",
+      "expected": 31,
+      "actual": 31.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/A1/2",
+      "expected": 34,
+      "actual": 34.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/A1/3",
+      "expected": 31,
+      "actual": 31.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/A2/2",
+      "expected": 32,
+      "actual": 32.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/A2/3",
+      "expected": 29,
+      "actual": 29.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/B1/2",
+      "expected": 41,
+      "actual": 41.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/B1/3",
+      "expected": 36,
+      "actual": 36.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/B2/2",
+      "expected": 38,
+      "actual": 38.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/B2/3",
+      "expected": 34,
+      "actual": 34.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/C/2",
+      "expected": 46,
+      "actual": 46.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/C/3",
+      "expected": 41,
+      "actual": 41.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/D/2",
+      "expected": 47,
+      "actual": 47.0,
+      "matches": true
+    },
+    {
+      "label": "Itab PVC/Cu/6.0/D/3",
+      "expected": 39,
+      "actual": 39.0,
+      "matches": true
+    }
+  ]
+}

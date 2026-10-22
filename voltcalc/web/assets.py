@@ -9,6 +9,8 @@ PUBLIC_FILES = (
     'js/views/pages.js', 'js/views/diagnostics.js',
     'js/features/circuits.js', 'js/features/files.js', 'js/features/dialogs.js',
     'js/features/report.js', 'js/features/grid.js',
+    'js/features/project.js', 'js/views/report.js', 'css/project.css',
+    'js/views/visuals.js', 'js/views/dashboard.js', 'images/project-reference.png',
 )
 ASSETS = {'/' + name: FRONTEND / name for name in PUBLIC_FILES}
 ASSETS['/'] = ASSETS['/index.html']

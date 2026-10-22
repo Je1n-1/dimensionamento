@@ -1,5 +1,18 @@
+import { icon, hydrateShell } from "./views/visuals.js";
+import {
+  dashboardView,
+  resultDashboard,
+  filterCircuitRows,
+} from "./views/dashboard.js";
+import {
+  projectView,
+  projectClick,
+  projectInput,
+  invalidateProposal,
+} from "./features/project.js";
+import { reportView, exportCsv } from "./views/report.js";
 import { calc, prepare, prepareBoard } from "./core/api.js";
-import { closeModal, toast } from "./core/dom.js";
+import { closeModal, refreshTableOverflow, toast } from "./core/dom.js";
 import {
   $,
   CONNECTIONS,
@@ -34,6 +47,7 @@ import {
   gridClick,
   gridInput,
   refreshGrid,
+  refreshTechnicalAside,
   selectGridRow,
   technicalView,
 } from "./features/grid.js";
@@ -57,6 +71,7 @@ import {
 
 let renderVersion = 0,
   summaryVersion = 0;
+let lastScreen = "";
 
 export function paintLive() {
   paintDiagnostics();
@@ -161,49 +176,120 @@ export async function render() {
   const version = ++renderVersion,
     snapshot = viewKey();
   await prepare(
-    state.page === "loads" || state.mode === "technical"
+    ["loads", "report", "project", "result"].includes(state.page) ||
+      state.mode === "technical"
       ? [state.draft, ...state.circuits]
       : [state.draft],
   );
-  if (state.page === "loads") await prepareBoard();
+  if (["loads", "report", "project", "result"].includes(state.page))
+    await prepareBoard();
   if (version !== renderVersion || snapshot !== viewKey()) return;
   document
     .querySelector(".page-layout")
     .classList.toggle(
       "board-layout",
-      state.page === "loads" || state.mode === "technical",
+      ["loads", "report", "project", "result"].includes(state.page) ||
+        state.mode === "technical" ||
+        (state.page === "wizard" && state.step === 6),
     );
   $("summaryPanel").hidden =
-    state.page === "loads" || state.mode === "technical";
-  document.querySelector(".mode-toggle").hidden = state.page === "loads";
+    ["loads", "report", "project", "result"].includes(state.page) ||
+    state.mode === "technical" ||
+    (state.page === "wizard" && state.step === 6);
+  document.querySelector(".mode-toggle").hidden = false;
   $("projectName").value = state.projectName;
   $("guidedMode").classList.toggle("active", state.mode === "guided");
   $("technicalMode").classList.toggle("active", state.mode === "technical");
   $("guidedMode").setAttribute("aria-pressed", state.mode === "guided");
   $("technicalMode").setAttribute("aria-pressed", state.mode === "technical");
-  $("pageTitle").textContent =
-    state.page === "loads"
-      ? "Quadro de cargas"
-      : state.page === "wizard"
-        ? "Dimensionamento de circuitos"
-        : "Análise do circuito";
-  $("pageSubtitle").textContent =
-    "Cadastre as cargas, entenda os critérios e confira cada resultado.";
-  document
-    .querySelectorAll("[data-page]")
-    .forEach((el) =>
-      el.classList.toggle("active", el.dataset.page === state.page),
-    );
+  const section = ["project", "report"].includes(state.page)
+    ? state.page
+    : "loads";
+  const isResult =
+    state.page === "result" ||
+    (state.page === "wizard" && state.mode === "guided" && state.step === 6);
+  const isTechnical =
+    section === "loads" && state.mode === "technical" && !isResult;
+  const heading = document.querySelector(".page-heading");
+  heading.classList.toggle(
+    "house-heading",
+    state.page === "project" || (state.page === "loads" && !isTechnical),
+  );
+  const title = isResult
+    ? "Resultado do dimensionamento"
+    : isTechnical
+      ? "Planilha técnica de circuitos"
+      : state.page === "project"
+        ? ui.projectStep === 1
+          ? "Projeto: " + state.projectName
+          : "Assistente de circuitos"
+        : section === "report"
+          ? "Relatório do projeto"
+          : state.page === "wizard"
+            ? "Assistente de dimensionamento"
+            : "Quadro de cargas";
+  $("pageTitle").textContent = title;
+  $("pageSubtitle").textContent = isResult
+    ? "Confira o resultado da análise do circuito, incluindo dimensionamento, proteção e queda de tensão."
+    : isTechnical
+      ? "Visualize, edite e dimensione os circuitos do projeto. Confira os critérios e pendências."
+      : state.page === "project"
+        ? "Configure as informações do projeto e receba uma proposta inicial de circuitos, com condições editáveis."
+        : section === "report"
+          ? "Resultados consolidados, critérios verificados e pendências do projeto."
+          : "Visualize a distribuição dos circuitos entre as fases e confira os resultados do dimensionamento.";
+  $("pageIcon").innerHTML = icon(
+    isResult
+      ? "report"
+      : isTechnical
+        ? "report"
+        : section === "project"
+          ? "home"
+          : section === "report"
+            ? "report"
+            : "board",
+  );
+  $("pageBreadcrumb").textContent =
+    state.page === "project"
+      ? ui.projectStep === 1
+        ? "Olá, vamos dimensionar seu projeto?"
+        : "Início  ›  Assistente de circuitos"
+      : "Projeto  ›  " +
+        (section === "report"
+          ? "Relatório"
+          : isResult
+            ? "Circuitos  ›  Resultado"
+            : isTechnical
+              ? "Circuitos  ›  Modo técnico"
+              : "Circuitos  ›  Quadro de cargas");
+  document.querySelectorAll(".nav-list [data-page]").forEach((el) => {
+    el.classList.toggle("active", el.dataset.page === section);
+    if (el.dataset.page === section) el.setAttribute("aria-current", "page");
+    else el.removeAttribute("aria-current");
+  });
+  const contextNav =
+    state.page === "wizard" && !isResult
+      ? '<div class="context-nav"><button class="btn secondary small" data-page="loads">← Todos os circuitos</button></div>'
+      : "";
   $("mainPanel").innerHTML =
-    state.page === "wizard"
-      ? state.mode === "guided"
-        ? wizardView()
-        : technicalView()
-      : state.page === "loads"
-        ? loadsView()
-        : state.page === "reference"
-          ? referenceView()
-          : overviewView();
+    contextNav +
+    (isResult
+      ? resultDashboard()
+      : state.page === "project"
+        ? projectView()
+        : state.page === "report"
+          ? reportView()
+          : state.page === "wizard"
+            ? state.mode === "guided"
+              ? wizardView()
+              : technicalView()
+            : state.page === "loads"
+              ? state.mode === "technical"
+                ? technicalView()
+                : dashboardView()
+              : state.page === "reference"
+                ? referenceView()
+                : overviewView());
   if (
     state.page === "wizard" &&
     state.mode === "technical" &&
@@ -214,12 +300,37 @@ export async function render() {
       '<div data-diagnostics aria-live="polite"></div>',
     );
   paintLive();
+  refreshTableOverflow();
+  filterCircuitRows();
+  hydrateShell();
+  const screen = [state.page, state.mode, state.page === "project" ? ui.projectStep : state.step].join(":");
+  if (screen !== lastScreen) window.scrollTo({top:0, behavior:"instant"});
+  lastScreen = screen;
 }
 
 export function clickHandler(ev) {
   const btn = ev.target.closest("button");
   if (!btn) return;
   const d = btn.dataset;
+  if (projectClick(d)) return;
+  if (d.resultTab) {
+    ui.resultTab = d.resultTab;
+    render();
+    return;
+  }
+  if (d.resultId) {
+    syncTechnical();
+    const c = state.circuits.find((c) => c.id === d.resultId);
+    if (!c) return;
+    state.draft = M.cleanCircuit(c);
+    state.editingId = c.id;
+    state.selected = c.id;
+    state.page = "result";
+    state.step = 6;
+    ui.gridDetails = 6;
+    render();
+    return;
+  }
   if (
     d.gridTab ||
     d.gridAction ||
@@ -256,7 +367,9 @@ export function clickHandler(ev) {
     return;
   }
   if (d.page) {
+    syncTechnical();
     state.page = d.page;
+    if (d.page === "loads") { ui.gridOverview = true; ui.gridDetails = 0; }
     render();
     return;
   }
@@ -302,6 +415,13 @@ export function clickHandler(ev) {
   }
   const action = d.action || btn.id;
   switch (action) {
+    case "editPhases":
+      state.mode = "technical";
+      state.page = "loads";
+      ui.gridTab = "loads";
+      ui.gridOverview = false;
+      render();
+      break;
     case "csvDialog":
       csvDialog();
       break;
@@ -323,11 +443,14 @@ export function clickHandler(ev) {
     case "guidedMode":
       syncTechnical();
       state.mode = "guided";
-      state.page = "wizard";
       render();
       break;
     case "technicalMode":
-      enterTechnical();
+      if (state.page === "wizard") enterTechnical();
+      else {
+        state.mode = "technical";
+        render();
+      }
       break;
     case "addLoad":
       if (state.draft.loads.length >= 100)
@@ -376,6 +499,9 @@ export function clickHandler(ev) {
     case "sidebarReport":
       report();
       break;
+    case "exportCsv":
+      exportCsv();
+      break;
     case "export":
       exportJson();
       break;
@@ -402,6 +528,28 @@ export function updateInput(ev) {
   const target = ev.target,
     d = target.dataset,
     value = target.type === "checkbox" ? target.checked : target.value;
+  if (d.resultCircuit !== undefined) {
+    syncTechnical();
+    const c = state.circuits.find((c) => c.id === value);
+    if (c) {
+      state.draft = M.cleanCircuit(c);
+      state.editingId = c.id;
+      render();
+    }
+    return;
+  }
+  if (
+    d.circuitSearch !== undefined ||
+    d.circuitPhase !== undefined ||
+    d.circuitStatus !== undefined
+  ) {
+    if (d.circuitSearch !== undefined) ui.circuitSearch = value;
+    if (d.circuitPhase !== undefined) ui.circuitPhase = value;
+    if (d.circuitStatus !== undefined) ui.circuitStatus = value;
+    filterCircuitRows();
+    return;
+  }
+  if (projectInput(target)) return;
   if (d.gridRow !== undefined) {
     gridInput(target);
     return;
@@ -427,6 +575,7 @@ export function updateInput(ev) {
   if (d.field) changeCircuit(d.field, value);
   else if (d.supply) {
     state.supply[d.supply] = value;
+    invalidateProposal();
     persist();
   } else if (d.load) {
     const load = state.draft.loads[+d.index];
@@ -450,7 +599,12 @@ export function updateInput(ev) {
       persist();
     }
   } else return;
-  if (target.tagName === "SELECT" || target.type === "checkbox") render();
+  if (
+    state.page === "project" ||
+    target.tagName === "SELECT" ||
+    target.type === "checkbox"
+  )
+    render();
   else {
     refreshSummary();
     if (state.mode === "technical") refreshGrid();
@@ -530,6 +684,7 @@ document.addEventListener("focusin", (ev) => {
   }
   persist();
   paintDiagnostics();
+  refreshTechnicalAside();
 });
 ui.render = render;
 load();

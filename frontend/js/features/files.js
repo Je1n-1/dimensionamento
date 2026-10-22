@@ -9,6 +9,7 @@ import {
   requestRender,
   state,
   ui,
+  syncTechnical,
 } from "../core/state.js";
 import { persist } from "../core/storage.js";
 import { notice } from "../views/components.js";
@@ -95,6 +96,7 @@ export function restorePrevious() {
 }
 
 export function exportJson() {
+  syncTechnical();
   const raw = JSON.stringify(M.projectData(state), null, 2),
     href = URL.createObjectURL(new Blob([raw], { type: "application/json" }));
   const a = document.createElement("a");

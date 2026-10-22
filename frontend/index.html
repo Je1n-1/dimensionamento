@@ -10,6 +10,7 @@
     />
     <link rel="stylesheet" href="/css/styles.css" />
     <link rel="stylesheet" href="/css/updates.css" />
+    <link rel="stylesheet" href="/css/project.css" />
     <style>
       [hidden] {
         display: none !important;
@@ -20,10 +21,16 @@
     <div id="app" class="app">
       <header class="topbar">
         <div class="brand">
-          <span class="brand-bolt">ϟ</span>
+          <span class="brand-bolt"
+            ><svg width="28" height="44" viewBox="0 0 28 44" aria-hidden="true">
+              <path
+                fill="#ffc43d"
+                d="M3 2h12l4 7-5 10h8l-8 13 7 10H9L4 32l7-11H2l8-12H3z"
+              /></svg
+          ></span>
           <div>
-            <strong>Dimensionamento Elétrico</strong
-            ><small>NBR 5410 • VoltCalc</small>
+            <strong>VoltCalc</strong><small>Dimensionamento Elétrico</small
+            ><small class="brand-reference">NBR 5410</small>
           </div>
         </div>
         <div class="top-actions">
@@ -33,43 +40,59 @@
               id="projectName"
               maxlength="60"
               aria-label="Nome do projeto"
-              value="Projeto exemplo" /></label
-          ><button id="saveBtn" class="top-btn" type="button">
-            <span>▣</span> Salvar</button
+              value="Projeto exemplo"
+          /></label>
+          <div class="mode-toggle">
+            <button
+              id="guidedMode"
+              type="button"
+              class="mode active"
+              title="Orientação passo a passo dentro da seção atual"
+            >
+              Modo guiado</button
+            ><button
+              id="technicalMode"
+              type="button"
+              class="mode"
+              title="Edição direta e visão tabular dentro da seção atual"
+            >
+              Modo técnico
+            </button>
+          </div>
+          <button
+            id="saveBtn"
+            class="top-btn"
+            type="button"
+            title="Salvar estado do projeto no navegador"
+          >
+            <span data-icon="save"></span> Salvar projeto</button
           ><button id="printBtn" class="top-btn" type="button">
-            <span>▤</span> Exportar PDF</button
+            <span data-icon="export"></span> Exportar PDF</button
           ><button
             id="settingsBtn"
             class="top-btn square"
             aria-label="Configurações"
             type="button"
           >
-            ⚙
+            <span data-icon="settings"></span>
           </button>
         </div>
       </header>
       <aside class="sidebar" aria-label="Menu lateral">
-        <nav class="nav-list">
-          <button class="nav-item active" data-page="wizard">
-            <span>▣</span> Circuitos
+        <nav class="nav-list" aria-label="Seções principais">
+          <button class="nav-item active" data-page="project">
+            <span data-icon="home"></span
+            ><span>Projeto<small>Instalação e consumidores</small></span>
           </button>
           <button class="nav-item" data-page="loads">
-            <span>▤</span> Quadro de cargas
+            <span data-icon="bolt"></span
+            ><span
+              >Circuitos<small>Cargas, cálculos e verificações</small></span
+            >
           </button>
-          <button class="nav-item" data-page="sizing">
-            <span>▧</span> Dimensionamento
-          </button>
-          <button class="nav-item" data-page="protection">
-            <span>⬡</span> Dispositivos de proteção
-          </button>
-          <button class="nav-item" data-page="voltage">
-            <span>♧</span> Queda de tensão
-          </button>
-          <button class="nav-item" id="sidebarReport">
-            <span>▤</span> Relatórios
-          </button>
-          <button class="nav-item" id="sidebarSettings">
-            <span>⚙</span> Configurações
+          <button class="nav-item" data-page="report">
+            <span data-icon="report"></span
+            ><span>Relatório<small>Resultados e exportação</small></span>
           </button>
         </nav>
         <div class="sidebar-bottom">
@@ -78,34 +101,23 @@
             <strong>NBR 5410:1997</strong><span>⌄</span>
           </div>
           <p>Referência histórica para estudo. Não equivale à edição atual.</p>
-          <h4>Tabelas disponíveis</h4>
-          <div class="table-nav">
-            <button data-table="28">Tab. 28 · Instalação</button
-            ><button data-table="31">Tab. 31 · PVC (A1 a D)</button
-            ><button data-table="32">Tab. 32 · EPR/XLPE (A1 a D)</button
-            ><button data-table="35">Tab. 35 · Temperatura</button
-            ><button data-table="37">Tab. 37 · Agrupamento</button>
-          </div>
-          <div class="sidebar-art" aria-hidden="true">
-            ◉<span>╱</span>◉<span>╱</span>◉
-          </div>
         </div>
       </aside>
       <main class="main">
         <section class="page-heading">
-          <div>
-            <h1 id="pageTitle">Dimensionamento de circuito</h1>
-            <p id="pageSubtitle">
-              Siga o passo a passo para dimensionar o circuito de forma mais
-              compreensível.
-            </p>
-          </div>
-          <div class="mode-toggle">
-            <button id="guidedMode" type="button" class="mode active">
-              ▣ &nbsp;Modo guiado</button
-            ><button id="technicalMode" type="button" class="mode">
-              ⚙ &nbsp;Modo técnico
-            </button>
+          <div class="hero-art" aria-hidden="true"></div>
+          <div class="heading-content">
+            <div id="pageBreadcrumb" class="breadcrumb"></div>
+            <div class="heading-title">
+              <span id="pageIcon" class="heading-icon"></span>
+              <div>
+                <h1 id="pageTitle">Dimensionamento de circuito</h1>
+                <p id="pageSubtitle">
+                  Siga o passo a passo para dimensionar o circuito de forma mais
+                  compreensível.
+                </p>
+              </div>
+            </div>
           </div>
         </section>
         <div id="connectionStatus" class="notice bad" role="alert" hidden></div>

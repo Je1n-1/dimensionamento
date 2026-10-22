@@ -1,10 +1,19 @@
 import { prepare, prepareBoard } from "../core/api.js";
 import { toast } from "../core/dom.js";
-import { $, esc, fmt, state, ui, viewKey } from "../core/state.js";
+import {
+  $,
+  esc,
+  fmt,
+  state,
+  ui,
+  viewKey,
+  syncTechnical,
+} from "../core/state.js";
 import { savedResults } from "../views/pages.js";
 import { resultView } from "../views/results.js";
 
 export async function report() {
+  syncTechnical();
   const snapshot = viewKey();
   if (!(await prepare(state.circuits)) || !(await prepareBoard())) {
     toast(ui.serviceError);
@@ -16,7 +25,7 @@ export async function report() {
   }
   const saved = state.draft;
   $("printArea").innerHTML =
-    `<h1>VoltCalc — Memorial preliminar</h1><p>Projeto: ${esc(state.projectName)} · ${new Date().toLocaleDateString("pt-BR")}<br>Base histórica NBR 5410:1997 · motor Python v3<br>Alimentação: ${esc(state.supply.phases)}, rede ${esc(state.supply.network)}. Reatância: ${fmt(state.reactance, 3)} Ω/km.</p><p class="report-warning">Verificações parciais. Este relatório não atesta conformidade integral.</p>${window.VoltBoard.render(
+    `<h1>VoltCalc — Memorial preliminar</h1><p>Projeto: ${esc(state.projectName)} · ${new Date().toLocaleDateString("pt-BR")}<br>Base histórica NBR 5410:1997 · motor Python v3<br>Ambientes: ${esc(state.context.rooms.join(", ") || "Não informados")}<br>Alimentação: ${esc(state.supply.phases)}, rede ${esc(state.supply.network)}. Reatância: ${fmt(state.reactance, 3)} Ω/km.</p><p class="report-warning">Verificações parciais. Este relatório não atesta conformidade integral.</p>${window.VoltBoard.render(
       ui.boardCache,
       state.circuits,
       savedResults().map((x) => x.r),

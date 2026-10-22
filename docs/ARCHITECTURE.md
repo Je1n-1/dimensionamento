@@ -81,3 +81,18 @@ node tests/grid.test.cjs
 Não há etapa de build nem dependências Python externas. `frontend/package.json` apenas identifica o código JavaScript como módulos ES; não instala pacotes. O site continua na mesma origem `http://127.0.0.1:8000/`, preservando o armazenamento do navegador. A versão de referência dos cálculos continua sendo a base histórica existente.
 
 Os diretórios `archive/`, `docs/`, `tests/` e o código Python não são expostos pelo servidor. `scripts/audit_original.cjs` audita a versão arquivada e grava suas evidências em `docs/analysis/evidencias.json`; não testa o motor atual.
+
+
+## Fluxo Projeto → Circuitos → Relatório
+
+- A lateral tem somente as três seções. `state.page` mantém `wizard`, `loads` e outras chaves internas para preservar o editor; todas pertencem visualmente a Circuitos.
+- O toggle de modos mantém a seção atual. Projeto tem etapas no guiado e formulário direto no técnico; Circuitos oferece quadro/editor guiado ou grade; Relatório oferece cartões ou tabela consolidada.
+- `frontend/js/features/project.js`: inventário, ambientes, prévia e aplicação explícita da proposta. A prévia é invalidada quando o contexto muda e nunca substitui circuitos existentes.
+- `voltcalc/calculations/planning.py`: `propose_circuits`, exposta por `POST /api/propose`. A divisão é uma heurística editável: um circuito por grupo de iluminação/tomadas, um por consumidor dedicado. Usa `build_panel` para alocação incremental de fases; não dimensiona entrada/alimentador, demanda, DR ou PE.
+- A proposta usa hipóteses visíveis de instalação B1/Cu/PVC e temperaturas/agrupamento informados. Os valores de cabos/disjuntores da prévia vêm da mesma API Python do editor. Não há valores elétricos fictícios na interface.
+- `planningOrigin` identifica o consumidor/unidade já aplicado e evita repetir a mesma proposta. O inventário é uma entrada para novos circuitos; editar o inventário não sobrescreve circuitos salvos.
+- `context` é persistido e exportado no backup v3, com migração vazia para projetos antigos. Dados antigos, rascunhos e informações do CSV continuam preservados.
+- `frontend/js/views/report.js`: consolidação, critérios triestados (atendido/não atendido/pendente) e CSV de resultados; células textuais com prefixos de fórmula são escapadas. O CSV de resultados não é o formato de importação de cargas: use JSON para restaurar o projeto completo.
+- `frontend/css/project.css`: shell e componentes do novo fluxo, sem reescrever os estilos internos do editor.
+
+Validação adicional: `python -m unittest discover -s tests`, `node tests/model.test.cjs`, `node tests/grid.test.cjs`, `node tests/report.test.mjs`.

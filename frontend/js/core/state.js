@@ -52,6 +52,7 @@ export const CONNECTIONS = [
 ];
 export const state = {
   projectName: "Meu projeto",
+  context: M.contextDefaults(),
   circuits: [],
   draft: M.newCircuit(),
   editingId: null,
@@ -59,7 +60,7 @@ export const state = {
   supply: M.supplyDefaults(),
   reactance: 0.08,
   importInfo: null,
-  page: "wizard",
+  page: "project",
   mode: "guided",
   step: 1,
 };
@@ -75,6 +76,7 @@ export const viewKey = () =>
     state.page,
     state.mode,
     state.step,
+    state.context,
   ]);
 export const G = window.VoltGrid;
 export const ui = {
@@ -87,6 +89,10 @@ export const ui = {
   gridDetails: 0,
   gridSelection: new Set(),
   render: null,
+  projectStep: 1,
+  proposal: null,
+  proposalError: "",
+  proposalBusy: false,
 };
 export function syncTechnical() {
   if (state.mode !== "technical" || !state.editingId) return;
