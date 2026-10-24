@@ -52,7 +52,15 @@ def propose_circuits(payload):
         if not name:
             raise ValueError('Informe o nome de cada grupo de equipamentos.')
         count = numeric(item.get('quantity'), f'{name}: quantidade', 1, 1000, True)
-        power = numeric(item.get('power'), f'{name}: potência em W', .01, 1e7)
+        unit = item.get('unit') or 'W'
+        if unit not in ('W', 'VA'):
+            raise ValueError(f'{name}: unidade de potência inválida.')
+        power = numeric(item.get('power'), f'{name}: potência em {unit}', .01, 1e7)
+        basis = item.get('powerBasis') or 'unit'
+        if basis not in ('unit', 'total'):
+            raise ValueError(f'{name}: base de potência inválida.')
+        if basis == 'total':
+            power /= count
         pf = numeric(item.get('powerFactor'), f'{name}: fator de potência', .01, 1)
         distance = numeric(item.get('distance'), f'{name}: distância em metros', 0, 10000)
         connection = item.get('connection')
@@ -79,7 +87,7 @@ def propose_circuits(payload):
                 connection=connection, phaseSet='ABC' if connection == 'tri' else 'AB' if connection == 'ff' else 'A',
                 voltageMode='auto', voltage=127, legacyLoaded=None,
                 loads=[dict(id=str(uuid4()), description=name, quantity=count if grouped else 1,
-                            power=power, unit='W', powerFactor=pf, efficiency=1, distance=distance)],
+                            power=power, unit=unit, powerFactor=pf, efficiency=1, distance=distance)],
                 routeMode='linear', installation='embedded', wall='masonry', cableForm='single',
                 conduitType='PVC', methodOverride='', insulation='PVC', metal='Cu',
                 groupCount=group_count, groupLayout='bundle', temperature=temperature, maxDrop=4,

@@ -37,7 +37,7 @@ roundtrip.draft.source.p=7000;
 assert.equal(roundtrip.circuits[0].source.p,5500);
 console.log('OK: valores originais CSV, identificação, pendências e metadados preservados no backup.');
 const contextProject=M.readProject(M.projectData(imported));
-contextProject.context={propertyType:'house',rooms:['Sala','Quarto 2'],equipment:[{id:'inventory-1',kind:'lighting',name:'Luminárias',room:'Sala',quantity:'15',power:'100',powerFactor:'0.97',distance:'50',connection:'fn'}],distribute:true,conditions:{temperature:'34',groupCount:'2'}};
+contextProject.context=M.cleanContext({propertyType:'house',rooms:['Sala','Quarto 2'],equipment:[{id:'inventory-1',kind:'lighting',name:'Luminárias',room:'Sala',quantity:'15',power:'100',powerFactor:'0.97',distance:'50',connection:'fn'}],distribute:true,conditions:{temperature:'34',groupCount:'2'}});
 contextProject.circuits[0].planningOrigin='inventory-1';
 const contextRoundtrip=M.readProject(JSON.parse(JSON.stringify(M.projectData(contextProject))),true);
 assert.deepEqual(contextRoundtrip,contextProject);
@@ -46,3 +46,9 @@ assert.equal(contextProject.context.rooms.length,2);
 assert.deepEqual(M.readProject(old,true).context,M.contextDefaults());
 assert.throws(()=>M.readProject({...old,context:{rooms:[],equipment:Array(101).fill({})}},true));
 console.log('OK: contexto do projeto, inventário, vínculo da proposta, limites e compatibilidade dos backups.');
+
+const residential=M.cleanContext({...M.contextDefaults(),rooms:['Cozinha'],roomSpecs:[{name:'Cozinha',type:'kitchen',area:'10',perimeter:'14',sockets:'4',lights:'1',distance:'20',powerFactor:'0.8',connection:'fn'}],equipment:[{id:'room-item',kind:'sockets',name:'TUG',room:'Cozinha',quantity:'4',power:'1900',unit:'VA',powerBasis:'total',residentialSource:'2004-room',powerFactor:'0.8',distance:'20',connection:'fn'}]});
+const withRooms={...contextProject,context:residential};
+assert.deepEqual(M.readProject(JSON.parse(JSON.stringify(M.projectData(withRooms))),true).context,residential);
+assert.throws(()=>M.cleanContext({...residential,roomSpecs:Array(101).fill({})}));
+console.log('OK: geometria por cômodo, potência total em VA e origem preservadas no JSON.');

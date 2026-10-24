@@ -1,3 +1,9 @@
+import { handleKeydown } from "./core/keyboard.js";
+import {
+  paintConnectionStatus,
+  checkConnection,
+  monitorConnection,
+} from "./core/connection.js";
 import { icon, hydrateShell } from "./views/visuals.js";
 import {
   dashboardView,
@@ -28,6 +34,8 @@ import {
 } from "./core/state.js";
 import { load, persist } from "./core/storage.js";
 import {
+  requestDeleteCircuit,
+  confirmDeleteCircuit,
   changeCircuit,
   editCircuit,
   goStep,
@@ -84,7 +92,11 @@ export function paintLive() {
     .forEach(
       (el) =>
         (el.innerHTML = live.corrections
-          ? `<div class="${live.fca == null ? "notice warn" : "explain"}">${esc(live.corrections.grouping.message)}</div>`
+          ? /* HTML */ `<div
+              class="${live.fca == null ? "notice warn" : "explain"}"
+            >
+              ${esc(live.corrections.grouping.message)}
+            </div>`
           : ""),
     );
   document
@@ -106,7 +118,10 @@ export function paintLive() {
         (el.innerHTML = (r.loadResults || [])
           .map(
             (l) =>
-              `<div class="summary-item"><span>Grupo ${l.index + 1} · ${esc(l.description)}</span><strong>${fmt(l.p)} W · ${fmt(l.s)} VA</strong></div>`,
+              /* HTML */ `<div class="summary-item">
+                <span>Grupo ${l.index + 1} · ${esc(l.description)}</span
+                ><strong>${fmt(l.p)} W · ${fmt(l.s)} VA</strong>
+              </div>`,
           )
           .join("")),
     );
@@ -139,11 +154,7 @@ export function paintLive() {
       (el) =>
         (el.textContent = `Este circuito: ${CONNECTIONS.find((x) => x[0] === state.draft.connection)?.[1] || "ligação a confirmar"}, ${fmt(r.voltage)} V; ${fmt(r.loaded, 0)} condutores carregados. ${r.phase === "tri" ? "A corrente exibida é por fase." : "A alimentação geral pode ter mais fases que este circuito utiliza."}`),
     );
-  const status = $("connectionStatus");
-  status.hidden = !ui.serviceError;
-  status.innerHTML = ui.serviceError
-    ? `${esc(ui.serviceError)} <button class="btn small" data-action="retry">Tentar novamente</button>`
-    : "";
+  paintConnectionStatus();
   document
     .querySelectorAll("[data-live-errors]")
     .forEach(
@@ -303,8 +314,12 @@ export async function render() {
   refreshTableOverflow();
   filterCircuitRows();
   hydrateShell();
-  const screen = [state.page, state.mode, state.page === "project" ? ui.projectStep : state.step].join(":");
-  if (screen !== lastScreen) window.scrollTo({top:0, behavior:"instant"});
+  const screen = [
+    state.page,
+    state.mode,
+    state.page === "project" ? ui.projectStep : state.step,
+  ].join(":");
+  if (screen !== lastScreen) window.scrollTo({ top: 0, behavior: "instant" });
   lastScreen = screen;
 }
 
@@ -343,8 +358,10 @@ export function clickHandler(ev) {
   }
   if (d.reviewStep) {
     state.page = "wizard";
-    if (state.mode === "technical") ui.gridDetails = +d.reviewStep;
-    else state.step = +d.reviewStep;
+    if (state.mode === "technical") {
+      ui.gridDetails = +d.reviewStep;
+      ui.gridOverview = false;
+    } else state.step = +d.reviewStep;
     render();
     return;
   }
@@ -369,7 +386,10 @@ export function clickHandler(ev) {
   if (d.page) {
     syncTechnical();
     state.page = d.page;
-    if (d.page === "loads") { ui.gridOverview = true; ui.gridDetails = 0; }
+    if (d.page === "loads") {
+      ui.gridOverview = true;
+      ui.gridDetails = 0;
+    }
     render();
     return;
   }
@@ -395,16 +415,11 @@ export function clickHandler(ev) {
     return;
   }
   if (d.delete) {
-    const c = state.circuits.find((c) => c.id === d.delete);
-    if (c && confirm(`Excluir "${c.description}"?`)) {
-      state.circuits = state.circuits.filter((x) => x.id !== c.id);
-      if (state.editingId === c.id) {
-        state.editingId = null;
-        state.draft = M.newCircuit();
-      }
-      persist();
-      render();
-    }
+    requestDeleteCircuit(d.delete);
+    return;
+  }
+  if (d.confirmDelete) {
+    confirmDeleteCircuit(d.confirmDelete);
     return;
   }
   if (d.removeLoad !== undefined) {
@@ -519,6 +534,7 @@ export function clickHandler(ev) {
       break;
     }
     case "retry":
+      checkConnection();
       render();
       break;
   }
@@ -622,22 +638,7 @@ document.addEventListener("change", (ev) => {
   else if (ev.target.tagName === "SELECT" || ev.target.type === "checkbox")
     updateInput(ev);
 });
-document.addEventListener("keydown", (ev) => {
-  if ($("modalRoot").hidden) return;
-  if (ev.key === "Escape") closeModal();
-  if (ev.key === "Tab") {
-    const nodes = [
-      ...$("modalRoot").querySelectorAll("button,input:not([hidden]),select,a"),
-    ].filter((el) => !el.disabled);
-    if (ev.shiftKey && document.activeElement === nodes[0]) {
-      ev.preventDefault();
-      nodes.at(-1)?.focus();
-    } else if (!ev.shiftKey && document.activeElement === nodes.at(-1)) {
-      ev.preventDefault();
-      nodes[0]?.focus();
-    }
-  }
-});
+document.addEventListener("keydown", handleKeydown);
 $("modalRoot").addEventListener("click", (ev) => {
   if (ev.target === $("modalRoot")) closeModal();
 });
@@ -664,16 +665,6 @@ document.addEventListener("paste", async (ev) => {
     toast("Colagem não aplicada: " + error.message);
   }
 });
-document.addEventListener("keydown", async (ev) => {
-  if (ev.key !== "Enter" || ev.target.dataset.gridRow === undefined) return;
-  ev.preventDefault();
-  const row = +ev.target.dataset.gridRow,
-    col = ev.target.dataset.gridCol;
-  const next = [...document.querySelectorAll(`[data-grid-col="${col}"]`)].find(
-    (el) => +el.dataset.gridRow > row,
-  );
-  next?.focus();
-});
 document.addEventListener("focusin", (ev) => {
   const row = ev.target.dataset.gridRow;
   if (row === undefined || state.circuits[+row]?.id === state.editingId) return;
@@ -689,3 +680,4 @@ document.addEventListener("focusin", (ev) => {
 ui.render = render;
 load();
 render();
+monitorConnection();

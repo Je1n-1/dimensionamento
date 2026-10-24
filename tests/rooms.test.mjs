@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+globalThis.window={};
+await import('../frontend/js/model.js');
+const {state,ui}=await import('../frontend/js/core/state.js');
+const {defaultRoom,roomRows,applyRoomPreview}=await import('../frontend/js/features/rooms.js');
+globalThis.document={getElementById:()=>({textContent:'',classList:{add(){},remove(){}}})};
+globalThis.localStorage={setItem(){}};
+globalThis.setTimeout=()=>0;
+ui.render=()=>{};
+state.context={...window.VoltModel.contextDefaults(),rooms:['Sala','Cozinha']};
+assert.equal(defaultRoom('Área de serviço').type,'laundry');
+const prepare=()=>{ui.roomPreview={key:JSON.stringify([state.context.propertyType,roomRows(),ui.roomKinds || {sockets:true,lighting:true}]),complete:true,rooms:state.context.rooms.map(name=>({name,sockets:4,lights:1,socketsVA:name==='Sala'?400:1900,lightingVA:160}))};};
+prepare(); assert.equal(applyRoomPreview(),true); assert.equal(state.context.equipment.length,4);
+assert.equal(state.context.equipment[2].unit,'VA'); assert.equal(state.context.equipment[2].power,'1900');
+const ids=state.context.equipment.map(e=>e.id);prepare();applyRoomPreview();assert.deepEqual(state.context.equipment.map(e=>e.id),ids);
+state.context.equipment[0].power='1234';state.circuits=[{planningOrigin:ids[0]+':0'}];prepare();applyRoomPreview();assert.equal(state.context.equipment[0].power,'1234');
+state.context.equipment.push({id:'manual',kind:'lighting',room:'Sala',power:'987'});prepare();applyRoomPreview();assert.equal(state.context.equipment.at(-1).power,'987');assert.equal(state.context.equipment.length,5);
+prepare();state.context.rooms.push('Quarto 1');const before=JSON.stringify(state.context.equipment);assert.equal(applyRoomPreview(),false);assert.equal(JSON.stringify(state.context.equipment),before);
+console.log('Cômodos: aplicação em lote, reaplicação sem duplicatas, preservação de itens manuais/circuitos e prévia obsoleta OK.');
+
+state.context={...window.VoltModel.contextDefaults(),rooms:['Sala']};state.circuits=[];ui.roomKinds={sockets:true,lighting:false};prepare();applyRoomPreview();assert.equal(state.context.equipment.length,1);assert.equal(state.context.equipment[0].kind,'sockets');

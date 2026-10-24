@@ -1,6 +1,6 @@
 import { calc, prepare } from "../core/api.js";
-import { toast } from "../core/dom.js";
-import { M, requestRender, resultKey, state, ui } from "../core/state.js";
+import { toast, modal, closeModal } from "../core/dom.js";
+import { esc, M, requestRender, resultKey, state, ui } from "../core/state.js";
 import { persist } from "../core/storage.js";
 
 export function stepError(step) {
@@ -148,4 +148,44 @@ export function editCircuit(id) {
   state.step = 1;
   persist();
   requestRender();
+}
+
+let pendingDeletion = null;
+export function requestDeleteCircuit(id) {
+  const c = state.circuits.find((c) => c.id === id);
+  if (!c) return;
+  pendingDeletion = id;
+  modal(
+    "Excluir circuito?",
+    /* HTML */ `<p>
+        Excluir <strong>${esc(c.description || "Circuito sem nome")}</strong> do
+        projeto?
+      </p>
+      <p>
+        Os demais circuitos serão mantidos. Esta ação remove o circuito do
+        projeto salvo neste navegador.
+      </p>`,
+    /* HTML */ `<button class="btn secondary" data-close>Cancelar</button
+      ><button class="btn danger" data-confirm-delete="${esc(id)}">
+        Excluir circuito
+      </button>`,
+  );
+}
+export function confirmDeleteCircuit(id) {
+  if (id !== pendingDeletion || document.getElementById("modalRoot").hidden)
+    return;
+  const c = state.circuits.find((c) => c.id === id);
+  if (!c) return;
+  pendingDeletion = null;
+  state.circuits = state.circuits.filter((c) => c.id !== id);
+  ui.gridSelection.delete(id);
+  if (state.selected === id) state.selected = null;
+  if (state.editingId === id) {
+    state.editingId = null;
+    state.draft = M.newCircuit();
+  }
+  closeModal();
+  persist();
+  requestRender();
+  toast("Circuito excluído do projeto.");
 }

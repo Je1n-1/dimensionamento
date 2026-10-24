@@ -2217,11 +2217,268 @@ button {
   }
 }
 /* Compact forms and technical overview match the reference hierarchy. */
-.design-card .field{gap:0}.design-card .field-caption{min-height:17px;margin-bottom:5px}.design-card .field label{font-size:11px;font-weight:500}.design-card .input-grid{gap:13px 16px}.brand small{margin-top:0}
-.technical-overview{margin-bottom:12px;overflow:hidden}.technical-overview>.card-title{padding:16px;margin:0}.technical-overview h2{font-size:16px;margin:0}.technical-overview p{font-size:11px;color:var(--muted);margin:5px 0 0}.technical-summary-table{min-width:925px;width:100%}.technical-summary-table th{font-size:10px;padding:12px 7px;line-height:1.5}.technical-summary-table td{padding:12px 7px;font-size:11px;border-bottom:1px solid #e8effb}.technical-summary-table .selected-row{background:#f0f6ff;outline:1px solid #81a8ff;outline-offset:-1px}.circuit-name{padding:0;border:0;text-align:left;color:var(--ink);background:transparent;min-width:150px}.circuit-name strong{display:block;font-size:11px}.circuit-name small{display:block;font-size:10px;margin-top:4px;color:var(--muted)}.overview-return{margin-bottom:10px}
-.technical-shell .grid-panel{padding:16px;margin-bottom:12px}.technical-shell .grid-panel h2{font-size:16px}.technical-shell .grid-panel .card-title p{font-size:11px;color:var(--muted)}.technical-shell .grid-panel .hint{font-size:11px}.technical-shell .circuit-grid input:not([type=checkbox]),.technical-shell .circuit-grid select{font-size:11px;height:30px;min-height:30px;padding:4px;border-color:transparent;background:transparent}.technical-shell .circuit-grid input:hover,.technical-shell .circuit-grid select:hover{border-color:#c8d9fa}.technical-shell .circuit-grid td,.technical-shell .circuit-grid th{font-size:10px;padding:7px 5px}.technical-shell .grid-toolbar{margin-top:12px}.technical-shell .circuit-grid{min-width:1080px}.technical-main>[data-phase-summary],.technical-main .phase-summary{margin-top:12px}
-@media(max-width:500px){.technical-overview>.card-title{flex-wrap:wrap}.technical-overview .head-actions{flex-wrap:wrap}.design-card .input-grid{gap:12px}}
-.main{position:relative}.result-circuit-picker{position:absolute;top:51px;right:20px;z-index:2;margin:0;width:300px;display:flex;flex-direction:column;align-items:stretch;gap:3px}.result-circuit-picker select{font-size:12px}.result-circuit-picker>span{padding-left:8px}.result-tabs button{font-weight:600}
-@media(min-width:1121px){.page-heading:has(+ #connectionStatus + .page-layout .result-hero) .heading-content{max-width:calc(100% - 330px)}}
-@media(max-width:1120px){.result-circuit-picker{position:static;width:auto;flex-direction:row;align-items:center;margin:0 0 12px}.result-circuit-picker select{width:auto}}
-@media(max-width:500px){.result-circuit-picker select{width:100%}}
+.design-card .field {
+  gap: 0;
+}
+.design-card .field-caption {
+  min-height: 17px;
+  margin-bottom: 5px;
+}
+.design-card .field label {
+  font-size: 11px;
+  font-weight: 500;
+}
+.design-card .input-grid {
+  gap: 13px 16px;
+}
+.brand small {
+  margin-top: 0;
+}
+.technical-overview {
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.technical-overview > .card-title {
+  padding: 16px;
+  margin: 0;
+}
+.technical-overview h2 {
+  font-size: 16px;
+  margin: 0;
+}
+.technical-overview p {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 5px 0 0;
+}
+.technical-summary-table {
+  min-width: 925px;
+  width: 100%;
+}
+.technical-summary-table th {
+  font-size: 10px;
+  padding: 12px 7px;
+  line-height: 1.5;
+}
+.technical-summary-table td {
+  padding: 12px 7px;
+  font-size: 11px;
+  border-bottom: 1px solid #e8effb;
+}
+.technical-summary-table .selected-row {
+  background: #f0f6ff;
+  outline: 1px solid #81a8ff;
+  outline-offset: -1px;
+}
+.circuit-name {
+  padding: 0;
+  border: 0;
+  text-align: left;
+  color: var(--ink);
+  background: transparent;
+  min-width: 150px;
+}
+.circuit-name strong {
+  display: block;
+  font-size: 11px;
+}
+.circuit-name small {
+  display: block;
+  font-size: 10px;
+  margin-top: 4px;
+  color: var(--muted);
+}
+.overview-return {
+  margin-bottom: 10px;
+}
+.technical-shell .grid-panel {
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.technical-shell .grid-panel h2 {
+  font-size: 16px;
+}
+.technical-shell .grid-panel .card-title p {
+  font-size: 11px;
+  color: var(--muted);
+}
+.technical-shell .grid-panel .hint {
+  font-size: 11px;
+}
+.technical-shell .circuit-grid input:not([type="checkbox"]),
+.technical-shell .circuit-grid select {
+  font-size: 11px;
+  height: 30px;
+  min-height: 30px;
+  padding: 4px;
+  border-color: transparent;
+  background: transparent;
+}
+.technical-shell .circuit-grid input:hover,
+.technical-shell .circuit-grid select:hover {
+  border-color: #c8d9fa;
+}
+.technical-shell .circuit-grid td,
+.technical-shell .circuit-grid th {
+  font-size: 10px;
+  padding: 7px 5px;
+}
+.technical-shell .grid-toolbar {
+  margin-top: 12px;
+}
+.technical-shell .circuit-grid {
+  min-width: 1080px;
+}
+.technical-main > [data-phase-summary],
+.technical-main .phase-summary {
+  margin-top: 12px;
+}
+@media (max-width: 500px) {
+  .technical-overview > .card-title {
+    flex-wrap: wrap;
+  }
+  .technical-overview .head-actions {
+    flex-wrap: wrap;
+  }
+  .design-card .input-grid {
+    gap: 12px;
+  }
+}
+.main {
+  position: relative;
+}
+.result-circuit-picker {
+  position: absolute;
+  top: 51px;
+  right: 20px;
+  z-index: 2;
+  margin: 0;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 3px;
+}
+.result-circuit-picker select {
+  font-size: 12px;
+}
+.result-circuit-picker > span {
+  padding-left: 8px;
+}
+.result-tabs button {
+  font-weight: 600;
+}
+@media (min-width: 1121px) {
+  .page-heading:has(+ #connectionStatus + .page-layout .result-hero)
+    .heading-content {
+    max-width: calc(100% - 330px);
+  }
+}
+@media (max-width: 1120px) {
+  .result-circuit-picker {
+    position: static;
+    width: auto;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 0 12px;
+  }
+  .result-circuit-picker select {
+    width: auto;
+  }
+}
+@media (max-width: 500px) {
+  .result-circuit-picker select {
+    width: 100%;
+  }
+}
+.mode-toggle .mode {
+  white-space: nowrap;
+}
+.status-pill.partial {
+  background: #e9f2ff;
+  color: #245caa;
+}
+.candidates .status-pill.partial {
+  background: #e2f7eb;
+  color: #088341;
+}
+@media (max-width: 500px) {
+  .mode-toggle .mode {
+    padding: 8px;
+  }
+  .top-actions {
+    gap: 7px;
+  }
+  .mode-toggle {
+    margin-right: 0 !important;
+  }
+}
+.project-composition .equipment-choice {
+  min-height: 60px;
+  padding-top: 9px;
+  padding-bottom: 9px;
+  gap: 10px;
+}
+@media (min-width: 851px) and (max-width: 1350px) {
+  .house-heading .hero-art {
+    opacity: 0.38;
+  }
+}
+.btn.danger {
+  background: #b42335;
+  border: 1px solid #b42335;
+  color: white;
+}
+.btn.danger:hover {
+  background: #951a29;
+}
+.row-actions .delete-action {
+  color: #b42335;
+}
+.overall-status strong {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+.overall-status p {
+  font-size: 10px;
+}
+#connectionStatus {
+  margin: 12px 0;
+  padding: 16px;
+}
+#connectionStatus p {
+  margin: 7px 0;
+  font-size: 13px;
+}
+#connectionStatus code {
+  font-weight: 600;
+}
+/* Residential batch editor: room names remain visible while reviewing a row. */
+.room-planner { margin: 24px 0; padding-top: 20px; border-top: 1px solid #dfE8f8; }
+.room-planner-heading p { color: #61759a; margin: 6px 0 16px; }
+.bulk-room-add { display: grid; grid-template-columns: 1fr auto; gap: 8px 16px; align-items: center; margin-bottom: 18px; }
+.bulk-room-add label { grid-column: 1 / -1; font-weight: 650; }
+.bulk-room-add textarea { width: 100%; min-height: 64px; padding: 10px 12px; border: 1px solid #cbd9ef; border-radius: 8px; font: inherit; resize: vertical; }
+.room-planner-table { min-width: 920px; table-layout: fixed; width: 100%; }
+.room-planner-table caption { text-align: left; padding: 12px 0; color: #53688f; }
+.room-planner-table td { vertical-align: top; padding: 12px; white-space: normal; }
+.room-planner-table td .field { margin: 8px 0; }
+.room-planner-table .field-caption label { font-size: 12px; }
+.room-planner-table input, .room-planner-table select { width: 100%; min-width: 0; }
+.room-planner-table summary { cursor: pointer; color: #0758df; font-size: 12px; }
+.room-planner-table p { font-size: 12px; line-height: 1.5; margin: 6px 0; }
+.room-planner-actions { display: flex; gap: 12px; flex-wrap: wrap; margin: 16px 0; }
+.normative-coverage { margin: 16px 0; background: #fff; padding: 16px; border: 1px solid #dce7fa; border-radius: 10px; }
+.normative-coverage td { white-space: normal; vertical-align: top; }
+@media(max-width: 700px) { .bulk-room-add { grid-template-columns: 1fr; } .room-planner-actions .btn { width: 100%; } }
+.room-kind-options { display: flex; flex-wrap: wrap; gap: 18px; margin: 16px 0; padding: 12px; background: #f2f7ff; border-radius: 8px; }
+.room-kind-options label { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+@media(max-width: 700px) {
+  .room-planner-table { min-width: 0; table-layout: auto; }
+  .room-planner-table thead { display: none; }
+  .room-planner-table tbody { display: block; }
+  .room-planner-table tr { display: grid; grid-template-columns: 1fr 1fr; margin: 12px 0; border: 1px solid #dce7fa; border-radius: 8px; }
+  .room-planner-table td { display: block; border: 0; padding: 8px; }
+  .room-planner-table td:first-child, .room-planner-table td:nth-child(4), .room-planner-table td:last-child { grid-column: 1 / -1; }
+  .room-planner-table input, .room-planner-table select { font-size: 16px; }
+}

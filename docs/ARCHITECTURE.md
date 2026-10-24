@@ -96,3 +96,36 @@ Os diretórios `archive/`, `docs/`, `tests/` e o código Python não são expost
 - `frontend/css/project.css`: shell e componentes do novo fluxo, sem reescrever os estilos internos do editor.
 
 Validação adicional: `python -m unittest discover -s tests`, `node tests/model.test.cjs`, `node tests/grid.test.cjs`, `node tests/report.test.mjs`.
+
+## Composição visual das referências (22/10/2026)
+
+- `frontend/css/project.css`: cabeçalho compacto, três seções laterais, cartões, assistente, tabelas com painel lateral e resultados; adaptações para telas estreitas.
+- `frontend/js/views/visuals.js`: ícones SVG, indicadores e resumo de fases compartilhados.
+- `frontend/js/views/dashboard.js`: quadro de cargas, filtros, detalhes do circuito e resultado com abas contextuais.
+- `frontend/js/features/grid.js`: visão consolidada no modo técnico e acesso à edição de células existente por **Editar em planilha**.
+- `frontend/js/features/project.js`: contexto e proposta em duas colunas; seleção de ambientes/equipamentos e resumo lateral no assistente.
+- `frontend/images/project-reference.png`: referência fornecida pelo usuário, exibida como fundo com recorte por CSS da área da casa.
+
+A navegação principal permanece **Projeto / Circuitos / Relatório**. Valores dos modelos visuais não são usados como resultados. Indicadores gerais distinguem **Pré-dimensionado**, **Revisar**, **Dados pendentes** e **Cálculo indisponível**; aprovação aparece somente nos critérios calculados.
+
+Validação: 72 testes Python; testes JavaScript de modelo, grade e relatório; navegação, geração e aplicação de proposta, alteração de potência com recálculo, filtro de circuitos, acesso à proteção pelo resultado, abas de queda e proteção; inspeção visual em 1672×941 e 390×844. Dados de teste isolados na porta 8001. Capturas em `docs/screenshots/*_referencia_desktop.png`.
+
+
+## Revisão de usabilidade e manutenção (22/10/2026)
+
+- A referência normativa não apresenta mais seta de expansão sem ação. O favicon SVG usa o raio amarelo da marca.
+- A exclusão usa o modal da aplicação, com nome escapado, foco inicial em Cancelar e confirmação vinculada ao circuito solicitado. Escape cancela; Tab permanece no modal.
+- `core/keyboard.js` concentra o único listener de teclado do documento: o modal tem prioridade sobre a navegação da grade.
+- `views/status.js` centraliza os estados da tabela e do resultado. Pré-dimensionado significa seleção calculada no modelo, sem declarar conformidade integral.
+- `core/connection.js` verifica a disponibilidade do servidor e mostra instruções de inicialização e opção de tentar novamente. A recuperação mantém os circuitos cadastrados.
+- Abrir `frontend/index.html` via arquivo mostra instruções estáticas e um link explícito para localhost, sem redirecionar. Se a navegação HTTP começar com o servidor já parado, a mensagem de conexão pertence ao navegador e não pode ser substituída pelo site.
+- `/tables.js` continua sendo um recurso gerado pelo servidor Python; agora o caminho é absoluto como os demais recursos. Não há migração do motor de cálculos para JavaScript.
+- Os templates das telas principais foram indentados e marcados como HTML para facilitar manutenção, sem introduzir dependência de build.
+
+Verificação: 72 testes Python; suítes JavaScript de modelo, grade, relatório e `node tests/ux.test.mjs`. No navegador: modal, cancelamento por Escape, preservação do circuito, status explicativo, desconexão e recuperação do servidor isolado na porta 8001. Captura: `docs/screenshots/ux_confirmacao_exclusao.png`.
+
+## Cadastro residencial por cômodo (24/10/2026)
+
+`features/rooms.js` oferece cadastro em lote, prévia e aplicação explícita. `calculations/residential.py` calcula a previsão residencial de 2004/2008 separadamente das tabelas de dimensionamento ainda históricas (1997). `views/coverage.js` apresenta cobertura e lacunas no projeto, relatório e impressão. `context.roomSpecs` guarda geometria e escolhas; o inventário aceita `unit`, `powerBasis` e `residentialSource`. Backups antigos continuam aceitos.
+
+Detalhes, referências, limites e validação em `docs/REVISAO_COMODOS_NBR5410.md`. Teste adicional de interface lógica: `node tests/rooms.test.mjs`.

@@ -136,6 +136,7 @@
   const contextDefaults = () => ({
     propertyType: "house",
     rooms: [],
+    roomSpecs: [],
     equipment: [],
     distribute: true,
     conditions: { temperature: 30, groupCount: 1 },
@@ -161,7 +162,31 @@
     )
       throw Error("Use até 100 ambientes e 100 grupos de equipamentos.");
     result.rooms = data.rooms.map((room) => String(room).slice(0, 60));
+    if (
+      data.roomSpecs != null &&
+      (!Array.isArray(data.roomSpecs) || data.roomSpecs.length > 100)
+    )
+      throw Error("Dados dos ambientes inválidos.");
+    result.roomSpecs = (data.roomSpecs || []).map((room) => {
+      if (!room || typeof room !== "object") throw Error("Ambiente inválido.");
+      return Object.fromEntries(
+        [
+          "name",
+          "type",
+          "area",
+          "perimeter",
+          "sockets",
+          "lights",
+          "distance",
+          "powerFactor",
+          "connection",
+        ].map((key) => [key, String(room[key] ?? "").slice(0, 60)]),
+      );
+    });
     const keys = [
+      "unit",
+      "powerBasis",
+      "residentialSource",
       "id",
       "kind",
       "name",

@@ -2,11 +2,12 @@
 from voltcalc.calculations.sizing import calculate
 from voltcalc.calculations.panel import build_panel
 from voltcalc.calculations.planning import propose_circuits
+from voltcalc.calculations.residential import residential_preview
 from voltcalc.importers.csv_import import import_csv
 from voltcalc.paths import EXAMPLES
 
 GET_ROUTES = frozenset(('/api/health', '/api/example'))
-POST_ROUTES = frozenset(('/api/calculate', '/api/panel', '/api/import-csv', '/api/propose'))
+POST_ROUTES = frozenset(('/api/calculate', '/api/panel', '/api/import-csv', '/api/propose', '/api/residential'))
 
 
 def get_payload(route):
@@ -23,6 +24,8 @@ def post_payload(route, payload):
         raise ValueError('Envie um objeto JSON.')
     if route == '/api/import-csv':
         return import_csv(payload.get('text'), payload.get('filename', 'Quadro.csv'))
+    if route == '/api/residential':
+        return residential_preview(payload)
     if route == '/api/propose':
         return propose_circuits(payload)
     if route not in POST_ROUTES:

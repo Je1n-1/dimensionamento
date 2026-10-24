@@ -2,6 +2,7 @@ import { esc, fmt, state, ui } from "../core/state.js";
 import { calc } from "../core/api.js";
 
 const paths = {
+  trash: '<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/>',
   home: '<path d="m3 10 9-7 9 7M5 9v12h5v-7h4v7h5V9"/>',
   bolt: '<path d="m13 2-8 12h6l-1 8 9-13h-7z"/>',
   report: '<path d="M5 3h10l4 4v14H5zM14 3v5h5M8 12h8M8 16h6"/>',

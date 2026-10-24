@@ -5,7 +5,7 @@ const { criterionChecks, circuitStatus, csvCell } = await import('../frontend/js
 const c = window.VoltModel.newCircuit();
 const r = { chosen: { iz: 20, dvPct: 2 }, ib: 12, issues: [], protection: { loadOk: true, cableOk: true, conventionalOk: true, shortOk: null } };
 assert.equal(criterionChecks(c, r).filter(([, ok]) => ok === true).length, 5);
-assert.equal(circuitStatus(c, r), 'Verificações parciais');
+assert.equal(circuitStatus(c, r), 'Pré-dimensionado · verificações complementares pendentes');
 assert.equal(criterionChecks(c, r).find(([name]) => name.startsWith('Capacidade de interrupção'))[1], null);
 assert.equal(circuitStatus(c, { ...r, protection: { ...r.protection, shortOk: false } }), 'Revisão necessária');
 assert.equal(circuitStatus(c, { ...r, chosen: null }), 'Dimensionamento pendente');
