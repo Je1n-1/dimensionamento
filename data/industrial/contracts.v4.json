@@ -1,0 +1,1231 @@
+{
+  "format": "voltcalc-industrial-contract",
+  "version": 4,
+  "engineVersion": "industrial-currents-1",
+  "rules": {
+    "id": "nbr-5410-2004",
+    "label": "ABNT NBR 5410:2004",
+    "version": "2004-unimplemented-v1",
+    "status": "not_implemented",
+    "tables": []
+  },
+  "models": {
+    "Supply": {
+      "phases": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "single",
+          "two",
+          "three"
+        ]
+      },
+      "voltageFN": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "voltageFF": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "frequency": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "earthing": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "TT",
+          "TN-S",
+          "TN-C",
+          "TN-C-S",
+          "IT"
+        ]
+      }
+    },
+    "Source": {
+      "kind": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "plate",
+          "catalog",
+          "formula",
+          "manual"
+        ]
+      },
+      "manufacturer": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "model": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "edition": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "reference": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      }
+    },
+    "Consumer": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "type": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "motor",
+          "panel",
+          "transformer",
+          "drive",
+          "lighting",
+          "heating",
+          "other"
+        ]
+      },
+      "tag": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 60
+      },
+      "description": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "quantity": {
+        "type": "number",
+        "default": 1,
+        "nullable": false,
+        "minimum": 1,
+        "integer": true
+      },
+      "power": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "unit": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "W",
+          "kW",
+          "VA",
+          "kVA",
+          "cv",
+          "hp"
+        ]
+      },
+      "powerBasis": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "electrical",
+          "mechanical",
+          "apparent"
+        ]
+      },
+      "voltage": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "frequency": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "connection": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "FN",
+          "FF",
+          "3F",
+          "3FN"
+        ]
+      },
+      "hasPE": {
+        "type": "boolean",
+        "default": true
+      },
+      "phaseSet": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "A",
+          "B",
+          "C",
+          "AB",
+          "BC",
+          "CA",
+          "ABC"
+        ]
+      },
+      "powerFactor": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0,
+        "maximum": 1
+      },
+      "efficiency": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0,
+        "maximum": 1
+      },
+      "panelId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "panels",
+        "minLength": 1
+      },
+      "plannedSegmentId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "segments",
+        "minLength": 1
+      },
+      "distance": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false
+      },
+      "distanceBasis": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "cumulative",
+          "physical"
+        ]
+      },
+      "environment": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "temperature": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": -100,
+        "integer": false,
+        "maximum": 200
+      },
+      "installationMethod": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "notes": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 2000
+      },
+      "cableMaterial": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "copper",
+          "aluminum"
+        ]
+      },
+      "cableType": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "insulated",
+          "unipolar",
+          "multipolar",
+          "other"
+        ]
+      },
+      "insulation": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "PVC",
+          "XLPE",
+          "EPR",
+          "other"
+        ]
+      },
+      "insulationDescription": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "plannedSegmentTag": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "balanced": {
+        "type": "boolean",
+        "default": null,
+        "nullable": true
+      }
+    },
+    "Motor": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "consumerId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "consumers",
+        "minLength": 1
+      },
+      "poles": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 1,
+        "integer": true
+      },
+      "serviceFactor": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "plateCurrent": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "startingCurrent": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "measuredCurrent": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "source": {
+        "type": "object",
+        "model": "Source",
+        "nullable": false,
+        "default": {}
+      },
+      "catalogCurrent": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "currentPreference": {
+        "type": "string",
+        "default": "auto",
+        "nullable": false,
+        "maxLength": 200,
+        "enum": [
+          "auto",
+          "plate",
+          "catalog",
+          "formula"
+        ]
+      },
+      "catalogId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "weg-w21-fockink-2006-v1"
+        ]
+      },
+      "nominalConditionsConfirmed": {
+        "type": "boolean",
+        "default": null,
+        "nullable": true
+      },
+      "exclusiveS1Circuit": {
+        "type": "boolean",
+        "default": null,
+        "nullable": true
+      },
+      "usesServiceFactor": {
+        "type": "boolean",
+        "default": null,
+        "nullable": true
+      }
+    },
+    "Panel": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "consumerId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "consumers",
+        "minLength": 1
+      },
+      "tag": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "description": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "parentPanelId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "panels",
+        "minLength": 1
+      },
+      "supply": {
+        "type": "object",
+        "model": "Supply",
+        "nullable": false,
+        "default": {}
+      }
+    },
+    "Circuit": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "tag": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "purpose": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "lighting",
+          "power",
+          "control",
+          "other"
+        ]
+      },
+      "role": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "terminal",
+          "feeder"
+        ]
+      },
+      "originPanelId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "panels",
+        "minLength": 1
+      },
+      "consumerIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "default": null,
+          "nullable": true,
+          "maxLength": 200,
+          "target": "consumers",
+          "minLength": 1
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "segmentIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "default": null,
+          "nullable": true,
+          "maxLength": 200,
+          "target": "segments",
+          "minLength": 1
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "loadedConductors": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 1,
+        "integer": true,
+        "maximum": 4
+      },
+      "voltageDropLimit": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0,
+        "maximum": 100
+      },
+      "limitSource": {
+        "type": "object",
+        "model": "Source",
+        "nullable": false,
+        "default": {}
+      }
+    },
+    "Node": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "kind": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "panel",
+          "consumer",
+          "junction"
+        ]
+      },
+      "entityId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "label": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      }
+    },
+    "Segment": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "tag": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "fromNodeId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "nodes",
+        "minLength": 1
+      },
+      "toNodeId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "nodes",
+        "minLength": 1
+      },
+      "length": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false
+      },
+      "circuitIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "default": null,
+          "nullable": true,
+          "maxLength": 200,
+          "target": "circuits",
+          "minLength": 1
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "installationMethod": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "temperature": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": -100,
+        "integer": false,
+        "maximum": 200
+      },
+      "groupingArrangement": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "soilResistivity": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "soilDepth": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false
+      }
+    },
+    "Conductor": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "circuitId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "circuits",
+        "minLength": 1
+      },
+      "role": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "L1",
+          "L2",
+          "L3",
+          "N",
+          "PE",
+          "PEN"
+        ]
+      },
+      "material": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "Cu",
+          "Al"
+        ]
+      },
+      "insulation": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "PVC",
+          "XLPE",
+          "EPR",
+          "other"
+        ]
+      },
+      "formation": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "insulated",
+          "single_core",
+          "multicore"
+        ]
+      },
+      "section": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "outerDiameter": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "source": {
+        "type": "object",
+        "model": "Source",
+        "nullable": false,
+        "default": {}
+      }
+    },
+    "Infrastructure": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "segmentId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "target": "segments",
+        "minLength": 1
+      },
+      "type": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "conduit",
+          "tray",
+          "ladder",
+          "other"
+        ]
+      },
+      "width": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "height": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "innerDiameter": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0
+      },
+      "conductorIds": {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "default": null,
+          "nullable": true,
+          "maxLength": 200,
+          "target": "conductors",
+          "minLength": 1
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "occupancyLimit": {
+        "type": "number",
+        "default": null,
+        "nullable": true,
+        "minimum": 0,
+        "integer": false,
+        "exclusiveMinimum": 0,
+        "maximum": 100
+      },
+      "limitSource": {
+        "type": "object",
+        "model": "Source",
+        "nullable": false,
+        "default": {}
+      }
+    },
+    "Criterion": {
+      "code": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "status": {
+        "type": "string",
+        "default": "pending",
+        "nullable": false,
+        "maxLength": 200,
+        "enum": [
+          "pending",
+          "passed",
+          "failed",
+          "not_applicable"
+        ]
+      },
+      "reference": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      },
+      "reason": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200
+      }
+    },
+    "CalculationResult": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "domain": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "currents",
+          "topology",
+          "conductors",
+          "protection",
+          "infrastructure",
+          "voltage"
+        ]
+      },
+      "targetId": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "inputRevision": {
+        "type": "number",
+        "default": 0,
+        "nullable": false,
+        "minimum": 0,
+        "integer": true
+      },
+      "engineVersion": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "rulesVersion": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "status": {
+        "type": "string",
+        "default": "not_calculated",
+        "nullable": false,
+        "maxLength": 200,
+        "enum": [
+          "not_calculated",
+          "pending",
+          "not_implemented",
+          "invalidated",
+          "calculated"
+        ]
+      },
+      "criteria": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Criterion",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "reason": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 2000
+      },
+      "measurements": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Measurement"
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "trace": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 12000
+      },
+      "currentSource": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200,
+        "enum": [
+          "plate",
+          "catalog",
+          "formula"
+        ]
+      }
+    },
+    "Project": {
+      "id": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 200,
+        "minLength": 1
+      },
+      "schemaVersion": {
+        "type": "number",
+        "default": 4,
+        "nullable": false,
+        "minimum": 4,
+        "integer": true,
+        "maximum": 4
+      },
+      "revision": {
+        "type": "number",
+        "default": 0,
+        "nullable": false,
+        "minimum": 0,
+        "integer": true
+      },
+      "name": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 120
+      },
+      "description": {
+        "type": "string",
+        "default": "",
+        "nullable": false,
+        "maxLength": 2000
+      },
+      "createdAt": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "updatedAt": {
+        "type": "string",
+        "default": null,
+        "nullable": true,
+        "maxLength": 200
+      },
+      "normativeProfile": {
+        "type": "string",
+        "default": "nbr-5410-2004",
+        "nullable": false,
+        "maxLength": 200,
+        "enum": [
+          "nbr-5410-2004"
+        ]
+      },
+      "supply": {
+        "type": "object",
+        "model": "Supply",
+        "nullable": false,
+        "default": {}
+      },
+      "consumers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Consumer",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "motors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Motor",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "panels": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Panel",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "circuits": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Circuit",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "nodes": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Node",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "segments": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Segment",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "conductors": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Conductor",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "infrastructures": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "Infrastructure",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "results": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "model": "CalculationResult",
+          "nullable": false,
+          "default": {}
+        },
+        "default": [],
+        "maxItems": 1000
+      },
+      "storageRevision": {
+        "type": "number",
+        "default": 0,
+        "minimum": 0,
+        "integer": true
+      },
+      "workflowStatus": {
+        "type": "string",
+        "default": "draft",
+        "maxLength": 20,
+        "enum": [
+          "draft",
+          "active",
+          "archived"
+        ]
+      },
+      "currentStage": {
+        "type": "number",
+        "default": 2,
+        "minimum": 2,
+        "maximum": 11,
+        "integer": true
+      }
+    },
+    "Measurement": {
+      "code": {
+        "type": "string",
+        "default": "",
+        "maxLength": 100,
+        "minLength": 1
+      },
+      "value": {
+        "type": "number",
+        "default": null,
+        "nullable": true
+      },
+      "unit": {
+        "type": "string",
+        "default": "",
+        "maxLength": 30
+      }
+    }
+  },
+  "capabilities": {
+    "currents": true
+  },
+  "currentRules": {
+    "version": "nbr5410-2004-motors-6.5.1.3.1-v1",
+    "status": "partial",
+    "reference": "ABNT NBR 5410:2004, versão corrigida 2008, 6.5.1.1 e 6.5.1.3.1"
+  }
+}

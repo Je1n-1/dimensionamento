@@ -1,16 +1,113 @@
 [
-  {"name":"empty draft is pending, structurally valid", "model":"Project", "changes":{}, "valid":true},
-  {"name":"negative quantity", "model":"Consumer", "changes":{"quantity":-2}, "valid":false},
-  {"name":"boolean is not quantity", "model":"Consumer", "changes":{"quantity":true}, "valid":false},
-  {"name":"fractional quantity", "model":"Consumer", "changes":{"quantity":1.2}, "valid":false},
-  {"name":"zero voltage", "model":"Consumer", "changes":{"voltage":0}, "valid":false},
-  {"name":"unknown power is not zero", "model":"Consumer", "changes":{"power":null}, "valid":true},
-  {"name":"unknown unit", "model":"Consumer", "changes":{"unit":"BTU"}, "valid":false},
-  {"name":"power factor above one", "model":"Consumer", "changes":{"powerFactor":1.2}, "valid":false},
-  {"name":"negative length", "model":"Segment", "changes":{"length":-1}, "valid":false},
-  {"name":"zero length junction", "model":"Segment", "changes":{"length":0}, "valid":true},
-  {"name":"residential profile rejected", "model":"Project", "changes":{"normativeProfile":"nbr-5410-1997"}, "valid":false},
-  {"name":"future schema rejected", "model":"Project", "changes":{"schemaVersion":3}, "valid":false},
-  {"name":"string numeric rejected", "model":"Motor", "changes":{"plateCurrent":"28.9"}, "valid":false},
-  {"name":"no automatic earthing inference", "model":"Supply", "changes":{"phases":"three","earthing":null}, "valid":true}
+  {
+    "name": "empty draft is pending, structurally valid",
+    "model": "Project",
+    "changes": {},
+    "valid": true
+  },
+  {
+    "name": "negative quantity",
+    "model": "Consumer",
+    "changes": {
+      "quantity": -2
+    },
+    "valid": false
+  },
+  {
+    "name": "boolean is not quantity",
+    "model": "Consumer",
+    "changes": {
+      "quantity": true
+    },
+    "valid": false
+  },
+  {
+    "name": "fractional quantity",
+    "model": "Consumer",
+    "changes": {
+      "quantity": 1.2
+    },
+    "valid": false
+  },
+  {
+    "name": "zero voltage",
+    "model": "Consumer",
+    "changes": {
+      "voltage": 0
+    },
+    "valid": false
+  },
+  {
+    "name": "unknown power is not zero",
+    "model": "Consumer",
+    "changes": {
+      "power": null
+    },
+    "valid": true
+  },
+  {
+    "name": "unknown unit",
+    "model": "Consumer",
+    "changes": {
+      "unit": "BTU"
+    },
+    "valid": false
+  },
+  {
+    "name": "power factor above one",
+    "model": "Consumer",
+    "changes": {
+      "powerFactor": 1.2
+    },
+    "valid": false
+  },
+  {
+    "name": "negative length",
+    "model": "Segment",
+    "changes": {
+      "length": -1
+    },
+    "valid": false
+  },
+  {
+    "name": "zero length junction",
+    "model": "Segment",
+    "changes": {
+      "length": 0
+    },
+    "valid": true
+  },
+  {
+    "name": "residential profile rejected",
+    "model": "Project",
+    "changes": {
+      "normativeProfile": "nbr-5410-1997"
+    },
+    "valid": false
+  },
+  {
+    "name": "future schema rejected",
+    "model": "Project",
+    "changes": {
+      "schemaVersion": 6
+    },
+    "valid": false
+  },
+  {
+    "name": "string numeric rejected",
+    "model": "Motor",
+    "changes": {
+      "plateCurrent": "28.9"
+    },
+    "valid": false
+  },
+  {
+    "name": "no automatic earthing inference",
+    "model": "Supply",
+    "changes": {
+      "phases": "three",
+      "earthing": null
+    },
+    "valid": true
+  }
 ]

@@ -18,17 +18,23 @@ ASSETS = {'/' + name: FRONTEND / name for name in PUBLIC_FILES}
 ASSETS['/'] = ASSETS['/index.html']
 ASSETS['/VoltCalc_Guiado_Abrir.html'] = ASSETS['/index.html']
 
-# Industrial: isolated shell, project repository and shared contracts; no calculation API.
+# Industrial: isolated shell, project repository and shared contracts and isolated current service.
 INDUSTRIAL_FILES = (
+    'js/topology-controller.js', 'js/topology-view.js', 'js/core/topology.js',
     'index.html', 'css/industrial.css', 'js/app.js', 'js/components.js', 'js/pages.js',
     'js/core/routes.js', 'js/core/model.js', 'js/core/repository.js',
     'js/core/services.js', 'js/core/state.js',
     'js/core/local-repository.js', 'js/projects-view.js', 'js/projects-controller.js',
+    'js/core/currents.js', 'js/currents-view.js', 'js/currents-controller.js',
+    'js/core/migrations.js', 'js/core/consumers.js', 'js/consumers-view.js', 'js/consumers-controller.js',
 )
 ASSETS.update({'/industrial/' + name: FRONTEND / 'industrial' / name for name in INDUSTRIAL_FILES})
 ASSETS['/industrial/'] = FRONTEND / 'industrial/index.html'
 ASSETS['/industrial/contracts.v1.json'] = ROOT / 'data/industrial/contracts.v1.json'
 ASSETS['/industrial/contracts.v2.json'] = ROOT / 'data/industrial/contracts.v2.json'
+ASSETS['/industrial/contracts.v4.json'] = ROOT / 'data/industrial/contracts.v4.json'
+ASSETS['/industrial/contracts.v5.json'] = ROOT / 'data/industrial/contracts.v5.json'
+ASSETS['/industrial/contracts.v3.json'] = ROOT / 'data/industrial/contracts.v3.json'
 
 # Old URLs redirect to their canonical locations so module-relative imports work.
 ALIASES = {'/ui.js': '/js/app.js', '/preview.png': '/images/preview.png'}

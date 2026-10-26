@@ -1,4 +1,6 @@
+import { topologyView, topologyTabs } from './topology-view.js';
 import { projectsView } from './projects-view.js';
+import { consumersView } from './consumers-view.js';
 import { icon, metric, action, panel, table, emptyState, badge, notice, field, escapeHTML as esc } from './components.js';
 
 const intro = {
@@ -12,11 +14,6 @@ const intro = {
   configuracoes: ['Configurações e referências', 'Consulte a base prevista e os limites de funcionamento desta etapa.'],
 };
 const definitions = {
-  consumidores: {
-    metrics: [['Total de consumidores', 'report'], ['Potência instalada total', 'bolt'], ['Motores', 'motor'], ['Painéis e quadros', 'infrastructure'], ['Trechos previstos', 'nodes']],
-    columns: ['Nº', 'Tipo de consumidor', 'Tag / descrição', 'Quantidade', 'Potência', 'Unidade', 'Tensão', 'Fases', 'Método de instalação', 'Tipo de cabo', 'Distância (m)', 'Ambiente', 'Trecho planejado', 'Ações'],
-    title: 'Consumidores e cargas', description: 'O cadastro de consumidores será implementado na Etapa 3.',
-  },
   dimensionamento: {
     metrics: [['Item selecionado', 'motor'], ['Corrente de projeto', 'bolt'], ['Cabo sugerido', 'cable'], ['Método de instalação', 'settings']],
     columns: ['Nº', 'Tipo', 'Tag / descrição', 'Potência', 'Fases', 'Corrente (A)', 'Cabo (mm²)', 'Método', 'Isolação', 'ΔV (%)', 'Status'],
@@ -43,9 +40,7 @@ function stageLine(stage) {
 function dataPage(route) {
   const def = definitions[route.id];
   const filters = `<div class="filters">${field('Tipo', { id: 'filter-type', options: ['Todos os tipos'], disabled: true })}${field('Ambiente', { id: 'filter-environment', options: ['Todos os ambientes'], disabled: true })}${field('Pesquisar', { id: 'filter-search', placeholder: 'Tag, descrição ou trecho…', disabled: true })}</div>`;
-  const controls = route.id === 'consumidores'
-    ? `<div class="actions">${action('Adicionar item', 'plus', { stage: 3, primary: true })}${action('Importar planilha', 'export', { stage: 3 })}</div>`
-    : badge('Não calculado');
+  const controls = badge('Não calculado');
   const content = panel(def.title, 'list', filters + table(def.columns, def.title, def.description), controls);
   const side = def.side ? `<aside class="detail-column">${panel(def.side[0], def.side[1], emptyState(def.side[2], def.side[3], def.side[1]))}
     ${panel('Critérios e referências', 'report', `<div class="panel-body">${notice('Verificações pendentes', route.id === 'dimensionamento'
@@ -63,25 +58,26 @@ function overviewPage() {
 }
 function reportPage() {
   return `${panel('Resumo consolidado', 'report', emptyState('Nenhum relatório disponível', 'O relatório reunirá os resultados efetivos, as fontes e todas as pendências. Exportações previstas para a Etapa 10.', 'report'), `<div class="actions">${['PDF', 'JSON', 'CSV'].map(format => action(format, 'export', { stage: 10 })).join('')}</div>`)}
-  ${panel('Itens verificados e pendências', 'shield', table(['Critério', 'Resultado', 'Referência', 'Pendência'], 'Verificações do projeto', 'Sem projeto selecionado e sem critérios calculados.'))}`;
+  ${panel('Itens verificados e pendências', 'shield', table(['Critério', 'Resultado', 'Referência', 'Pendência'], 'Verificações do projeto', 'Nenhum critério industrial foi calculado.'))}`;
 }
 function settingsPage(contract) {
-  return `<div class="settings-grid">${panel('Referência normativa prevista', 'shield', `<div class="panel-body"><span class="eyebrow">BASE INDUSTRIAL ISOLADA</span><h3>${esc(contract.rules.label)}</h3>${badge('Regras não implementadas', 'amber')}
-    <p>A edição identifica o escopo planejado. Não há tabelas industriais carregadas nem verificação normativa disponível.</p>
+  return `<div class="settings-grid">${panel('Referência normativa prevista', 'shield', `<div class="panel-body"><span class="eyebrow">BASE INDUSTRIAL ISOLADA</span><h3>${esc(contract.rules.label)}</h3>${badge('Cobertura normativa parcial', 'amber')}
+    <p>A edição identifica o escopo planejado. Correntes disponíveis na Etapa 4, incluindo o limite inferior de Ib de motor no escopo de 6.5.1.3.1. Tabelas de condutores e demais critérios continuam pendentes. A base geral não é declarada implementada.</p>
     <dl class="key-values"><div><dt>Identificação</dt><dd>${esc(contract.rules.id)}</dd></div><div><dt>Versão do registro</dt><dd>${esc(contract.rules.version)}</dd></div><div><dt>Base residencial de 1997</dt><dd>Não utilizada pelo módulo industrial</dd></div></dl></div>`)}
     ${panel('Dados e armazenamento', 'folder', `<div class="panel-body">${notice('Armazenamento local do navegador', 'Projetos industriais são gravados separadamente em localStorage, com controle de revisão e bloqueio entre abas.')}
-    <p>O catálogo pertence a este navegador e endereço. Abrir ou fechar um projeto registra a seleção atual. Nenhuma chave residencial é lida ou alterada.</p><dl class="key-values"><div><dt>Contrato de dados</dt><dd>Versão ${contract.version}</dd></div><div><dt>Serviços de cálculo</dt><dd>Não implementados</dd></div></dl></div>`)}</div>`;
+    <p>O catálogo pertence a este navegador e endereço. Abrir ou fechar um projeto registra a seleção atual. Nenhuma chave residencial é lida ou alterada.</p><dl class="key-values"><div><dt>Contrato de dados</dt><dd>Versão ${contract.version}</dd></div><div><dt>Serviços de cálculo</dt><dd>Potências e correntes disponíveis; demais serviços pendentes</dd></div></dl></div>`)}</div>`;
 }
-export function pageView(route, contract, projectView = {}) {
+export function pageView(route, contract, projectView = {}, consumerView = {}, topologyState) {
   const [title, description] = intro[route.id];
   const buttons = route.id === 'projetos' ? `<div class="actions">${action('Novo projeto', 'plus', { action: 'new-project', primary: true })}${action('Importar projeto', 'export', { stage: 10 })}</div>` : '';
   let content;
   if (route.id === 'projetos') content = projectsView(projectView);
+  else if (route.id === 'consumidores') content = (topologyState ? topologyTabs(topologyState.tab) : '') + (topologyState?.tab === 'topology' ? topologyView(consumerView.project, topologyState) : consumersView(consumerView.project, consumerView.query));
   else if (definitions[route.id]) content = dataPage(route);
   else if (route.id === 'visao-geral') content = overviewPage();
   else if (route.id === 'relatorios') content = reportPage();
   else content = settingsPage(contract);
   return `<div class="breadcrumb"><a href="#/projetos">Início</a><span aria-hidden="true">›</span><span>${esc(route.title)}</span></div>
     <header class="page-heading"><span class="page-icon">${icon(route.icon)}</span><div><h1 id="page-title" tabindex="-1">${esc(title)}</h1><p>${esc(description)}</p></div>${buttons}</header>
-    ${route.stage && route.id !== 'projetos' ? stageLine(route.stage) : ''}${content}`;
+    ${route.stage && !['projetos','consumidores'].includes(route.id) ? stageLine(route.stage) : ''}${content}`;
 }

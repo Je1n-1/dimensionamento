@@ -7,7 +7,7 @@ from voltcalc.importers.csv_import import import_csv
 from voltcalc.paths import EXAMPLES
 
 GET_ROUTES = frozenset(('/api/health', '/api/example'))
-POST_ROUTES = frozenset(('/api/calculate', '/api/panel', '/api/import-csv', '/api/propose', '/api/residential'))
+POST_ROUTES = frozenset(('/api/calculate', '/api/panel', '/api/import-csv', '/api/propose', '/api/residential', '/api/industrial/currents', '/api/industrial/topology'))
 
 
 def get_payload(route):
@@ -22,6 +22,12 @@ def get_payload(route):
 def post_payload(route, payload):
     if not isinstance(payload, dict):
         raise ValueError('Envie um objeto JSON.')
+    if route == '/api/industrial/topology':
+        from voltcalc.industrial.topology import topology_request
+        return topology_request(payload)
+    if route == '/api/industrial/currents':
+        from voltcalc.industrial.currents import current_request
+        return current_request(payload)
     if route == '/api/import-csv':
         return import_csv(payload.get('text'), payload.get('filename', 'Quadro.csv'))
     if route == '/api/residential':

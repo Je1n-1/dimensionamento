@@ -1,5 +1,6 @@
 import { ProjectRepository } from './repository.js';
 import { validateEntity } from './model.js';
+import { migrateProject } from './migrations.js';
 
 export const INDUSTRIAL_STORAGE = 'voltcalc_industrial_projects_v1';
 export const INDUSTRIAL_LOCK = 'voltcalc-industrial-projects-v1';
@@ -45,8 +46,8 @@ export function duplicateProject(contract, original, now) {
  * Both dependencies are injected so real failure/concurrency behavior can be tested.
  */
 export class LocalProjectRepository extends ProjectRepository {
-  constructor(contract, { storage, locks, now = () => new Date().toISOString() }) {
-    super(); this.contract = contract; this.storage = storage; this.locks = locks; this.now = now;
+  constructor(contract, { storage, locks, previousContract, now = () => new Date().toISOString() }) {
+    super(); this.contract = contract; this.storage = storage; this.locks = locks; this.now = now; this.previousContract = previousContract;
   }
   validateProject(project) {
     const errors = validateEntity(this.contract, 'Project', project);
@@ -61,6 +62,7 @@ export class LocalProjectRepository extends ProjectRepository {
       const data = JSON.parse(raw);
       if (data.format !== 'voltcalc-industrial-projects' || data.version !== 1 || !Array.isArray(data.projects) || data.projects.length > 500 || !(data.currentId === null || typeof data.currentId === 'string')) throw new Error();
       const ids = new Set();
+      data.projects = data.projects.map(project => migrateProject(project, this.contract, this.previousContract));
       for (const project of data.projects) {
         this.validateProject(project);
         if (project.storageRevision < 1 || ids.has(project.id) || !project.createdAt || !project.updatedAt || !Number.isFinite(Date.parse(project.createdAt)) || !Number.isFinite(Date.parse(project.updatedAt))) throw new Error();

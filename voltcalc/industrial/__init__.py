@@ -1,1 +1,1 @@
-"""Industrial contracts only. No residential engine or normative tables imported."""
+"""Isolated industrial contracts and current services; no residential engine imported."""

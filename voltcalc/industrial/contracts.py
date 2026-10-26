@@ -5,11 +5,11 @@ import math
 from uuid import uuid4
 from voltcalc.paths import ROOT
 
-CONTRACT = json.loads((ROOT / 'data/industrial/contracts.v2.json').read_text(encoding='utf-8'))
+CONTRACT = json.loads((ROOT / 'data/industrial/contracts.v5.json').read_text(encoding='utf-8'))
 
 
-def create_entity(name, **overrides):
-    fields = CONTRACT['models'][name]
+def create_entity(model_name, **overrides):
+    fields = CONTRACT['models'][model_name]
     unknown = overrides.keys() - fields.keys()
     if unknown:
         raise ValueError(f'Campos desconhecidos: {sorted(unknown)}')

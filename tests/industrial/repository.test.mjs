@@ -101,6 +101,19 @@ for (const corrupt of ['{broken', '{"version":999}', JSON.stringify({ format: 'v
 }
 storage.data.set(INDUSTRIAL_STORAGE, preserved);
 assert.equal(storage.getItem('voltcalc_guiado_v3'), 'residential-preserved');
+const countBeforeConcurrentCreates = (await repo.list()).length;
+await Promise.all([
+  repo.save(entity('Project', { name: 'Concurrent new A' }), 0),
+  reopened.save(entity('Project', { name: 'Concurrent new B' }), 0),
+]);
+assert.equal((await repo.list()).length, countBeforeConcurrentCreates + 2, 'concurrent creates must preserve both projects');
+const silentStorage = { getItem: () => null, setItem: () => {} };
+await assert.rejects(() => new LocalProjectRepository(contract, { storage: silentStorage, locks }).save(entity('Project', { name: 'Unconfirmed write' }), 0), { code: 'STORAGE_VERIFY' });
+const activeBeforeFailure = await repo.getCurrentId();
+storage.denyWrite = true;
+await assert.rejects(() => repo.setCurrentId(null), { code: 'STORAGE_WRITE' });
+assert.equal(await repo.getCurrentId(), activeBeforeFailure);
+storage.denyWrite = false;
 const html = projectsView({ all: await repo.list(), rows: await repo.list(), current: null, query: {} });
 assert.ok(html.includes('Potência não calculada')); assert.ok(!html.includes('>Conforme<'));
 const hostile = { ...(await repo.list())[0], name: '<img src=x onerror=alert(1)>' };

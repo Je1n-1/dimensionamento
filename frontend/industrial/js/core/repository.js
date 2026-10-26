@@ -1,5 +1,5 @@
 export class RepositoryUnavailable extends Error {
-  constructor() { super('Persistência industrial não implementada. Prevista para a Etapa 2.'); this.code = 'REPOSITORY_NOT_IMPLEMENTED'; }
+  constructor() { super('Nenhum adaptador de persistência industrial foi configurado.'); this.code = 'REPOSITORY_NOT_IMPLEMENTED'; }
 }
 
 /** Async port, independent from storage technology.

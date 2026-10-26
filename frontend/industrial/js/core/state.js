@@ -1,5 +1,14 @@
 import { validateEntity } from './model.js';
-import { serviceRequest } from './services.js';
+import { serviceRequest, rulesVersionFor } from './services.js';
+
+function unavailable(contract, result) {
+  // Stage 4 admits numeric currents only, never a global or protection verdict.
+  if (result.domain === 'currents' && contract.capabilities?.currents === true) {
+    return result.criteria.some(c => c.status !== 'pending') ||
+      (result.measurements.some(m => m.value !== null) && !result.trace?.trim());
+  }
+  return contract.rules.status !== 'implemented' && (result.status === 'calculated' || result.criteria.some(c => c.status !== 'pending') || result.measurements.some(m => m.value !== null));
+}
 
 /** Editing state; persistence is delegated to the repository. */
 export function createStore(contract) {
@@ -15,9 +24,9 @@ export function createStore(contract) {
       assertValid(data);
       project = structuredClone(data);
       project.results = project.results.map(result => {
-        const stale = result.inputRevision !== project.revision || result.engineVersion !== contract.engineVersion || result.rulesVersion !== contract.rules.version;
-        const unavailable = contract.rules.status !== 'implemented' && (result.status === 'calculated' || result.criteria.some(c => c.status !== 'pending') || result.measurements.some(m => m.value !== null));
-        return stale || unavailable ? { ...result, status: 'invalidated', measurements: [], criteria: [], reason: 'Resultado sem validade para as entradas e versões atuais.' } : result;
+        const stale = result.inputRevision !== project.revision || result.engineVersion !== contract.engineVersion || result.rulesVersion !== rulesVersionFor(contract,result.domain);
+        const missingTarget = result.domain === 'currents' && !project.consumers.some(c => c.id === result.targetId);
+        return stale || unavailable(contract, result) || missingTarget ? { ...result, status: 'invalidated', measurements: [], criteria: [], reason: 'Resultado sem validade para as entradas e versões atuais.' } : result;
       });
     },
     update(change) {
@@ -43,8 +52,8 @@ export function createStore(contract) {
       const current = serviceRequest(contract, project, token.domain);
       if (Object.keys(current).some(key => token[key] !== current[key])) return false;
       if (['inputRevision', 'domain', 'engineVersion', 'rulesVersion'].some(key => result[key] !== current[key])) return false;
-      // This registry has no implemented rules. Never accept a calculated verdict yet.
-      if (contract.rules.status !== 'implemented' && (result.status === 'calculated' || result.criteria.some(c => c.status !== 'pending') || result.measurements.some(m => m.value !== null))) return false;
+      if (unavailable(contract, result)) return false;
+      if (result.domain === 'currents' && contract.capabilities?.currents && !project.consumers.some(c => c.id === result.targetId)) return false;
       const next = structuredClone(project);
       next.results = next.results.filter(r => !(r.domain === result.domain && r.targetId === result.targetId));
       next.results.push(structuredClone(result));

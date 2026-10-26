@@ -1,0 +1,68 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {execFileSync} from 'node:child_process';
+import {createEntity,validateEntity} from '../../frontend/industrial/js/core/model.js';
+import {migrateProject} from '../../frontend/industrial/js/core/migrations.js';
+import {TopologyService,readTopologyForm} from '../../frontend/industrial/js/core/topology.js';
+import {topologyView,topologyForm} from '../../frontend/industrial/js/topology-view.js';
+import {LocalProjectRepository,INDUSTRIAL_STORAGE,duplicateProject} from '../../frontend/industrial/js/core/local-repository.js';
+const read=v=>JSON.parse(fs.readFileSync(new URL(`../../data/industrial/contracts.v${v}.json`,import.meta.url)));
+const contract=read(5),previous=[read(4),read(3),read(2)];
+const e=(model,data={})=>createEntity(contract,model,data);
+const run=payload=>JSON.parse(execFileSync('python',['-c','import sys,json;from voltcalc.industrial.topology import topology_request;print(json.dumps(topology_request(json.load(sys.stdin))))'],{input:JSON.stringify(payload),encoding:'utf8'}));
+const transport=async(_url,opts)=>({ok:true,json:async()=>run(JSON.parse(opts.body))});
+const service=new TopologyService(transport);
+let p=e('Project',{name:'Topologia integrada'});
+let answer=await service.execute(contract,p,{action:'save',collection:'panels',data:{tag:'QCMD'}});
+p=answer.project;
+assert.equal(p.currentStage,5);assert.equal(p.revision,1);assert.equal(p.panels[0].tag,'QCMD');
+answer=await service.execute(contract,p,{action:'points'});p=answer.project;
+assert.equal(p.nodes[0].entityId,p.panels[0].id);
+assert.equal(answer.analysis.status,'pending');
+assert.deepEqual(validateEntity(contract,'Project',p),[]);
+await assert.rejects(()=>new TopologyService(async()=>{throw Error('offline');}).execute(contract,p),/Servidor indisponível/);
+await assert.rejects(()=>new TopologyService(async()=>({ok:false,json:async()=>({error:'Ciclo detectado'})})).execute(contract,p),/Ciclo/);
+await assert.rejects(()=>new TopologyService(async()=>({ok:true,json:async()=>({...answer,analysis:{...answer.analysis,inputRevision:999}})})).execute(contract,p),/incompatível/);
+
+for(const version of [2,3,4]) {
+  const old=createEntity(read(version),'Project',{name:'Legado',revision:7});
+  old.panels=[createEntity(read(version),'Panel',{tag:'Q antigo'})];
+  const original=structuredClone(old), upgraded=migrateProject(old,contract,previous);
+  assert.deepEqual(old,original);assert.equal(upgraded.schemaVersion,5);assert.deepEqual(upgraded.panels,old.panels);
+  assert.equal(upgraded.revision,7);assert.deepEqual(upgraded.cables,[]);assert.deepEqual(upgraded.nodes,[]);
+  assert.deepEqual(validateEntity(contract,'Project',upgraded),[]);
+}
+const values=new Map([['residential-key','unchanged']]);
+const storage={getItem:key=>values.get(key)??null,setItem:(key,value)=>values.set(key,value)};
+const locks={request:async(_name,_options,callback)=>callback()};
+const repo=new LocalProjectRepository(contract,{storage,locks,previousContract:previous});
+// Use repository creation to exercise its normal metadata and revision lifecycle.
+const created=await repo.save(e('Project',{name:'Persistência da estrutura'}),0);
+const saved=await repo.save({...p,id:created.id,storageRevision:created.storageRevision,createdAt:created.createdAt},created.storageRevision);
+assert.deepEqual((await repo.load(saved.id)).nodes,saved.nodes);
+await assert.rejects(()=>repo.save({...saved,storageRevision:created.storageRevision},created.storageRevision),/alterado|revisão|outra/i);
+assert.equal(values.get('residential-key'),'unchanged');assert.ok(values.has(INDUSTRIAL_STORAGE));
+const copy=duplicateProject(contract,saved,'2026-10-26');
+assert.notEqual(copy.nodes[0].entityId,saved.nodes[0].entityId);
+assert.equal(copy.nodes[0].entityId,copy.panels[0].id);
+const linked=structuredClone(p);
+linked.circuits=[e('Circuit',{tag:'C1',originNodeId:linked.nodes[0].id,originPanelId:linked.panels[0].id})];
+linked.cables=[e('Cable',{tag:'F1',circuitId:linked.circuits[0].id,formation:'multicore'})];
+linked.conductors=[e('Conductor',{cableId:linked.cables[0].id,circuitId:linked.circuits[0].id,role:'L1',formation:'multicore'})];
+const linkedCopy=duplicateProject(contract,linked,'2026-10-26');
+assert.equal(linkedCopy.conductors[0].cableId,linkedCopy.cables[0].id);
+assert.equal(linkedCopy.cables[0].circuitId,linkedCopy.circuits[0].id);
+assert.equal(linkedCopy.circuits[0].originNodeId,linkedCopy.nodes[0].id);
+assert.notEqual(linkedCopy.conductors[0].id,linked.conductors[0].id);
+assert.deepEqual(validateEntity(contract,'Project',linkedCopy),[]);
+
+const f=new FormData();f.set('tag','A');f.set('kind','trunk');f.set('length','7');f.set('temperature','');f.set('environment','Fábrica');
+const data=readTopologyForm(contract,'segments',f);
+assert.equal(data.length,7);assert.equal(data.temperature,null);assert.equal(data.fromNodeId,null);
+const html=topologyView(p,{analysis:answer.analysis});
+assert.ok(html.includes('Caminhos físicos'));assert.ok(html.includes('Contagem')||html.includes('Contagens'));
+assert.ok(!html.includes('Conforme'));assert.ok(html.includes('Sem declaração de conformidade elétrica'));
+const bad=e('Project',{panels:[e('Panel',{tag:'<script>attack</script>'})]});
+assert.ok(!topologyView(bad).includes('<script>'));
+assert.ok(topologyForm(contract,p,'circuits',e('Circuit')).includes('originNodeId'));
+console.log('Etapa 5: integração Python/JS, migração, persistência, conflito, isolamento e apresentação OK.');
