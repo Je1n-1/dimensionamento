@@ -295,3 +295,11 @@ Importação é uma operação explícita de criação de cópia: valida integra
 O serviço `industrial-report-1` orquestra a visão geral e apresenta os resultados sem alterar regras normativas. Identifica projeto, revisão elétrica, versões dos serviços, data UTC e SHA-256 das entradas (incluindo metadados/posições; excluindo resultados). O frontend descarta respostas que não correspondem ao projeto/entradas atuais e rejeita versões incompatíveis. A identidade criptográfica é rastreabilidade, não assinatura ou certificação.
 
 Tela, CSV e PDF compartilham seções normalizadas com entradas, fontes, critérios, memória e limites. CSV usa UTF-8 com BOM, ponto e vírgula e neutralização de fórmulas em células textuais. PDF usa ReportLab como dependência opcional e fonte incorporada; a falta da dependência gera mensagem acionável, sem impedir o residencial. A geração retorna bytes em base64 pela API existente, sem armazenamento de relatórios no servidor. O status geral é sempre verificação parcial; critérios individuais preservam seus resultados reais. A Etapa 11 permanece separada e não foi iniciada nesta entrega.
+
+## DA-43 — fechamento da auditoria sem ampliação normativa (30/10/2026)
+
+A Etapa 11 testa e documenta o escopo existente. Resultado de regressão positivo não promove estados parciais a Conforme nem implementa proteção ou aterramento implicitamente. O cenário de 30 consumidores usa dados sintéticos isolados; exclusão automatizada ocorre somente em memória. Roteiro 0–11 mantido e encerrado com ressalvas. Pendências posteriores precisam de autorização própria.
+
+A potência da visão geral é soma de registros convertidos, sem balanço de energia em cadeias de transformação/acionamento nem demanda. Essa semântica fica explícita na apresentação. Nenhuma fórmula elétrica é alterada pela auditoria.
+
+PDF incorpora Noto Sans Regular para os quatro símbolos gregos ausentes na Vera, com licença OFL, origem e hashes em `voltcalc/industrial/fonts/`. A fonte é local e não depende da máquina do leitor; o restante da tipografia é preservado. O teste confere texto extraído e fonte incorporada, complementado por inspeção visual. A extensão excessiva do relatório permanece uma pendência editorial, sem omissão da memória técnica para encurtá-lo artificialmente.

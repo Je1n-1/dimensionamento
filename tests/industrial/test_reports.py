@@ -71,6 +71,22 @@ class ReportTests(unittest.TestCase):
             self.assertIn(expected,text)
         self.assertTrue(all('Verificação parcial' in page.extract_text() for page in reader.pages))
 
+    def test_pdf_formula_glyphs_use_supported_font(self):
+        try:
+            from pypdf import PdfReader
+            import reportlab
+        except ImportError:self.skipTest('PDF: dependências de extração ausentes.')
+        from voltcalc.industrial.report_pdf import render_pdf
+        r=build_report(create_entity('Project',name='QA símbolos'))
+        r['disclaimer']='ΔU = k × Ib × (R cosφ + X senφ); ΣP / η'
+        reader=PdfReader(io.BytesIO(render_pdf(r)))
+        text=reader.pages[0].extract_text()
+        for symbol in 'ΔΣηφ':
+            self.assertIn(symbol,text)
+        fonts=[f.get_object() for f in reader.pages[0]['/Resources']['/Font'].values()]
+        greek=next(f for f in fonts if 'NotoSans' in f['/BaseFont'])
+        self.assertIn('/FontFile2',greek['/FontDescriptor'])
+
 class ReportHttpTests(IndustrialHttpTests):
     def test_report_endpoint(self):
         p=fixture();request=Request(self.url+'/api/industrial/reports',data=json.dumps(dict(project=p,request=token(p),format='csv')).encode(),headers={'Content-Type':'application/json'})

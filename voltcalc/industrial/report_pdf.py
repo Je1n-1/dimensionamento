@@ -20,6 +20,8 @@ def render_pdf(report):
     fontdir=Path(reportlab.__file__).parent/'fonts'
     for name,file in [('VoltReport','Vera.ttf'),('VoltReportBold','VeraBd.ttf')]:
         if name not in pdfmetrics.getRegisteredFontNames():pdfmetrics.registerFont(TTFont(name,str(fontdir/file)))
+    if 'VoltReportGreek' not in pdfmetrics.getRegisteredFontNames():
+        pdfmetrics.registerFont(TTFont('VoltReportGreek',str(Path(__file__).parent/'fonts/NotoSans-Regular.ttf')))
     navy=colors.HexColor('#082346');blue=colors.HexColor('#075bff');light=colors.HexColor('#eef5ff')
     normal=ParagraphStyle('body',fontName='VoltReport',fontSize=8,leading=11,textColor=navy,spaceAfter=6,splitLongWords=True)
     title=ParagraphStyle('title',parent=normal,fontName='VoltReportBold',fontSize=22,leading=27,spaceAfter=16)
@@ -29,7 +31,12 @@ def render_pdf(report):
     headcell=ParagraphStyle('headcell',parent=cell,fontName='VoltReportBold',spaceBefore=0,keepWithNext=False)
     def para(text,style=normal):
         value=str(text).replace('\u2011','-').replace('\u2013','-').replace('\u2014','-')
-        return Paragraph(escape(value).replace('\n','<br/>'),style)
+        # Vera lacks these formula glyphs. Embed the fallback so rendering does
+        # not depend on fonts installed in the PDF reader's operating system.
+        markup=escape(value).replace('\n','<br/>')
+        for symbol in 'ΔΣηφ':
+            markup=markup.replace(symbol,f'<font name="VoltReportGreek">{symbol}</font>')
+        return Paragraph(markup,style)
     def table(columns,rows):
         widths=[165,358] if len(columns)==2 else [523/len(columns)]*len(columns)
         if len(columns)==5:widths=[38,68,56,101,260]

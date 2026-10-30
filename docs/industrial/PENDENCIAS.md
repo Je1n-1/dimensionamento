@@ -204,3 +204,19 @@ Recuperação e exportações entregues conforme [ETAPA_10.md](ETAPA_10.md). IND
 | IND-59 | Média | Arquivo histórico de resultados e assinatura de documentos | Fora do escopo atual; ampliação autorizada | PDF/CSV são retratos exportáveis; JSON recupera entradas e recalcula com a versão atual. SHA-256 não é assinatura digital |
 
 Etapa 10 concluída no escopo documentado. Etapa 11 não iniciada. Testes de interface na origem isolada 8001; dados do usuário na origem 8000 preservados.
+
+## Encerramento da Etapa 11 — 30/10/2026
+
+Auditoria executada conforme [ETAPA_11.md](ETAPA_11.md) e [MATRIZ_VALIDACAO.md](MATRIZ_VALIDACAO.md). Os registros anteriores são históricos; não significam que a etapa atual permaneça não iniciada. IND-55 revisado: cobertura explícita, sem conformidade integral. IND-56 validado com ReportLab instalado e teste de indisponibilidade; fonte suplementar agora distribuída com o código. IND-58 validado no escopo local/backup; sincronização continua ausente. IND-57 permanece aberto quanto à usabilidade, apesar do desempenho de geração medido.
+
+| ID | Prioridade | Problema | Resolução prevista | Situação |
+|---|---|---|---|---|
+| IND-60 | Alta | Esquemas TT/TN/IT cadastráveis, mas sem verificação de seccionamento, falta, resistência de terra e condições de proteção | Ampliação de proteção após o roteiro, mediante autorização | Não implementado; explicitado em configurações/relatório. Não considerar testagem de enum como verificação elétrica |
+| IND-61 | Alta | Soma de registros não resolve cadeias transformador/acionamento/motor e pode contar potência em cascata duas vezes | Modelo explícito de fluxos de energia, em escopo posterior autorizado | Não implementado; soma identificada como soma de registros, sem demanda/balanço |
+| IND-62 | Média | PDF de 30 consumidores com 396 páginas | Revisão editorial posterior autorizada; complementar IND-57 | Geração e integridade passaram; precisa de resumo selecionável e memória anexa mais compacta |
+| IND-63 | Média | Pendências de planejamento do consumidor apesar de dados físicos preenchidos em trechos/circuitos | Revisão de UX e vínculo entre planejamento e topologia, posterior autorizada | Não inferir nem sobrescrever dados automaticamente |
+| IND-64 | Média | Mapa denso pequeno no PDF | Revisão de apresentação posterior, complementar IND-54/57 | Tabela completa e mapa interativo disponíveis; sem roteamento CAD |
+
+Correções encerradas nesta auditoria: mensagem histórica de condutores, quadro destino no alimentador, descrição do total de cargas especiais e símbolos gregos no PDF. As demais limitações IND-27 a IND-59 não foram automaticamente encerradas. Particularmente proteção, curto-circuito, coordenação e partida continuam não implementados. Nenhuma alteração no motor residencial ou nas ressalvas SENAI.
+
+Roteiro 0–11 encerrado no escopo documentado, com ressalvas. Novas funcionalidades dependem de definição e autorização de escopo, sem criação automática de Etapa 12.
