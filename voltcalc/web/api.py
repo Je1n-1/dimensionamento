@@ -7,7 +7,7 @@ from voltcalc.importers.csv_import import import_csv
 from voltcalc.paths import EXAMPLES
 
 GET_ROUTES = frozenset(('/api/health', '/api/example'))
-POST_ROUTES = frozenset(('/api/calculate', '/api/panel', '/api/import-csv', '/api/propose', '/api/residential', '/api/industrial/currents', '/api/industrial/topology'))
+POST_ROUTES = frozenset(('/api/calculate', '/api/panel', '/api/import-csv', '/api/propose', '/api/residential', '/api/industrial/currents', '/api/industrial/topology', '/api/industrial/conductors', '/api/industrial/infrastructure', '/api/industrial/voltage', '/api/industrial/overview', '/api/industrial/reports'))
 
 
 def get_payload(route):
@@ -22,6 +22,21 @@ def get_payload(route):
 def post_payload(route, payload):
     if not isinstance(payload, dict):
         raise ValueError('Envie um objeto JSON.')
+    if route == '/api/industrial/reports':
+        from voltcalc.industrial.reports import report_request
+        return report_request(payload)
+    if route == '/api/industrial/overview':
+        from voltcalc.industrial.overview import overview_request
+        return overview_request(payload)
+    if route == '/api/industrial/voltage':
+        from voltcalc.industrial.voltage import voltage_request
+        return voltage_request(payload)
+    if route == '/api/industrial/infrastructure':
+        from voltcalc.industrial.infrastructure import infrastructure_request
+        return infrastructure_request(payload)
+    if route == '/api/industrial/conductors':
+        from voltcalc.industrial.conductors import conductor_request
+        return conductor_request(payload)
     if route == '/api/industrial/topology':
         from voltcalc.industrial.topology import topology_request
         return topology_request(payload)

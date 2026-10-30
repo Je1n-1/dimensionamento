@@ -1,4 +1,9 @@
+import {reportsView} from './reports-view.js';
 import { topologyView, topologyTabs } from './topology-view.js';
+import { conductorsView } from './conductors-view.js';
+import { overviewView } from './overview-view.js';
+import { voltageView } from './voltage-view.js';
+import { infrastructureView } from './infrastructure-view.js';
 import { projectsView } from './projects-view.js';
 import { consumersView } from './consumers-view.js';
 import { icon, metric, action, panel, table, emptyState, badge, notice, field, escapeHTML as esc } from './components.js';
@@ -49,35 +54,27 @@ function dataPage(route) {
   return `<div class="metric-grid count-${def.metrics.length}">${def.metrics.map(([label, symbol]) => metric(label, symbol, 'Não calculado')).join('')}</div>
     <div class="${def.side ? 'workspace-grid' : 'workspace-full'}">${content}${side}</div>`;
 }
-function overviewPage() {
-  return `<div class="metric-grid">${[['Total de consumidores', 'report'], ['Potência instalada total', 'bolt'], ['Trechos do projeto', 'nodes'], ['Status geral', 'shield']].map(([label, symbol]) => metric(label, symbol, 'Pendente de dados')).join('')}</div>
-  <div class="workspace-grid overview-grid">
-    ${panel('Mapa resumido de trechos', 'nodes', `<div class="map-placeholder">${emptyState('A topologia aparecerá aqui', 'O mapa completo será implementado na Etapa 9, após o cadastro e a análise dos trechos.', 'nodes')}</div>`)}
-    ${panel('Trechos do projeto', 'list', table(['Trecho', 'Comprimento (m)', 'Método', 'Cabos', 'Cargas atendidas', 'Infraestrutura', 'Status'], 'Trechos do projeto', 'Nenhuma topologia carregada.'))}
-  </div>${notice('Projeto ainda não verificado', 'Nenhum cálculo industrial foi executado. Não há declaração de conformidade ou aprovação técnica nesta etapa.', 'amber')}`;
-}
-function reportPage() {
-  return `${panel('Resumo consolidado', 'report', emptyState('Nenhum relatório disponível', 'O relatório reunirá os resultados efetivos, as fontes e todas as pendências. Exportações previstas para a Etapa 10.', 'report'), `<div class="actions">${['PDF', 'JSON', 'CSV'].map(format => action(format, 'export', { stage: 10 })).join('')}</div>`)}
-  ${panel('Itens verificados e pendências', 'shield', table(['Critério', 'Resultado', 'Referência', 'Pendência'], 'Verificações do projeto', 'Nenhum critério industrial foi calculado.'))}`;
-}
 function settingsPage(contract) {
   return `<div class="settings-grid">${panel('Referência normativa prevista', 'shield', `<div class="panel-body"><span class="eyebrow">BASE INDUSTRIAL ISOLADA</span><h3>${esc(contract.rules.label)}</h3>${badge('Cobertura normativa parcial', 'amber')}
-    <p>A edição identifica o escopo planejado. Correntes disponíveis na Etapa 4, incluindo o limite inferior de Ib de motor no escopo de 6.5.1.3.1. Tabelas de condutores e demais critérios continuam pendentes. A base geral não é declarada implementada.</p>
+    <p>A edição identifica a referência dos critérios implementados: correntes e limite inferior de Ib de motor no escopo de 6.5.1.3.1; capacidade dos condutores, correções e seções mínimas; ocupação e arranjo geométrico; queda de tensão em regime permanente. Cada serviço tem condições e limites explícitos. Proteção, curto-circuito, coordenação, partida e verificação dos esquemas de aterramento permanecem não implementados. A cobertura normativa é parcial.</p>
     <dl class="key-values"><div><dt>Identificação</dt><dd>${esc(contract.rules.id)}</dd></div><div><dt>Versão do registro</dt><dd>${esc(contract.rules.version)}</dd></div><div><dt>Base residencial de 1997</dt><dd>Não utilizada pelo módulo industrial</dd></div></dl></div>`)}
     ${panel('Dados e armazenamento', 'folder', `<div class="panel-body">${notice('Armazenamento local do navegador', 'Projetos industriais são gravados separadamente em localStorage, com controle de revisão e bloqueio entre abas.')}
-    <p>O catálogo pertence a este navegador e endereço. Abrir ou fechar um projeto registra a seleção atual. Nenhuma chave residencial é lida ou alterada.</p><dl class="key-values"><div><dt>Contrato de dados</dt><dd>Versão ${contract.version}</dd></div><div><dt>Serviços de cálculo</dt><dd>Potências e correntes disponíveis; demais serviços pendentes</dd></div></dl></div>`)}</div>`;
+    <p>O catálogo pertence a este navegador e endereço. Abrir ou fechar um projeto registra a seleção atual. Nenhuma chave residencial é lida ou alterada.</p><dl class="key-values"><div><dt>Contrato de dados</dt><dd>Versão ${contract.version}</dd></div><div><dt>Serviços de cálculo</dt><dd>Potências, correntes e pré-dimensionamento de condutores disponíveis; ocupação disponível por trecho; queda em regime permanente disponível; proteção pendente</dd></div></dl></div>`)}</div>`;
 }
-export function pageView(route, contract, projectView = {}, consumerView = {}, topologyState) {
+export function pageView(route, contract, projectView = {}, consumerView = {}, topologyState, conductorState, infrastructureState, voltageState, overviewState, reportState) {
   const [title, description] = intro[route.id];
-  const buttons = route.id === 'projetos' ? `<div class="actions">${action('Novo projeto', 'plus', { action: 'new-project', primary: true })}${action('Importar projeto', 'export', { stage: 10 })}</div>` : '';
+  const buttons = route.id === 'projetos' ? `<div class="actions">${action('Novo projeto', 'plus', { action: 'new-project', primary: true })}${action('Importar projeto', 'export', { action: 'import-project' })}</div>` : '';
   let content;
   if (route.id === 'projetos') content = projectsView(projectView);
   else if (route.id === 'consumidores') content = (topologyState ? topologyTabs(topologyState.tab) : '') + (topologyState?.tab === 'topology' ? topologyView(consumerView.project, topologyState) : consumersView(consumerView.project, consumerView.query));
+  else if (route.id === 'dimensionamento' && conductorState) content = conductorsView(consumerView.project, conductorState);
+  else if (route.id === 'infraestrutura' && infrastructureState) content = infrastructureView(consumerView.project, infrastructureState);
+  else if (route.id === 'queda-de-tensao' && voltageState) content = voltageView(consumerView.project, voltageState);
   else if (definitions[route.id]) content = dataPage(route);
-  else if (route.id === 'visao-geral') content = overviewPage();
-  else if (route.id === 'relatorios') content = reportPage();
+  else if (route.id === 'visao-geral') content = overviewView(consumerView.project,overviewState);
+  else if (route.id === 'relatorios') content = reportsView(consumerView.project,reportState);
   else content = settingsPage(contract);
   return `<div class="breadcrumb"><a href="#/projetos">Início</a><span aria-hidden="true">›</span><span>${esc(route.title)}</span></div>
     <header class="page-heading"><span class="page-icon">${icon(route.icon)}</span><div><h1 id="page-title" tabindex="-1">${esc(title)}</h1><p>${esc(description)}</p></div>${buttons}</header>
-    ${route.stage && !['projetos','consumidores'].includes(route.id) ? stageLine(route.stage) : ''}${content}`;
+    ${route.stage && !['projetos','consumidores',...(conductorState?['dimensionamento']:[]),...(infrastructureState?['infraestrutura']:[]),...(voltageState?['queda-de-tensao']:[]),...(overviewState?['visao-geral']:[]),...(reportState?['relatorios']:[])].includes(route.id) ? stageLine(route.stage) : ''}${content}`;
 }

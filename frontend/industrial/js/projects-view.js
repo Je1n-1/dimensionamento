@@ -30,5 +30,5 @@ export function projectsView({ all = [], rows = [], current = null, query = {}, 
     <label class="field" for="project-order"><span>Ordenar por</span><select id="project-order" ${unavailable ? 'disabled' : ''}><option value="updated" ${query.sort !== 'name' ? 'selected' : ''}>Última edição</option><option value="name" ${query.sort === 'name' ? 'selected' : ''}>Nome</option></select></label></div>
     <div id="project-results"><div class="section-heading"><h2>Projetos recentes</h2><span class="result-count">${rows.length} projeto(s) na seleção</span></div>${cards}
     <div class="section-heading"><h2>Todos os projetos</h2>${badge('Salvos neste navegador', 'blue')}</div>${panel('Lista de projetos', 'list', listing)}
-    <p class="storage-note">Projetos industriais são salvos neste navegador e neste endereço. O status organiza o trabalho e não indica conformidade elétrica. Exportação prevista para a Etapa 10.</p></div>`;
+    <p class="storage-note">Projetos industriais são salvos neste navegador e neste endereço. O status organiza o trabalho e não indica conformidade elétrica. Use Backup JSON em Relatórios para recuperar o projeto em outro navegador ou endereço.</p></div>`;
 }

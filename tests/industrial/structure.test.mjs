@@ -62,7 +62,8 @@ for (const route of ROUTES) {
   const html = pageView(route, contract);
   assert.ok(html.includes('page-title'));
   assert.ok(!html.includes('>Conforme<'));
-  assert.equal(html.includes('map-placeholder'), route.id === 'visao-geral');
+  assert.ok(!html.includes('map-placeholder'));
+  if(route.id==='visao-geral')assert.ok(html.includes('Abra um projeto'));
 }
 assert.equal(pageView(ROUTES[1], contract).includes('detail-column'), false);
 assert.equal(escapeHTML('<img onerror="x">'), '&lt;img onerror=&quot;x&quot;&gt;');

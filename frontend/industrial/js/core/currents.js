@@ -25,7 +25,7 @@ export function activePowerSummary(project) {
   // Aggregate only an explicit list of end uses; panel/drive chains require Stage 5.
   if (!project.consumers.length) return { value: null, reason: 'Nenhum consumidor informado' };
   if (project.consumers.some(c => ['panel','drive','transformer','other'].includes(c.type))) {
-    return { value: null, reason: 'Total da instalação pendente de topologia; consulte as potências por item' };
+    return { value: null, reason: 'Cargas especiais: consulte potências por item. A Visão geral soma registros, sem resolver cadeias de transformação ou acionamento.' };
   }
   let total = 0, known = 0;
   for (const c of project.consumers) {

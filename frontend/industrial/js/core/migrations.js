@@ -5,7 +5,7 @@ export function migrateProject(project, contract, previousContract) {
   if (project?.schemaVersion === contract.version) return structuredClone(project);
   const sources = Array.isArray(previousContract) ? previousContract : [previousContract];
   const source = sources.find(c => c?.version === project?.schemaVersion);
-  if (![3,4,5].includes(contract.version) || ![2,3,4].includes(project?.schemaVersion) || project.schemaVersion >= contract.version || !source || validateEntity(source, 'Project', project).length) {
+  if (![3,4,5,6,7,8,9].includes(contract.version) || ![2,3,4,5,6,7,8].includes(project?.schemaVersion) || project.schemaVersion >= contract.version || !source || validateEntity(source, 'Project', project).length) {
     throw new Error('Versão ou dados do projeto incompatíveis.');
   }
   function upgrade(model, value) {

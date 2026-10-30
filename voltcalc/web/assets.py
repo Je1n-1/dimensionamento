@@ -20,6 +20,11 @@ ASSETS['/VoltCalc_Guiado_Abrir.html'] = ASSETS['/index.html']
 
 # Industrial: isolated shell, project repository and shared contracts and isolated current service.
 INDUSTRIAL_FILES = (
+    'js/reports-controller.js', 'js/reports-view.js', 'js/core/reports.js', 'js/core/project-files.js',
+    'js/overview-controller.js', 'js/overview-view.js', 'js/core/overview.js',
+    'js/voltage-controller.js', 'js/voltage-view.js',
+    'js/infrastructure-controller.js', 'js/infrastructure-view.js',
+    'js/conductors-controller.js', 'js/conductors-view.js',
     'js/topology-controller.js', 'js/topology-view.js', 'js/core/topology.js',
     'index.html', 'css/industrial.css', 'js/app.js', 'js/components.js', 'js/pages.js',
     'js/core/routes.js', 'js/core/model.js', 'js/core/repository.js',
@@ -34,6 +39,10 @@ ASSETS['/industrial/contracts.v1.json'] = ROOT / 'data/industrial/contracts.v1.j
 ASSETS['/industrial/contracts.v2.json'] = ROOT / 'data/industrial/contracts.v2.json'
 ASSETS['/industrial/contracts.v4.json'] = ROOT / 'data/industrial/contracts.v4.json'
 ASSETS['/industrial/contracts.v5.json'] = ROOT / 'data/industrial/contracts.v5.json'
+ASSETS['/industrial/contracts.v6.json'] = ROOT / 'data/industrial/contracts.v6.json'
+ASSETS['/industrial/contracts.v9.json'] = ROOT / 'data/industrial/contracts.v9.json'
+ASSETS['/industrial/contracts.v8.json'] = ROOT / 'data/industrial/contracts.v8.json'
+ASSETS['/industrial/contracts.v7.json'] = ROOT / 'data/industrial/contracts.v7.json'
 ASSETS['/industrial/contracts.v3.json'] = ROOT / 'data/industrial/contracts.v3.json'
 
 # Old URLs redirect to their canonical locations so module-relative imports work.

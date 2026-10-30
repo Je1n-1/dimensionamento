@@ -5,7 +5,7 @@ import math
 from uuid import uuid4
 from voltcalc.paths import ROOT
 
-CONTRACT = json.loads((ROOT / 'data/industrial/contracts.v5.json').read_text(encoding='utf-8'))
+CONTRACT = json.loads((ROOT / 'data/industrial/contracts.v9.json').read_text(encoding='utf-8'))
 
 
 def create_entity(model_name, **overrides):

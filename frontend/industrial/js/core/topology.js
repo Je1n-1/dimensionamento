@@ -27,7 +27,7 @@ export const TOPOLOGY_FIELDS = {
   panels: ['tag', 'description', 'parentPanelId'],
   nodes: ['label', 'kind', 'entityId'],
   segments: ['tag', 'kind', 'fromNodeId', 'toNodeId', 'length', 'installationMethod', 'temperature', 'environment', 'groupingArrangement', 'soilResistivity', 'soilDepth'],
-  circuits: ['tag', 'purpose', 'role', 'originNodeId', 'consumerIds', 'destinationPanelIds', 'segmentIds'],
+  circuits: ['tag', 'purpose', 'role', 'loadedConductors', 'originNodeId', 'consumerIds', 'destinationPanelIds', 'segmentIds'],
   cables: ['tag', 'circuitId', 'formation', 'quantity', 'routeMode', 'segmentIds'],
   infrastructures: ['segmentId', 'type'],
 };

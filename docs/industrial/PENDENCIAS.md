@@ -119,3 +119,88 @@ Etapa 5 não iniciada. Ressalvas residenciais/SENAI fora do escopo permanecem in
 | IND-33 | Média | Ocupação por trecho, diâmetros externos e dimensões de infraestrutura | 7 | Tipo de infraestrutura cadastrado; ocupação Não calculada |
 
 Etapa 5 concluída no escopo documentado. Etapa 6 não iniciada.
+
+## Atualização da Etapa 6 — 26/10/2026
+
+- IND-08/09/10 atendidos no escopo parcial de [ETAPA_06.md](ETAPA_06.md): base 2004 independente, método explícito, capacidade por trecho e mínimos de instalação fixa. Não há declaração de cobertura integral da norma.
+- IND-11 atendido para as disposições implementadas: agrupamento pela topologia, comparação de seções e temperaturas de serviço, hipótese conservadora explícita e bloqueios para condições não suportadas.
+- IND-28 permanece parcial: relações e Ib de carga terminal disponíveis; estudo de grupos/alimentadores deve ser informado com memória, sem soma automática ou demanda presumida.
+- IND-31 atendido para conferência de fases/neutro, correção de carregamento, seção mínima e PE simplificado. PEN, paralelismo e proteção continuam pendentes.
+- IND-33 permanece na Etapa 7. Queda permanece na Etapa 8; mapa e exportações nas etapas originais. Ressalvas residenciais/SENAI não autorizaram alterações no motor residencial.
+- Contrato v6, migração v2–v5 e serviço com versões/revisões isoladas implementados. Condições persistidas; análises detalhadas transitórias e recalculáveis, sem conformidade global.
+
+| ID | Prioridade | Limitação / acompanhamento | Etapa prevista | Situação |
+|---|---|---|---|---|
+| IND-34 | Alta | Tabela 38: células suspeitas Al 630 mm², F plano/G horizontal/vertical | Revisão documental da 11; antes de liberar essas células | Bloqueadas; transcrição e ressalva preservadas, sem correção silenciosa |
+| IND-35 | Alta | Radiação, paralelismo, PEN, harmônicas >33%, grupo com isolação 70/90 °C e condições fora das tabelas implementadas | Validar limites na 11; ampliação de modelos depende de autorização | Não calculados; motivos explícitos. Sem uso de regra aproximada silenciosa |
+| IND-36 | Alta | Enterramento fora de 0,7 m, agrupamento >6, resistividade/espaçamento não cobertos e camadas parciais | Revisão de cobertura na 11; modelo específico somente autorizado | Combinações bloqueadas. Tabelas 44/45 têm aproximação indicada |
+| IND-37 | Média | Consolidação/persistência da memória de condutores para relatório | 10, conforme roteiro | Condições salvas; análise transitória exige recálculo na revisão atual antes de exportar |
+| IND-38 | Alta | Dimensionamento final ainda depende de proteção, curto-circuito, seccionamento, partida e queda | Etapas originais correspondentes; proteção em serviço separado | Somente Pré-dimensionado, sem Conforme global |
+
+Etapa 6 concluída com limites documentados. Etapa 7 não iniciada; aguarda confirmação expressa.
+
+## Revisão de usabilidade — 27/10/2026
+
+Feedback do teste exploratório tratado sem depender da recuperação do projeto G1. Entrega registrada em [AJUSTES_UX_CADASTRO.md](AJUSTES_UX_CADASTRO.md).
+
+| ID | Prioridade | Acompanhamento | Etapa / escopo | Situação |
+|---|---|---|---|---|
+| IND-39 | Alta | Cargas cadastradas invisíveis no dimensionamento; falta de ligação com circuitos | Correção de UX das etapas 3/5/6 | Resolvido: lista de cargas sem estrutura, preparação explícita em lote de circuitos independentes e motivo de pendência visível |
+| IND-40 | Alta | Cadastro repetitivo, quadro difícil de encontrar e excesso de campos de motor | Correção de UX das etapas existentes | Resolvido no escopo atual: adicionar quadro, duplicar equipamento, campos contextuais, detalhes avançados recolhidos e explicações |
+| IND-41 | Média | Assistente para várias cargas distribuídas no mesmo circuito / caminhos compartilhados | Aprimoramento posterior do editor da Etapa 5, mediante definição de escopo | Editor manual existente disponível; preparação rápida atual cobre somente circuitos independentes. Não inferir compartilhamento a partir de tags iguais |
+| IND-42 | Média | Novos catálogos, cadastro de tabelas pelo usuário e leitura automática de PDF | Fora desta revisão; autorização específica e validação de fontes | Não implementado, conforme orientação do usuário |
+
+Limitações normativas IND-27 a IND-38 permanecem. As etapas 7 a 11 não foram antecipadas.
+
+## Atualização da Etapa 7 — 28/10/2026
+
+IND-33 atendido no escopo parcial de [ETAPA_07.md](ETAPA_07.md): ocupação por envoltórias físicas, fonte dimensional, eletrodutos, camada única em calhas/leitos e recomendações geométricas. A regra geral não foi promovida a conformidade integral. IND-37 continua na Etapa 10; as ressalvas residenciais e SENAI não foram alteradas.
+
+| ID | Prioridade | Acompanhamento | Etapa prevista | Situação |
+|---|---|---|---|---|
+| IND-43 | Alta | Múltiplos condutos e alocação parcial por trecho | Revisar limites na 11; expansão requer escopo específico | Pendente, sem soma de áreas de condutos independentes |
+| IND-44 | Alta | Arranjos em várias camadas, trifólio/vertical e dimensionamento mecânico de suportes | Revisão de cobertura na 11; ampliação específica | Apenas camada única horizontal; demais arranjos não calculados |
+| IND-45 | Alta | Curvas diferentes de 90°, exceção por tamanho nominal, raios, caixas/acessibilidade e requisitos de produto | Revisão de cobertura na 11; ampliação específica | Comprimento e curvas verificáveis apenas no escopo declarado; demais requisitos não verificados |
+| IND-46 | Média | Catálogo automático de dimensões e autenticação de fontes | Expansão futura autorizada; não antecipada | Entrada de diâmetro e referência por fabricante/modelo; ausência mantém pendência |
+| IND-47 | Média | Persistência/consolidação da memória de infraestrutura | 10 | Entradas salvas; resultados transitórios vinculados à revisão atual |
+
+Etapa 7 concluída com limites documentados. Etapa 8 não iniciada.
+## Atualização da Etapa 8 — 28/10/2026
+
+Queda em regime permanente atendida no escopo parcial de [ETAPA_08.md](ETAPA_08.md). IND-38 permanece aberto quanto à proteção, partida e demais condições não verificadas. As anotações anteriores registram a situação na data de cada entrega; esta atualização não altera as ressalvas SENAI ou o motor residencial.
+
+| ID | Prioridade | Acompanhamento | Etapa prevista | Situação |
+|---|---|---|---|---|
+| IND-48 | Alta | Queda na partida, harmônicas, desequilíbrio, paralelismo e transformações intermediárias | Revisão de cobertura na 11; ampliação específica autorizada | Não implementados; não declarar aprovação nesses regimes |
+| IND-49 | Alta | Correntes equivalentes de grupos/alimentadores e redução por derivações | Revisão na 11; modelo específico mediante autorização | Ib referenciada e confirmada; corrente integral do circuito em cada segmento |
+| IND-50 | Média | Catálogo de R/X, autenticação de fonte e correção térmica/eletromagnética | Expansão futura autorizada | R AC/X com referência e temperatura declaradas; assinatura exige reconferência após mudanças |
+| IND-51 | Média | Suplementação opcional de limite para linhas principais acima de 100 m | Revisão na 11; implementação específica | Não aplicada; limites base conservados |
+| IND-52 | Média | Consolidação e exportação da memória de queda | 10 | Entradas salvas; memória transitória vinculada à revisão |
+
+Etapa 8 concluída com limites documentados. Etapa 9 não iniciada. Exclusão dos dados de testes manuais cancelada pelo usuário; registros preservados.
+
+
+## Atualização da Etapa 9 — 29/10/2026
+
+Mapa e consolidação entregues conforme [ETAPA_09.md](ETAPA_09.md). As ressalvas normativas anteriores permanecem abertas; a visão geral não amplia a cobertura dos serviços de cálculo.
+
+| ID | Prioridade | Acompanhamento | Etapa prevista | Situação |
+|---|---|---|---|---|
+| IND-53 | Média | Consolidação da recuperação, memória e exportação do mapa/resultados | 10 | Entradas e posições persistidas; análise recalculada explicitamente ao reabrir |
+| IND-54 | Média | Layout de grafos densos e cruzamentos entre conexões | Revisão de usabilidade na 11; ampliação específica se necessária | Organização inicial e movimento manual disponíveis; sem roteamento CAD |
+| IND-55 | Alta | Revisão global das pendências de serviços e limites de cobertura | 11 | Visão geral reúne os resultados, sem conferir proteção, partida ou conformidade integral |
+
+Etapa 9 concluída no escopo documentado. Etapa 10 não iniciada. Dados do usuário preservados; somente projeto identificado como QA na origem 8001 recebeu alterações sintéticas de verificação.
+
+## Atualização da Etapa 10 — 29/10/2026
+
+Recuperação e exportações entregues conforme [ETAPA_10.md](ETAPA_10.md). IND-37, IND-47, IND-52 e IND-53 atendidos no escopo de recuperação por recálculo das entradas persistidas e exportação da memória/mapa. Não há cache de resultados numéricos para uso offline. As ressalvas SENAI, residenciais e normativas anteriores permanecem; não foram convertidas em conformidade integral.
+
+| ID | Prioridade | Acompanhamento | Etapa prevista | Situação |
+|---|---|---|---|---|
+| IND-56 | Média | Dependência PDF e distribuição do ambiente Python | Revisão de instalação na 11 | ReportLab declarado em requirements-industrial.txt; mensagem de instalação quando ausente |
+| IND-57 | Média | Relatórios extensos e mapas muito densos | Desempenho e usabilidade na 11 | PDF paginado com cabeçalhos repetidos; mapa esquemático e tabela completa de conexões. Sem roteamento CAD |
+| IND-58 | Alta | Portabilidade, perda do perfil do navegador e limites de quota | Validação final na 11; sincronização requer escopo próprio | Backup JSON manual disponível; armazenamento local não equivale a backup externo automático |
+| IND-59 | Média | Arquivo histórico de resultados e assinatura de documentos | Fora do escopo atual; ampliação autorizada | PDF/CSV são retratos exportáveis; JSON recupera entradas e recalcula com a versão atual. SHA-256 não é assinatura digital |
+
+Etapa 10 concluída no escopo documentado. Etapa 11 não iniciada. Testes de interface na origem isolada 8001; dados do usuário na origem 8000 preservados.

@@ -138,6 +138,19 @@ export class LocalProjectRepository extends ProjectRepository {
       return { deletedId: id };
     });
   }
+  async importProject(project) {
+    this.validateProject(project);
+    const snapshot=clone(project);
+    return this.transaction(data=>{
+      if(data.projects.length>=500)throw fail('PROJECT_LIMIT','O catálogo atingiu o limite de 500 projetos.');
+      const imported=duplicateProject(this.contract,snapshot,this.now());
+      imported.name=`${snapshot.name.slice(0,108)} (importado)`;
+      imported.results=[];
+      this.validateProject(imported);
+      data.projects.push(imported);data.currentId=imported.id;
+      return imported;
+    });
+  }
   async getCurrentId() { return this.read().currentId; }
   async setCurrentId(id) {
     return this.transaction(data => {

@@ -86,7 +86,7 @@ class IndustrialHttpTests(unittest.TestCase):
         self.assertFalse(any(route.startswith('/js/') for route in seen))
 
     def test_contract_route_and_source_privacy(self):
-        with urlopen(self.url + '/industrial/contracts.v5.json') as response:
+        with urlopen(self.url + '/industrial/contracts.v9.json') as response:
             self.assertEqual(json.load(response), CONTRACT)
         for route in ('/data/industrial/contracts.v1.json', '/voltcalc/industrial/contracts.py', '/api/industrial/calculate'):
             with self.subTest(route=route), self.assertRaises(HTTPError) as error:

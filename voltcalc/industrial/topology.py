@@ -4,6 +4,7 @@ from copy import deepcopy
 import math
 
 from .contracts import CONTRACT, create_entity, validate_entity
+from .preparation import prepare_independent
 
 VERSION = 'industrial-topology-1'
 MODELS = {'nodes': 'Node', 'panels': 'Panel', 'segments': 'Segment',
@@ -276,7 +277,9 @@ def mutate_topology(project, operation):
         raise ValueError('Operação inválida.')
     next_project = deepcopy(project)
     action = operation.get('action')
-    if action == 'points':
+    if action == 'prepare':
+        prepare_independent(next_project, operation)
+    elif action == 'points':
         for kind, collection in (('panel', 'panels'), ('consumer', 'consumers')):
             for item in next_project[collection]:
                 if kind == 'consumer' and item['type'] == 'panel':
@@ -363,6 +366,13 @@ def mutate_topology(project, operation):
     if added:
         raise ValueError(added[0]['message'])
     next_project['revision'] += 1
+    # Physical topology changes invalidate the scope/group declarations of stage 6.
+    for cable in next_project['cables']:
+        cable['design']['scopeConfirmed'] = None
+        cable['design']['manualIbConfirmed'] = None
+    for segment in next_project['segments']:
+        segment['thermal']['methodConfirmed'] = None
+        segment['thermal']['groupingConfirmed'] = None
     next_project['currentStage'] = max(5, next_project['currentStage'])
     for result in next_project['results']:
         result.update(status='invalidated', measurements=[], criteria=[], reason='Estrutura alterada. Recalcule as grandezas.')

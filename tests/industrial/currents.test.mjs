@@ -12,7 +12,7 @@ import {currentsView} from '../../frontend/industrial/js/currents-view.js';
 import {consumerForm} from '../../frontend/industrial/js/consumers-view.js';
 
 const read=v=>JSON.parse(fs.readFileSync(new URL(`../../data/industrial/contracts.v${v}.json`,import.meta.url)));
-const contract=read(5), previous=[read(4),read(3),read(2)];
+const contract=read(9), previous=[read(8),read(7),read(6),read(5),read(4),read(3),read(2)];
 const e=(name,values={})=>createEntity(contract,name,values);
 let p=e('Project',{name:'Teste de correntes',revision:3});
 const c=e('Consumer',{type:'motor',tag:'M1',power:20,unit:'cv',powerBasis:'mechanical',voltage:380,frequency:60,connection:'3F',phaseSet:'ABC',balanced:true,powerFactor:.85,efficiency:.9});
@@ -69,13 +69,13 @@ for(const legacy of previous){
   const raw=JSON.stringify({format:'voltcalc-industrial-projects',version:1,currentId:old.id,projects:[old]});data.set(INDUSTRIAL_STORAGE,raw);
   const repo=new LocalProjectRepository(contract,{storage,locks,previousContract:previous});
   const migrated=await repo.load(old.id);
-  assert.equal(migrated.schemaVersion,5);assert.equal(migrated.revision,old.revision);
+  assert.equal(migrated.schemaVersion,9);assert.equal(migrated.revision,old.revision);
   assert.equal(migrated.motors[0].plateCurrent,22.7);assert.equal(migrated.motors[0].exclusiveS1Circuit,null);
   assert.equal(migrated.motors[0].catalogId,null);assert.equal(migrated.consumers[0].balanced,null);
   assert.equal(data.get(INDUSTRIAL_STORAGE),raw);
   const failing=new LocalProjectRepository(contract,{storage:{...storage,setItem(){throw Error('quota');}},locks,previousContract:previous});
   await assert.rejects(()=>failing.save(migrated,1),{code:'STORAGE_WRITE'});assert.equal(data.get(INDUSTRIAL_STORAGE),raw);
-  await repo.save(migrated,1);assert.equal(JSON.parse(data.get(INDUSTRIAL_STORAGE)).projects[0].schemaVersion,5);
+  await repo.save(migrated,1);assert.equal(JSON.parse(data.get(INDUSTRIAL_STORAGE)).projects[0].schemaVersion,9);
 }
 assert.throws(()=>migrateProject({...p,schemaVersion:999},contract,previous));
 data.delete(INDUSTRIAL_STORAGE);

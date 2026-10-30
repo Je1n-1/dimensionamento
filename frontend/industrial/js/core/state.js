@@ -35,6 +35,10 @@ export function createStore(contract) {
       change(next);
       if (next.id !== project.id) throw new Error('A identidade do projeto não pode mudar.');
       next.revision = project.revision + 1;
+      for (const cable of next.cables || []) if (cable.design) {
+        cable.design.manualIbConfirmed = null;
+        cable.design.scopeConfirmed = null;
+      }
       // Conservative invalidation until dependencies are implemented in later stages.
       next.results = project.results.map(result => ({ ...result, status: 'invalidated',
         measurements: [], criteria: [], reason: 'Entradas alteradas. Recalcule este resultado.' }));

@@ -86,7 +86,9 @@ export function createProjectController({ root, repository, contract, store, ren
           next.name = data.get('name').trim(); next.description = data.get('description').trim(); next.workflowStatus = data.get('workflowStatus');
           // Metadata edits do not change electrical inputs or calculation revisions.
           const saved = await repository.save(next, editing.storageRevision);
-          store.setDraft(saved); dialog.close(); await refresh(); notify('Projeto salvo neste navegador.');
+          await repository.setCurrentId(saved.id);
+          store.setDraft(saved); dialog.close(); await refresh(); notify(`Projeto ${saved.name} salvo. Cadastre o quadro e suas cargas.`);
+          if (editing.storageRevision === 0) location.hash = '#/consumidores';
         }
       } catch (error) { errorNode.textContent = error.message; }
     });
@@ -111,6 +113,7 @@ export function createProjectController({ root, repository, contract, store, ren
       const project = await repository.load(id);
       if (name === 'open') {
         await repository.setCurrentId(id); store.setDraft(project); await refresh(); notify(`Projeto aberto: ${project.name}`);
+        location.hash = '#/consumidores';
       } else if (name === 'edit') editForm(project);
       else if (name === 'delete') confirmDelete(project);
       else if (name === 'duplicate') { await repository.duplicate(id, project.storageRevision); await refresh(); notify('Cópia independente criada.'); }

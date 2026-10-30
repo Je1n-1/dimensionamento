@@ -21,10 +21,10 @@ export function currentsView(project, consumers = project.consumers) {
     return `<article class="current-item">
       <div class="current-heading"><div><strong>${esc(c.tag)}</strong><span>${esc(c.description)}</span></div>
         ${badge(result?.status === 'calculated' ? 'Corrente obtida' : result ? 'Dados pendentes' : 'Não calculado', result?.status === 'calculated' ? 'blue' : 'amber')}</div>
-      <div class="current-key-values"><div><small>Corrente por equipamento</small><strong>${format(selected)}${Number.isFinite(selected) ? ' A' : ''}</strong><span>${esc(sourceLabel[result?.currentSource] || 'Fonte ainda não disponível')}</span></div>
+      <div class="current-key-values"><div><small>Corrente por unidade · ${esc(c.tag)}</small><strong>${format(selected)}${Number.isFinite(selected) ? ' A' : ''}</strong><span>${esc(sourceLabel[result?.currentSource] || 'Informe os dados e calcule a corrente')}</span></div>
         <div><small>${c.type === 'motor' ? 'Ib mínimo do motor' : 'Potência aparente do registro'}</small><strong>${c.type === 'motor' ? format(design) + (Number.isFinite(design) ? ' A' : '') : format(apparent) + (Number.isFinite(apparent) ? ' VA' : '')}</strong><span>${c.type === 'motor' ? 'Condições específicas de 6.5.1.3.1' : esc(c.quantity) + ' equipamento(s) incluído(s)'}</span></div></div>
-      ${result ? `<details class="current-detail"><summary>Ver grandezas, fórmulas e pendências</summary>
-        <p class="current-pending">${esc(result.reason)}</p>
+      ${c.type === 'motor' && !Number.isFinite(design) ? '<p class="current-pending">Ib do motor ainda pendente: confira a corrente nominal, as condições de operação e o uso do fator de serviço em Editar → Condições para dimensionar o circuito do motor.</p>' : ''}
+      ${result ? `<p class="current-pending">${esc(result.reason)}</p><details class="current-detail"><summary>Ver grandezas e fórmulas</summary>
         <dl class="key-values">${result.measurements.filter(m => m.code !== 'selected_a').map(m => `<div><dt>${esc(labels[m.code] || m.code)}</dt><dd>${format(m.value)}${m.value === null ? '' : ' '+esc(m.unit)}</dd></div>`).join('')}</dl>
         <h4>Origem e memória de cálculo</h4><pre>${esc(result.trace)}</pre>
         <p>Cabo, proteção, partida e conformidade geral: <strong>não verificados</strong>.</p>

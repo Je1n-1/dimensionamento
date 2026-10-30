@@ -8,6 +8,34 @@ export const MATERIALS = { copper: 'Cobre', aluminum: 'Alumínio' };
 export const CABLES = { insulated: 'Condutores isolados', unipolar: 'Cabos unipolares', multipolar: 'Cabo multipolar', other: 'Outro' };
 export const BASES = { electrical: 'Ativa elétrica absorvida', apparent: 'Aparente', mechanical: 'Mecânica de saída' };
 export const DISTANCES = { cumulative: 'Acumulada desde o quadro', physical: 'Comprimento de um segmento' };
+export const METHODS = {
+  A1: 'A1 — condutores em eletroduto em parede termicamente isolante',
+  A2: 'A2 — cabo multipolar em eletroduto em parede termicamente isolante',
+  B1: 'B1 — condutores / unipolares em eletroduto', B2: 'B2 — multipolar em eletroduto',
+  C: 'C — cabos fixados diretamente sobre superfície', D: 'D — linha enterrada',
+  E: 'E — multipolar ao ar livre', F: 'F — unipolares justapostos ao ar livre',
+  G: 'G — unipolares espaçados ao ar livre',
+};
+
+export function suggestedPowerBasis(unit, type) {
+  if (['VA','kVA'].includes(unit)) return 'apparent';
+  if (['cv','hp'].includes(unit)) return 'mechanical';
+  if (['W','kW'].includes(unit)) return type === 'motor' ? 'mechanical' : 'electrical';
+  return null;
+}
+
+/** Copy equipment data only, never a physical circuit or calculation. */
+export function copyConsumer(contract, project, id) {
+  const original = project.consumers.find(c => c.id === id);
+  if (!original) throw new Error('Consumidor não encontrado.');
+  const consumer = createEntity(contract, 'Consumer', {...original, id: crypto.randomUUID(), plannedSegmentId: null});
+  let index = 2;
+  do { consumer.tag = `${original.tag.slice(0,48)} (cópia ${index++})`; }
+  while (project.consumers.some(c => c.tag.toLocaleLowerCase() === consumer.tag.toLocaleLowerCase()));
+  const oldMotor = project.motors.find(m => m.consumerId === id);
+  const motor = createEntity(contract, 'Motor', oldMotor ? {...oldMotor, id: crypto.randomUUID(), consumerId: consumer.id, nominalConditionsConfirmed: null} : {});
+  return {consumer, motor};
+}
 const fail = (field, message) => Object.assign(new Error(message), { field });
 
 export function conductorLabel(consumer) {
@@ -118,4 +146,32 @@ export function removeConsumer(contract, project, id) {
   });
   updated.results = updated.results.filter(r => !ids.has(r.targetId));
   return updated;
+}
+
+/** Individual motor records, validated on a private draft and persisted as one batch. */
+export function upsertMotorBatch(contract, project, base, motor, overrides) {
+  if (base.type !== 'motor' || !Array.isArray(overrides) || overrides.length !== base.quantity || overrides.length < 2 || overrides.length > 150) {
+    throw fail('quantity', 'Informe de 2 a 150 motores para o cadastro individual.');
+  }
+  const existing = project.consumers.find(c => c.id === base.id);
+  if (existing) {
+    const own = project.motors.filter(m => m.consumerId === base.id).map(m => m.id);
+    try { assertUnreferenced(contract, project, new Set([base.id]), new Set([base.id,...own])); }
+    catch { throw fail('quantity', 'Este registro já está vinculado à estrutura. Cadastre os novos motores em Adicionar item; a divisão deste registro exige revisar seus vínculos primeiro.'); }
+  }
+  let next = structuredClone(project);
+  overrides.forEach((row,index) => {
+    const c = createEntity(contract,'Consumer', {...base,...row.consumer,
+      id:index===0?base.id:crypto.randomUUID(), type:'motor', quantity:1, plannedSegmentId:null});
+    const m = createEntity(contract,'Motor', {...motor,...row.motor,
+      id:index===0?motor.id:crypto.randomUUID(), consumerId:c.id, nominalConditionsConfirmed:null});
+    try { next = upsertConsumer(contract,next,c,m); }
+    catch(error) {
+      error.message = `Motor ${index+1} (${c.tag || 'sem tag'}): ${error.message}`;
+      error.batchIndex = index;
+      throw error;
+    }
+  });
+  next.revision = project.revision+1;
+  return next;
 }

@@ -13,6 +13,7 @@ export class ProjectRepository {
   async load(_id) { throw new RepositoryUnavailable(); }
   async save(_project, _expectedRevision) { throw new RepositoryUnavailable(); }
   async duplicate(_id, _expectedRevision) { throw new RepositoryUnavailable(); }
+  async importProject(_project) { throw new RepositoryUnavailable(); }
   async delete(_id, _expectedRevision) { throw new RepositoryUnavailable(); }
   async getCurrentId() { throw new RepositoryUnavailable(); }
   async setCurrentId(_id) { throw new RepositoryUnavailable(); }

@@ -89,7 +89,7 @@
     "name": "future schema rejected",
     "model": "Project",
     "changes": {
-      "schemaVersion": 6
+      "schemaVersion": 10
     },
     "valid": false
   },

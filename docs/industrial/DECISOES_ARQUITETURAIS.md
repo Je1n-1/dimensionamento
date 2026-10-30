@@ -211,3 +211,87 @@ O navegador confirma a persistência com revisão otimista antes de publicar o e
 Cadastro compacto em uma subseção contextual Caminhos e circuitos de Consumidores e cargas, sem nova entrada lateral nem mapa completo. Formulários e tabelas usam os componentes e o visual industrial existentes. O resultado é Estrutura válida ou Pendências, jamais Conforme. A versão `industrial-topology-1` identifica lógica de rede, não uma edição normativa. As regras 2004 continuam isoladas da base residencial.
 
 Etapa 5 não calcula seção, proteção, ocupação, queda, corrente de alimentadores ou balanço de fases. Não antecipa o mapa da Etapa 9 nem os relatórios/exportações da 10. A Etapa 6 depende de autorização posterior.
+
+## DA-30 — regras de condutores 2004 independentes (Etapa 6)
+
+`conductor_rules.py` e `conductors-2004.v1.json` compõem a versão parcial `nbr5410-2004-conductors-1`. Não importam tabelas residenciais. A fonte fornecida, páginas, hash, ordem de colunas e exclusões ficam identificadas. Três células suspeitas de alumínio 630 mm² na tabela 38 não são utilizadas nem corrigidas silenciosamente. O registro geral de conformidade continua sem cobertura integral.
+
+O serviço aplica somente condições implementadas: capacidades A1–G, correções térmicas e de agrupamento, carregamento do neutro, mínimos de seção e PE simplificado. Confirmações não são inferidas de nomes de infraestrutura. Situações sem modelo ficam pendentes. Temperatura da isolação é limite de serviço, nunca temperatura operacional estimada.
+
+## DA-31 — dimensionamento por formação e trecho
+
+`Cable` é a unidade da seleção de seção; `Circuit` fornece a carga e `Segment` fornece as condições térmicas. A contagem de agrupamento deriva dos circuitos/formações presentes no trecho. O menor Iz corrigido ao longo da formação governa a comparação com Ib. A seção sugerida não altera os condutores adotados.
+
+Ib automático reutiliza o serviço isolado de correntes apenas para carga terminal compatível ou motor único com condições nominais válidas. Grupos/alimentadores recebem Ib externo com origem e confirmação explícitas, sem declaração de que o estudo de cargas foi verificado. Não há demanda arbitrária, soma cega de quadros ou divisão automática entre paralelos. A corrente integral do circuito é usada em todos os trechos da formação.
+
+Agrupamento das tabelas 42–45 exige a mesma temperatura máxima de serviço, carregamento semelhante declarado e faixa de três seções sucessivas conferida contra as seções adotadas dos outros circuitos. A opção conservadora F=1/√n é explícita, limitada às disposições implementadas ao ar. Não se misturam tabelas 42 e 43 nem se extrapolam condições enterradas. Temperatura intermediária usa classe superior e fica registrada na memória.
+
+## DA-32 — contrato v6 e persistência das condições
+
+Contrato v6 adiciona `Cable.design` e `Segment.thermal`, com confirmações inicialmente desconhecidas. Migração v2–v5 conserva IDs, valores e revisões, sem gravação automática. Material, isolação e seção continuam nos registros `Conductor`; o formulário aplica explicitamente material/isolação à formação e seção adotada somente às fases/neutro.
+
+`/api/industrial/conductors` recebe identidade, revisão e versões, opera sobre cópia e valida o contrato. Alterações de condições incrementam a revisão e invalidam grandezas anteriores. O navegador grava com revisão otimista antes de publicar o projeto. Respostas de outro projeto/revisão ou com formações incompatíveis são recusadas.
+
+A memória detalhada é análise transitória vinculada à revisão; não é inserida como resultado de conformidade no repositório. Condições são persistidas e o usuário recalcula ao reabrir. Um futuro relatório deve recalcular ou validar explicitamente a versão e revisão antes de consolidar resultados. Essa decisão não antecipa a Etapa 10.
+
+Alterações de estrutura limpam confirmações de método, agrupamento, escopo e Ib externo; alterações de cargas limpam confirmação de escopo e Ib externo. Valores permanecem preservados. Edição de condições pelo formulário da Etapa 6 reúne as confirmações necessárias na própria operação.
+
+## DA-33 — apresentação e fronteira de proteção
+
+O resultado é Pré-dimensionado ou Pendente, com cada critério calculado identificado. Neutro permanece sem redução; PE pela tabela 58 não significa verificação da função de proteção. Proteção, curto-circuito, partida, coordenação, seccionamento, ocupação e queda são pendências explícitas. `ProtectionService` continua separado e não implementado. Não há Conforme global, mesmo quando capacidade e seção mínima atendem.
+
+Os detalhes e candidatos ficam em painel contextual da página Dimensionamento, seguindo a estrutura visual industrial existente. O roteiro 0–11 permanece inalterado; Etapa 7 depende de confirmação posterior.
+
+## DA-34 — preparação explícita de circuitos e cadastro contextual (27/10/2026)
+
+A revisão de usabilidade das etapas existentes conecta o cadastro ao dimensionamento sem mudar o contrato v6 nem o motor elétrico. A operação `prepare` do serviço de topologia cria, em uma única transação validada, pontos, circuitos terminais, trechos independentes, formações e funções dos condutores para as cargas selecionadas. Exige quadro existente, distância completa declarada, ligação/fases compatíveis, tipo de cabo e confirmação de percursos independentes. Não transforma uma referência de trecho em agrupamento físico presumido.
+
+Material, isolação, temperatura e método são copiados apenas quando declarados. Seções e confirmações normativas não são preenchidas automaticamente. Cargas com circuitos, percursos ou vínculos conflitantes são recusadas sem gravação parcial. Circuitos compartilhados continuam no editor de caminhos da Etapa 5. O número de equipamentos de um registro representa cargas no mesmo ponto, não posições distribuídas.
+
+Duplicar consumidor cria novos IDs, conserva características editáveis, desvincula o segmento físico e não copia circuitos ou resultados. A confirmação nominal do motor deve ser refeita. Unidade sugere a base da potência somente após mudança explícita no formulário; W/kW continuam editáveis como potência elétrica ou mecânica. Ligação nunca é inferida apenas pela tensão.
+
+Novo projeto é salvo e selecionado antes de navegar para Consumidores. Quadros estruturais podem ser criados diretamente sem preencher dados de uma carga. Cargas sem circuito e circuitos sem formação aparecem como pendências no dimensionamento. Nenhuma dessas mudanças inicia a Etapa 7 ou amplia a cobertura normativa.
+
+## DA-35 — quantidade de motores como cadastro individual em lote (27/10/2026)
+
+Por solicitação do usuário, o formulário singular permanece para quantidade 1. Quantidade maior abre cartões com valores individuais e herança explícita dos dados comuns. O lote é validado em rascunho e persistido uma única vez, com revisão única, IDs próprios e quantidade 1 por consumidor. Não altera contrato, cálculos ou armazenamento. Divisão de registro vinculado à topologia é bloqueada; resultados e confirmações nominais não são replicados como válidos. Detalhes e testes: [CADASTRO_MULTIPLOS_MOTORES.md](CADASTRO_MULTIPLOS_MOTORES.md).
+
+## DA-36 — envoltórias físicas e referências independentes (28/10/2026)
+
+A Etapa 7 usa contrato v7 aditivo e serviço Python independente `infrastructure`. A envoltória do multipolar pertence a Cable; o diâmetro de cada unipolar/condutor isolado pertence a Conductor. Os diâmetros são vinculados por assinatura à construção (funções, seções, material, isolação e formação), sem IDs, para conservar validade numa duplicação fiel e pedir reconfirmação quando a construção mudar. Fontes de fabricante são declaradas pelo usuário, não autenticadas automaticamente. Nenhum diâmetro é inferido da área metálica.
+
+Uma infraestrutura abrange todos os elementos físicos do trecho. Múltiplos condutos/repartição parcial ficam pendentes até existir um modelo de alocação específico. Eletrodutos usam os limites de 6.2.11.1.6-a; percurso contínuo é entrada separada e confirmada, sem inferência a partir do total de cabos. Calhas e leitos usam arranjo em camada única e referência explícita de projeto/fabricante, sem percentuais normativos universais.
+
+Resultados geométricos têm versão `nbr5410-2004-infrastructure-1`, projeto e revisão. Entradas persistem pelo repositório existente; análises são transitórias. Edição física invalida resultados e confirmações térmicas do projeto de forma conservadora. Proteção continua em serviço separado. Etapas 8–11 permanecem na ordem original e não foram implementadas nesta entrega.
+## DA-37 — queda por percurso completo, regras isoladas (28/10/2026)
+
+A Etapa 8 introduz contrato v8 aditivo e serviço `voltage`, sem alterar o motor residencial nem implementar proteção. A origem normativa confirmada pertence ao projeto; a cadeia de circuitos atravessa alimentadores entre quadros até a carga. Origem desconectada, alimentação ambígua ou percurso inválido geram pendência, nunca queda a montante igual a zero presumida.
+
+Condições elétricas pertencem ao circuito e R/X à formação. Uma carga única pode fornecer tensão, frequência, FP e equilíbrio por herança; grupos/alimentadores usam parâmetros equivalentes e Ib referenciada. A assinatura da impedância abrange construção, frequência, método, arranjo e condições térmicas. IDs e comprimentos são excluídos para permitir duplicação fiel e recálculo geométrico. Não há catálogo, estimativa de temperatura ou correção automática da resistência.
+
+Limites de 6.2.7.1 são selecionados pela origem declarada, com 6.2.7.2 verificado separadamente no terminal. Limites adicionais não relaxam a norma. Somente regime permanente senoidal no escopo descrito em ETAPA_08 é calculado; partida e modelos especiais ficam pendentes. O estado positivo é restrito à queda e não implica Conforme global.
+
+## DA-38 — migração e resultados de queda (28/10/2026)
+
+Migração v2–v7 para v8 preserva entradas/IDs/revisões e adiciona campos desconhecidos, sem gravar automaticamente nem inventar impedâncias. `VoltageService` verifica identidade, revisão, versão, conjunto de consumidores e grandezas retornadas. Edições operam sobre cópia, salvam com controle otimista e invalidam resultados anteriores. A memória detalhada é transitória; consolidação continua na Etapa 10. Dados manuais do usuário permanecem preservados após cancelamento explícito da limpeza. O roteiro 0–11 não foi reorganizado; Etapa 9 aguarda continuidade autorizada.
+
+
+## DA-39 — topologia gráfica independente do percurso (29/10/2026)
+
+A Etapa 9 usa contrato v9 aditivo: `Node.position` é opcional, com coordenadas finitas; `Segment.notes` registra observações. Sem posição manual, o mapa organiza nós por profundidade do grafo. Coordenadas, zoom e deslocamento nunca determinam metros. Uma edição de posição preserva a revisão elétrica e usa a revisão de armazenamento para detectar conflitos. Edição de conexão/comprimento usa o serviço transacional de topologia, incrementa revisão e invalida confirmações/resultados. Vínculos de circuitos permanecem explícitos, sem remapeamento elétrico silencioso.
+
+## DA-40 — visão geral como orquestração, não motor normativo (29/10/2026)
+
+O domínio `overview`, versão `industrial-overview-1`, reúne os serviços existentes para a mesma revisão. Não muda fórmulas nem regras. Cada falha de serviço mantém resultado indisponível com motivo; potência parcial e resultados ausentes não viram zero. Cargas a jusante são deduplicadas por identidade; a parcela local de queda em alimentadores comuns é deduplicada por circuito/segmento. O status geral permanece parcial e critérios reprovados exigem revisão. `OverviewService` valida envelope, versões, identidades, conjuntos e resumo; o controlador descarta respostas obsoletas e grava via repositório existente. Análises são transitórias; posições e entradas persistem. A consolidação de recuperação e relatórios continua reservada à Etapa 10.
+
+## DA-41 — recuperação por entradas e intercâmbio versionado (29/10/2026)
+
+A Etapa 10 mantém o contrato de projeto v9 e o repositório local existente. O backup recebe envelope próprio `voltcalc-industrial-project`, versão 1, com versão do contrato e data de exportação. Inclui todas as entradas, configurações, revisões, fontes, relações e posições. Resultados numéricos transitórios são descartados: ao abrir Relatórios, os serviços atuais recalculam as entradas. Sem servidor disponível, as entradas continuam preservadas e a análise fica indisponível com motivo. Não se apresenta um resultado antigo como atual.
+
+Importação é uma operação explícita de criação de cópia: valida integralmente o arquivo, suporta migrações industriais v2–v8 para v9, remapeia IDs e vínculos e reinicia as revisões da nova cópia. Não sobrescreve o projeto de origem nem outros registros. O arquivo original conserva sua revisão para rastreabilidade. Limite de intercâmbio: 4 MB. JSON residencial, PDF e CSV não são formatos de importação industrial. Conflitos, quota e corrupção conservam o comportamento transacional já existente, sem limpeza silenciosa. Não há sincronização entre navegadores ou banco de dados no servidor.
+
+## DA-42 — relatório separado dos motores de cálculo (29/10/2026)
+
+O serviço `industrial-report-1` orquestra a visão geral e apresenta os resultados sem alterar regras normativas. Identifica projeto, revisão elétrica, versões dos serviços, data UTC e SHA-256 das entradas (incluindo metadados/posições; excluindo resultados). O frontend descarta respostas que não correspondem ao projeto/entradas atuais e rejeita versões incompatíveis. A identidade criptográfica é rastreabilidade, não assinatura ou certificação.
+
+Tela, CSV e PDF compartilham seções normalizadas com entradas, fontes, critérios, memória e limites. CSV usa UTF-8 com BOM, ponto e vírgula e neutralização de fórmulas em células textuais. PDF usa ReportLab como dependência opcional e fonte incorporada; a falta da dependência gera mensagem acionável, sem impedir o residencial. A geração retorna bytes em base64 pela API existente, sem armazenamento de relatórios no servidor. O status geral é sempre verificação parcial; critérios individuais preservam seus resultados reais. A Etapa 11 permanece separada e não foi iniciada nesta entrega.

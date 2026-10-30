@@ -7,7 +7,7 @@ import {TopologyService,readTopologyForm} from '../../frontend/industrial/js/cor
 import {topologyView,topologyForm} from '../../frontend/industrial/js/topology-view.js';
 import {LocalProjectRepository,INDUSTRIAL_STORAGE,duplicateProject} from '../../frontend/industrial/js/core/local-repository.js';
 const read=v=>JSON.parse(fs.readFileSync(new URL(`../../data/industrial/contracts.v${v}.json`,import.meta.url)));
-const contract=read(5),previous=[read(4),read(3),read(2)];
+const contract=read(9),previous=[read(8),read(7),read(6),read(5),read(4),read(3),read(2)];
 const e=(model,data={})=>createEntity(contract,model,data);
 const run=payload=>JSON.parse(execFileSync('python',['-c','import sys,json;from voltcalc.industrial.topology import topology_request;print(json.dumps(topology_request(json.load(sys.stdin))))'],{input:JSON.stringify(payload),encoding:'utf8'}));
 const transport=async(_url,opts)=>({ok:true,json:async()=>run(JSON.parse(opts.body))});
@@ -28,7 +28,7 @@ for(const version of [2,3,4]) {
   const old=createEntity(read(version),'Project',{name:'Legado',revision:7});
   old.panels=[createEntity(read(version),'Panel',{tag:'Q antigo'})];
   const original=structuredClone(old), upgraded=migrateProject(old,contract,previous);
-  assert.deepEqual(old,original);assert.equal(upgraded.schemaVersion,5);assert.deepEqual(upgraded.panels,old.panels);
+  assert.deepEqual(old,original);assert.equal(upgraded.schemaVersion,9);assert.deepEqual(upgraded.panels,old.panels);
   assert.equal(upgraded.revision,7);assert.deepEqual(upgraded.cables,[]);assert.deepEqual(upgraded.nodes,[]);
   assert.deepEqual(validateEntity(contract,'Project',upgraded),[]);
 }
