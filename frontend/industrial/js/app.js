@@ -1,0 +1,126 @@
+import { ROUTES, resolveRoute } from './core/routes.js';
+import { createStore } from './core/state.js';
+import { icon, action, escapeHTML as esc } from './components.js';
+import { pageView } from './pages.js';
+import { LocalProjectRepository } from './core/local-repository.js';
+import { createProjectController } from './projects-controller.js';
+import { createCurrentController } from './currents-controller.js';
+import { createTopologyController } from './topology-controller.js';
+import { createConductorController } from './conductors-controller.js';
+import { createReportController } from './reports-controller.js';
+import { createOverviewController } from './overview-controller.js';
+import { createVoltageController } from './voltage-controller.js';
+import { createInfrastructureController } from './infrastructure-controller.js';
+import { createConsumerController } from './consumers-controller.js';
+
+const root = document.getElementById('industrial-root');
+async function boot() {
+  const responses = await Promise.all([9,8,7,6,5,4,3,2].map(version => fetch(`/industrial/contracts.v${version}.json`)));
+  if (responses.some(response => !response.ok)) throw new Error('Não foi possível carregar os contratos industriais.');
+  const [contract, ...previousContract] = await Promise.all(responses.map(response => response.json()));
+  if (contract.format !== 'voltcalc-industrial-contract' || contract.version !== 9) throw new Error('Versão de contrato incompatível.');
+  const store = createStore(contract);
+  const repository = new LocalProjectRepository(contract, {
+    // Access lazily so browser storage denial is handled by the repository UI.
+    storage: { getItem: key => window.localStorage.getItem(key), setItem: (key, value) => window.localStorage.setItem(key, value) },
+    locks: navigator.locks, previousContract,
+  });
+  let projects, consumers, topology, conductors, infrastructure, voltage, overview, reports;
+  root.innerHTML = `
+    <aside class="sidebar" id="industrial-sidebar" aria-label="Módulo industrial">
+      <a class="brand" href="#/projetos"><img src="/images/favicon.svg" alt="" width="38" height="48"><span><strong>VoltCalc</strong><span>Industrial</span></span></a>
+      <nav aria-label="Etapas industriais">${ROUTES.filter(r => !r.auxiliary).map(navItem).join('')}</nav>
+      <nav class="aux-nav" aria-label="Funções auxiliares">${ROUTES.filter(r => r.auxiliary).map(navItem).join('')}</nav>
+      <div class="sidebar-footer"><a class="norm-card" href="#/configuracoes"><small>Referência prevista</small><strong>NBR 5410:2004</strong><span>Verificação normativa parcial</span></a>
+      <p>VoltCalc Industrial<br><span>Validação · Etapa 11</span></p><a class="residential-link" href="/">${icon('home')} Abrir residencial ${icon('arrow')}</a></div>
+    </aside>
+    <div class="app-content"><header class="topbar">
+      <button type="button" class="icon-button menu-toggle" data-action="menu" aria-label="Abrir navegação" aria-expanded="false" aria-controls="industrial-sidebar">${icon('menu')}</button>
+      <div class="project-identity"><span>Projeto:</span><strong id="project-name">${esc(store.snapshot()?.name || 'Nenhum projeto selecionado')}</strong></div>
+      <a href="#/configuracoes" class="norm-chip">${icon('shield')}<span>Referência prevista<strong>NBR 5410:2004</strong></span></a>
+      <div class="top-actions">${action('Salvar projeto', 'save', { action: 'save-project', primary: true })}${action('Exportar PDF', 'export', { action: 'export-report' })}<button type="button" class="icon-button" data-action="help" aria-label="Sobre esta etapa">${icon('info')}</button></div>
+    </header><main id="main" tabindex="-1"></main><footer class="page-footer"><span>VoltCalc Industrial · Etapa 11</span><span>Condutores, ocupação e queda disponíveis · Proteção e conformidade geral não verificadas</span></footer></div>
+    <dialog id="help-dialog" aria-labelledby="help-title"><form method="dialog"><button class="icon-button dialog-close" aria-label="Fechar">${icon('close')}</button><span class="page-icon">${icon('info')}</span><h2 id="help-title">Estrutura do VoltCalc Industrial</h2>
+      <p>Crie ou abra um projeto e cadastre suas cargas em Consumidores e cargas. Cada item é salvo no projeto atual. Os dados ficam neste navegador e endereço. Os controles futuros permanecem desabilitados.</p>
+      <ul><li>Etapas 2 a 4 disponíveis: projetos, consumidores, potências e correntes.</li><li>Etapa 5: quadros, caminhos físicos, circuitos e formações de cabos disponíveis.</li><li>Etapa 6: pré-dimensionamento e memória por trecho; proteção não verificada.</li><li>Etapa 7: ocupação, dimensões úteis e referências físicas por trecho.</li><li>Etapa 8: queda em regime permanente por percurso completo.</li><li>Etapa 9: mapa interativo, edição e revisão das análises.</li><li>Etapa 10: backup JSON, importação, recuperação por recálculo e relatórios PDF/CSV.</li><li>Etapa 11: validação final.</li></ul>
+      <p>Nenhum valor ilustrativo é utilizado como cálculo. O sistema residencial continua separado.</p><button class="button primary">Entendi</button></form></dialog>`;
+  function navItem(route) {
+    return `<a class="nav-item" href="#/${route.id}" data-route="${route.id}">${icon(route.icon)}<span><strong>${esc(route.title)}</strong><small>${esc(route.subtitle)}</small></span></a>`;
+  }
+  function render(focus = false, { filterOnly = false, consumerFilterOnly = false } = {}) {
+    const focused = document.activeElement;
+    const focusId = focused?.id;
+    const selection = focused?.tagName === 'INPUT' ? [focused.selectionStart, focused.selectionEnd] : null;
+    const contentHadFocus = root.querySelector('#main').contains(focused);
+    const route = resolveRoute(location.hash);
+    root.querySelector('#project-name').textContent = store.snapshot()?.name || 'Nenhum projeto selecionado';
+    root.querySelector('[data-action="save-project"]').disabled = !store.snapshot() || Boolean(projects?.view.unavailable);
+    if (consumerFilterOnly && route.id === 'consumidores' && root.querySelector('#consumer-results')) {
+      const template = document.createElement('template');
+      template.innerHTML = pageView(route, contract, projects?.view, consumers?.view(), topology?.view());
+      root.querySelector('#consumer-results').replaceWith(template.content.querySelector('#consumer-results'));
+      if (root.querySelector('#current-results')) root.querySelector('#current-results').replaceWith(template.content.querySelector('#current-results'));
+      return;
+    }
+    if (filterOnly && route.id === 'projetos' && root.querySelector('#project-results')) {
+      // Keep live filter controls mounted: typing must not recreate the focused input.
+      const template = document.createElement('template');
+      template.innerHTML = pageView(route, contract, projects.view);
+      for (const id of ['project-summary', 'project-results']) root.querySelector(`#${id}`).replaceWith(template.content.querySelector(`#${id}`));
+      return;
+    }
+    if (location.hash !== `#/${route.id}`) history.replaceState(null, '', `#/${route.id}`);
+    document.title = `VoltCalc Industrial · ${route.title}`;
+    root.querySelectorAll('[data-route]').forEach(item => {
+      if (item.dataset.route === route.id) item.setAttribute('aria-current', 'page');
+      else item.removeAttribute('aria-current');
+    });
+    root.querySelector('#main').innerHTML = pageView(route, contract, projects?.view, consumers?.view(), topology?.view(), conductors?.view(), infrastructure?.view(), voltage?.view(), overview?.view(), reports?.view());
+    root.classList.remove('nav-open');
+    root.querySelector('[data-action="menu"]').setAttribute('aria-expanded', 'false');
+    if (focus) {
+      window.scrollTo(0, 0);
+      root.querySelector('#page-title').focus({ preventScroll: true });
+    } else if (focusId && document.getElementById(focusId) !== focused) {
+      const replacement = document.getElementById(focusId);
+      replacement?.focus({ preventScroll: true });
+      if (selection && replacement?.tagName === 'INPUT') replacement.setSelectionRange(...selection);
+    } else if (contentHadFocus && !root.querySelector('dialog[open]')) {
+      root.querySelector('#page-title').focus({ preventScroll: true });
+    }
+  }
+  document.querySelector('.skip-link').addEventListener('click', event => {
+    event.preventDefault();
+    root.querySelector('#main').focus();
+  });
+  window.addEventListener('hashchange', () => render(true));
+  root.addEventListener('click', event => {
+    const control = event.target.closest('[data-action]');
+    if (control?.dataset.action === 'help') root.querySelector('#help-dialog').showModal();
+    if (control?.dataset.action === 'menu') {
+      const open = root.classList.toggle('nav-open');
+      control.setAttribute('aria-expanded', String(open));
+    }
+  });
+  root.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && root.classList.contains('nav-open')) {
+      root.classList.remove('nav-open');
+      const toggle = root.querySelector('[data-action="menu"]');
+      toggle.setAttribute('aria-expanded', 'false'); toggle.focus();
+    }
+  });
+  projects = createProjectController({ root, repository, contract, store, render });
+  consumers = createConsumerController({ root, repository, contract, store, projects, render });
+  createCurrentController({ root, repository, contract, store, projects });
+  topology = createTopologyController({ root, repository, contract, store, projects, render });
+  conductors = createConductorController({ root, repository, contract, store, projects, render });
+  infrastructure = createInfrastructureController({ root, repository, contract, store, projects, render });
+  voltage = createVoltageController({ root, repository, contract, store, projects, render });
+  overview = createOverviewController({ root, repository, contract, store, projects, render });
+  reports = createReportController({ root, repository, contract, previousContract, store, projects, render });
+  await projects.refresh({ restore: true });
+}
+boot().catch(error => {
+  root.innerHTML = `<main class="startup"><h1>VoltCalc Industrial indisponível</h1><p>${esc(error.message)}</p><p>Inicie ou reinicie o servidor com <code>python server.py</code> e acesse <a href="http://127.0.0.1:8000/industrial/">o módulo industrial</a>.</p><button class="button primary" id="retry">Tentar novamente</button><a href="/">Abrir residencial</a></main>`;
+  document.getElementById('retry').addEventListener('click', () => location.reload());
+});

@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>VoltCalc Python • Dimensionamento Elétrico Guiado</title>
+    <meta
+      name="description"
+      content="Ferramenta acadêmica de dimensionamento preliminar de circuitos elétricos com assistente visual e consulta histórica à NBR 5410:1997."
+    />
+    <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/updates.css" />
+    <link rel="stylesheet" href="/css/project.css" />
+    <style>
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <section
+      id="startupHelp"
+      hidden
+      role="alert"
+      style="
+        max-width: 620px;
+        margin: 10vh auto;
+        padding: 28px;
+        border: 1px solid #dce7fa;
+        border-radius: 12px;
+        background: white;
+        color: #0b164c;
+        font:
+          16px/1.6 &quot;Segoe UI&quot;,
+          Arial,
+          sans-serif;
+        box-sizing: border-box;
+      "
+    >
+      <h1 style="margin: 0; color: #0755ff">
+        Abra o VoltCalc com o servidor Python
+      </h1>
+      <p id="startupMessage">
+        O arquivo HTML sozinho não executa os cálculos. Primeiro, inicie o
+        servidor local.
+      </p>
+      <ol>
+        <li>Abra a pasta do projeto VoltCalc.</li>
+        <li>
+          Dê dois cliques em <strong>Iniciar_VoltCalc.bat</strong> ou execute
+          <code>python server.py --open</code> no terminal dessa pasta.
+        </li>
+        <li>Mantenha a janela do servidor aberta enquanto usa o site.</li>
+      </ol>
+      <p>
+        Depois de iniciar o servidor,
+        <a href="http://127.0.0.1:8000/">abrir o VoltCalc</a>.
+      </p>
+      <p style="font-size: 14px">
+        Se a conexão falhar, volte a esta página e confira se o servidor está
+        aberto. Nenhum projeto salvo foi apagado.
+      </p>
+    </section>
+    <div id="app" class="app">
+      <header class="topbar">
+        <div class="brand">
+          <span class="brand-bolt"
+            ><svg width="28" height="44" viewBox="0 0 28 44" aria-hidden="true">
+              <path
+                fill="#ffc43d"
+                d="M3 2h12l4 7-5 10h8l-8 13 7 10H9L4 32l7-11H2l8-12H3z"
+              /></svg
+          ></span>
+          <div>
+            <strong>VoltCalc</strong><small>Dimensionamento Elétrico</small
+            ><small class="brand-reference">NBR 5410</small>
+          </div>
+        </div>
+        <div class="top-actions">
+          <label class="project-name"
+            ><span>Projeto:</span
+            ><input
+              id="projectName"
+              maxlength="60"
+              aria-label="Nome do projeto"
+              value="Projeto exemplo"
+          /></label>
+          <div class="mode-toggle">
+            <button
+              id="guidedMode"
+              type="button"
+              class="mode active"
+              title="Orientação passo a passo dentro da seção atual"
+            >
+              Modo guiado</button
+            ><button
+              id="technicalMode"
+              type="button"
+              class="mode"
+              title="Edição direta e visão tabular dentro da seção atual"
+            >
+              Modo técnico
+            </button>
+          </div>
+          <button
+            id="saveBtn"
+            class="top-btn"
+            type="button"
+            title="Salvar estado do projeto no navegador"
+          >
+            <span data-icon="save"></span> Salvar projeto</button
+          ><button id="printBtn" class="top-btn" type="button">
+            <span data-icon="export"></span> Exportar PDF</button
+          ><button
+            id="settingsBtn"
+            class="top-btn square"
+            aria-label="Configurações"
+            type="button"
+          >
+            <span data-icon="settings"></span>
+          </button>
+        </div>
+      </header>
+      <aside class="sidebar" aria-label="Menu lateral">
+        <nav class="nav-list" aria-label="Seções principais">
+          <button class="nav-item active" data-page="project">
+            <span data-icon="home"></span
+            ><span>Projeto<small>Instalação e consumidores</small></span>
+          </button>
+          <button class="nav-item" data-page="loads">
+            <span data-icon="bolt"></span
+            ><span
+              >Circuitos<small>Cargas, cálculos e verificações</small></span
+            >
+          </button>
+          <button class="nav-item" data-page="report">
+            <span data-icon="report"></span
+            ><span>Relatório<small>Resultados e exportação</small></span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <h4>Base do dimensionamento</h4>
+          <div class="edition">
+            <strong>NBR 5410:1997</strong>
+          </div>
+          <p>Cabos: base histórica de 1997.<br>Previsão residencial: 2004/2008.<br>Cobertura parcial; veja o relatório.</p>
+        </div>
+      </aside>
+      <main class="main">
+        <section class="page-heading">
+          <div class="hero-art" aria-hidden="true"></div>
+          <div class="heading-content">
+            <div id="pageBreadcrumb" class="breadcrumb"></div>
+            <div class="heading-title">
+              <span id="pageIcon" class="heading-icon"></span>
+              <div>
+                <h1 id="pageTitle">Dimensionamento de circuito</h1>
+                <p id="pageSubtitle">
+                  Siga o passo a passo para dimensionar o circuito de forma mais
+                  compreensível.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div id="connectionStatus" class="notice bad" role="alert" hidden></div>
+        <div class="page-layout">
+          <div class="primary-column"><div id="mainPanel"></div></div>
+          <aside
+            id="summaryPanel"
+            class="summary-column"
+            aria-label="Resumo do circuito"
+          ></aside>
+        </div>
+        <footer class="footer">
+          <span>VoltCalc • Ferramenta acadêmica de pré-dimensionamento</span
+          ><span
+            >Resultados sujeitos à verificação de profissional habilitado</span
+          >
+        </footer>
+      </main>
+    </div>
+    <div id="modalRoot" class="modal-root" hidden></div>
+    <div id="toast" role="status" class="toast" aria-live="polite"></div>
+    <div id="printArea" class="print-only"></div>
+    <script>
+      function showStartupHelp() {
+        document.getElementById("app").hidden = true;
+        document.getElementById("startupHelp").hidden = false;
+        if (location.protocol !== "file:")
+          document.getElementById("startupMessage").textContent =
+            "Não foi possível carregar a aplicação. Confira o servidor Python e recarregue esta página.";
+      }
+      if (location.protocol === "file:") showStartupHelp();
+    </script>
+    <script onerror="showStartupHelp()" src="/tables.js"></script>
+    <script onerror="showStartupHelp()" src="/js/model.js"></script>
+    <script onerror="showStartupHelp()" src="/js/help.js"></script>
+    <script onerror="showStartupHelp()" src="/js/illustrations.js"></script>
+    <script onerror="showStartupHelp()" src="/js/board.js"></script>
+    <script onerror="showStartupHelp()" src="/js/technical.js"></script>
+    <script onerror="showStartupHelp()" type="module" src="/js/app.js"></script>
+  </body>
+</html>

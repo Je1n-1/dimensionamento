@@ -1,0 +1,34 @@
+import { icon, metric, action, panel, emptyState, badge, escapeHTML as esc } from './components.js';
+import { STATUS_LABELS } from './core/local-repository.js';
+
+export const dateLabel = value => value ? new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(value)) : 'Sem atualização';
+function control(label, symbol, name, id, cls = '') {
+  return `<button type="button" class="button ${cls}" data-project-action="${name}" data-project-id="${esc(id)}" title="${esc(label)}">${icon(symbol)}<span>${esc(label)}</span></button>`;
+}
+function statusLabel(status) { return badge(STATUS_LABELS[status], status === 'active' ? 'blue' : 'neutral'); }
+function card(project, currentId) {
+  return `<article class="project-card ${project.id === currentId ? 'is-current' : ''}">
+    <div class="project-card-top"><span class="project-thumbnail">${icon('infrastructure')}</span><div>${statusLabel(project.workflowStatus)}${project.id === currentId ? badge('Aberto', 'blue') : ''}</div>${control('Editar', 'edit', 'edit', project.id, 'icon-only')}</div>
+    <h3>${esc(project.name)}</h3><p class="project-description">${esc(project.description || 'Sem descrição.')}</p>
+    <div class="project-card-counts"><span>${icon('motor')}<b>${project.consumers}</b> consumidores</span><span>${icon('nodes')}<b>${project.segments}</b> trechos</span><span>${icon('infrastructure')}<b>${project.panels}</b> quadros</span><span>${icon('bolt')}<small>Potência não calculada</small></span></div>
+    <div class="project-updated">${icon('clock')}<div>Última edição<strong>${dateLabel(project.updatedAt)}</strong></div></div>
+    <div class="project-card-actions">${control('Abrir', 'folder', 'open', project.id, 'primary')}${control('Duplicar', 'copy', 'duplicate', project.id)}${control('Excluir', 'trash', 'delete', project.id, 'danger')}</div>
+  </article>`;
+}
+export function projectsView({ all = [], rows = [], current = null, query = {}, error = '', unavailable = false } = {}) {
+  const latest = all[0]?.updatedAt;
+  const summary = unavailable
+    ? `<div class="notice amber" role="alert"><div><strong>Catálogo indisponível</strong><p>${esc(error)}</p>${action('Tentar novamente', 'arrow', { action: 'refresh-projects' })}</div></div>`
+    : `<div class="metric-grid">${metric('Projetos ativos', 'folder', `de ${all.length} projetos salvos`, 'green', all.filter(p => p.workflowStatus === 'active').length)}${metric('Projetos em edição', 'edit', 'Status de organização do trabalho', 'blue', all.filter(p => p.workflowStatus === 'draft').length)}${metric('Consumidores cadastrados', 'motor', 'Soma dos cadastros armazenados', 'purple', all.reduce((sum, p) => sum + p.consumers, 0))}${metric('Última atualização', 'clock', latest ? dateLabel(latest) : 'Nenhum projeto salvo', 'amber', latest ? 'Salvo' : '—')}</div>`;
+  const active = current ? `<section class="active-project"><div><span class="eyebrow">PROJETO ABERTO · ETAPA ${current.currentStage}</span><h2>${esc(current.name)}</h2><p>${esc(current.description || 'Adicione uma descrição para identificar este estudo.')}</p></div><div class="actions">${control('Editar dados', 'edit', 'edit', current.id)}${control('Fechar projeto', 'close', 'close', current.id)}</div></section>` : '';
+  const recent = [...rows].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 4);
+  const cards = recent.length ? `<div class="project-cards">${recent.map(p => card(p, current?.id)).join('')}</div>`
+    : emptyState(unavailable ? 'Seus dados foram preservados' : all.length ? 'Nenhum projeto encontrado' : 'Seu primeiro projeto industrial', unavailable ? 'Resolva a leitura do catálogo antes de criar ou editar projetos.' : all.length ? 'Ajuste a pesquisa ou o status para encontrar seus projetos.' : 'Crie um projeto com nome e descrição. Depois, abra Consumidores e cargas para cadastrar os equipamentos.', 'folder', !unavailable && !all.length ? action('Criar projeto', 'plus', { action: 'new-project', primary: true }) : '');
+  const listing = `<div class="table-scroll" role="region" aria-label="Todos os projetos" tabindex="0"><table><caption class="sr-only">Projetos industriais salvos</caption><thead><tr><th scope="col">Nome do projeto</th><th scope="col">Descrição</th><th scope="col">Status</th><th scope="col">Etapa atual</th><th scope="col">Consumidores</th><th scope="col">Trechos</th><th scope="col">Última edição</th><th scope="col">Ações</th></tr></thead><tbody>${rows.length ? rows.map(p => `<tr ${p.id === current?.id ? 'class="selected-project"' : ''}><td><button class="text-button" data-project-action="open" data-project-id="${esc(p.id)}">${esc(p.name)}</button></td><td class="description-cell">${esc(p.description || '—')}</td><td>${statusLabel(p.workflowStatus)}</td><td>Etapa ${p.currentStage}</td><td>${p.consumers}</td><td>${p.segments}</td><td>${dateLabel(p.updatedAt)}</td><td><div class="row-actions">${control('Abrir', 'folder', 'open', p.id, 'icon-only')}${control('Editar', 'edit', 'edit', p.id, 'icon-only')}${control('Duplicar', 'copy', 'duplicate', p.id, 'icon-only')}${control('Excluir', 'trash', 'delete', p.id, 'icon-only danger')}</div></td></tr>`).join('') : '<tr><td colspan="8" class="empty-cell">Nenhum projeto disponível nesta seleção.</td></tr>'}</tbody></table></div>`;
+  return `<div id="project-summary">${summary}${active}</div><div class="project-toolbar"><label class="field search-field" for="project-search"><span>Buscar projetos</span><input id="project-search" type="search" value="${esc(query.search || '')}" placeholder="Nome ou descrição…" maxlength="200" ${unavailable ? 'disabled' : ''}></label>
+    <label class="field" for="project-status"><span>Status</span><select id="project-status" ${unavailable ? 'disabled' : ''}>${[['all', 'Todos os status'], ...Object.entries(STATUS_LABELS)].map(([value, label]) => `<option value="${value}" ${(query.status || 'all') === value ? 'selected' : ''}>${esc(label)}</option>`).join('')}</select></label>
+    <label class="field" for="project-order"><span>Ordenar por</span><select id="project-order" ${unavailable ? 'disabled' : ''}><option value="updated" ${query.sort !== 'name' ? 'selected' : ''}>Última edição</option><option value="name" ${query.sort === 'name' ? 'selected' : ''}>Nome</option></select></label></div>
+    <div id="project-results"><div class="section-heading"><h2>Projetos recentes</h2><span class="result-count">${rows.length} projeto(s) na seleção</span></div>${cards}
+    <div class="section-heading"><h2>Todos os projetos</h2>${badge('Salvos neste navegador', 'blue')}</div>${panel('Lista de projetos', 'list', listing)}
+    <p class="storage-note">Projetos industriais são salvos neste navegador e neste endereço. O status organiza o trabalho e não indica conformidade elétrica. Use Backup JSON em Relatórios para recuperar o projeto em outro navegador ou endereço.</p></div>`;
+}

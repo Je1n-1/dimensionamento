@@ -49,7 +49,7 @@ class EngineTests(unittest.TestCase):
 
     def test_unsupported_conditions(self):
         for updates in [dict(installation='tray'), dict(installation='overhead'),
-                        dict(installation='buried', groupCount=2), dict(temperature=32),
+                        dict(installation='buried', groupCount=2), dict(temperature=81),
                         dict(groupLayout='spaced', groupCount=2), dict(unknownInstallation=True)]:
             with self.subTest(updates=updates):
                 self.assertIsNone(calculate(circuit(**updates))['chosen'])
@@ -120,6 +120,14 @@ class ApiTests(unittest.TestCase):
             with self.assertRaises(HTTPError) as error:
                 urlopen(self.url + path)
             self.assertEqual(error.exception.code, 404)
+
+    def test_new_interface_assets_are_served(self):
+        for path in ('/ui.js', '/model.js', '/help.js', '/illustrations.js', '/updates.css'):
+            with self.subTest(path=path), urlopen(self.url + path) as response:
+                self.assertEqual(response.status, 200)
+                self.assertGreater(len(response.read()), 100)
+        with urlopen(self.url + '/api/health') as response:
+            self.assertEqual(json.load(response)['version'], 3)
 
 
 if __name__ == '__main__':

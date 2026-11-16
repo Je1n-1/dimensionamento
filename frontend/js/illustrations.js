@@ -1,0 +1,57 @@
+window.VoltArt = function installationArt(kind) {
+  let bg = "",
+    content = "";
+  let defs = `<defs><linearGradient id="wall" x1="0" x2="1"><stop stop-color="#e5e8eb"/><stop offset="1" stop-color="#cbd3da"/></linearGradient><linearGradient id="tube" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#b0c5d2"/><stop offset=".43" stop-color="#f6fbff"/><stop offset="1" stop-color="#809aa8"/></linearGradient><linearGradient id="earth" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#bc8759"/><stop offset="1" stop-color="#7e543c"/></linearGradient></defs>`;
+  const wires = (x1, y1, x2, y2) =>
+    [
+      ["#252c36", -10],
+      ["#1b6cc8", -3],
+      ["#2c9653", 4],
+      ["#c29118", 11],
+    ]
+      .map(
+        ([color, dy]) =>
+          `<path d="M${x1} ${y1 + dy} L${x2} ${y2 + dy}" stroke="${color}" stroke-width="7" fill="none" stroke-linecap="round"/>`,
+      )
+      .join("");
+  if (kind === "embedded") {
+    bg = `<rect width="300" height="130" fill="#e7ecf0"/><rect x="8" y="0" width="105" height="130" fill="url(#wall)"/><path d="M110 0v130" stroke="#a0adb9" stroke-width="5"/><rect x="80" y="10" width="65" height="104" rx="4" fill="#adbbc7"/>`;
+    content = `<path d="M125 13 V64 Q125 88 152 88 H280" fill="none" stroke="#6f8590" stroke-width="42"/><path d="M125 13 V64 Q125 88 152 88 H280" fill="none" stroke="url(#tube)" stroke-width="34"/>${[
+      ["#263242", -9],
+      ["#286ebd", -3],
+      ["#d5b438", 3],
+      ["#329553", 9],
+    ]
+      .map(
+        ([co, dy]) =>
+          `<path d="M125 15V64Q125 ${78 + dy} 151 ${78 + dy}H278" stroke="${co}" stroke-width="5" fill="none"/>`,
+      )
+      .join("")}`;
+  } else if (kind === "conduit") {
+    bg = `<rect width="300" height="130" fill="#ebeff2"/><path d="M0 102H300" stroke="#d8e1e7" stroke-width="2"/>`;
+    content = `<rect x="22" y="41" width="260" height="50" rx="25" fill="#a1b1c1"/><rect x="22" y="46" width="258" height="40" rx="20" fill="url(#tube)"/><rect x="50" y="35" width="14" height="61" rx="3" fill="#8298a5"/><rect x="221" y="35" width="14" height="61" rx="3" fill="#8298a5"/><circle cx="57" cy="44" r="2" fill="#fff"/><circle cx="228" cy="44" r="2" fill="#fff"/>${wires(231, 70, 293, 70)}`;
+  } else if (kind === "surface") {
+    bg = `<rect width="300" height="130" fill="#eceff2"/>`;
+    content = `${wires(5, 65, 295, 65)}<rect x="65" y="39" width="11" height="55" rx="4" fill="#788fa3" opacity=".9"/><rect x="208" y="39" width="11" height="55" rx="4" fill="#788fa3" opacity=".9"/><circle cx="71" cy="49" r="2.3" fill="#dbe6ef"/><circle cx="214" cy="49" r="2.3" fill="#dbe6ef"/>`;
+  } else if (kind === "buried") {
+    bg = `<rect width="300" height="130" fill="url(#earth)"/><path d="M0 27 Q75 33 150 27 T300 27" stroke="#77a446" stroke-width="18" fill="none"/><path d="M0 40H300" stroke="#d5a275" stroke-width="3" stroke-dasharray="15 7"/><path d="M0 108H300" stroke="#75533e" stroke-width="3" stroke-dasharray="12 8"/>`;
+    content = `<rect x="16" y="65" width="268" height="40" rx="19" fill="#424a50"/><rect x="21" y="72" width="260" height="27" rx="14" fill="#242c32"/>${wires(30, 85, 272, 85)}`;
+  } else if (kind === "tray") {
+    bg = `<rect width="300" height="130" fill="#e7eef4"/>`;
+    content = `<path d="M10 45L85 97H284L213 45Z" fill="#a2b4c1" stroke="#708aa0" stroke-width="4"/><path d="M10 48L85 100M51 48L125 100M90 48L160 100M135 48L203 100M175 48L244 100" stroke="#e5f2ff" stroke-width="6"/><path d="M85 100L85 117M284 100v17" stroke="#6f8a99" stroke-width="8"/>${[
+      ["#1d2a37", 10],
+      ["#2771bd", 18],
+      ["#259754", 26],
+      ["#d3a423", 34],
+    ]
+      .map(
+        ([co, y]) =>
+          `<path d="M24 ${y + 39}L96 ${y + 44}H270" fill="none" stroke="${co}" stroke-width="7" stroke-linecap="round"/>`,
+      )
+      .join("")}`;
+  } else {
+    bg = `<rect width="300" height="130" fill="#a9d7fa"/><circle cx="244" cy="24" r="14" fill="#ffe5a0"/><path d="M0 100Q80 80 140 106T300 103V130H0" fill="#86b782"/>`;
+    content = `<path d="M120 12v117" stroke="#725d4e" stroke-width="13"/><path d="M103 42h81" stroke="#715d4d" stroke-width="9"/><path d="M0 51Q65 70 120 50T300 48M0 65Q68 83 120 64T300 63" fill="none" stroke="#202936" stroke-width="4"/><path d="M120 47v-10M178 48v-10" stroke="#e8edf7" stroke-width="5"/>`;
+  }
+  return `<svg class="picture-art" viewBox="0 0 300 130" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Ilustração técnica simplificada da instalação">${defs}${bg}${content}</svg>`;
+};

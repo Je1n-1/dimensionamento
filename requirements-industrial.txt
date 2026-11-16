@@ -1,0 +1,2 @@
+# Dependência opcional apenas para a exportação industrial em PDF.
+reportlab>=4.5.1,<5

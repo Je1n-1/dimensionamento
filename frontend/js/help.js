@@ -1,0 +1,215 @@
+/* Explicações de uso e fundamentos, disponíveis nos dois modos. */
+window.VoltHelp = {
+  panelTotals: {
+    title: "Totais do quadro de cargas",
+    paragraphs: [
+      "O quadro usa os circuitos salvos, com todas as cargas ligadas simultaneamente. Soma-se a potência ativa em W. A soma cadastral dos VA não é necessariamente a potência aparente resultante da instalação quando os fatores de potência diferem.",
+      "As correntes são reunidas separadamente por fase. No exemplo: R = 25 A, S = 15 A, T = 15,09 A. A maior corrente de fase é 25 A. A diferença entre a maior e a menor é 10 A, um indicador informativo, sem critério automático de aprovação.",
+      "O cálculo considera correntes senoidais, FP indutivo e sequência R/S/T. Não aplica demanda, não dimensiona o alimentador ou o neutro e não calcula harmônicas ou desequilíbrio de tensão. Se faltar ligação, fase ou grandeza de qualquer circuito, os totais ficam indisponíveis.",
+    ],
+    source:
+      "https://www.electrical-installation.org/enwiki/Installed_apparent_power_(kVA)",
+  },
+  panelPhases: {
+    title: "Distribuição entre R, S e T",
+    paragraphs: [
+      "R/S/T correspondem às fases A/B/C do cadastro. Um circuito fase–neutro utiliza uma fase; uma carga trifásica equilibrada distribui sua potência igualmente nas três.",
+      "Em fase–fase, a corrente inteira percorre ambas as fases. Para organizar a tabela de W, atribuímos metade da potência a cada fase; esse rateio não representa medição de potência por polo.",
+      "Os totais de corrente consideram os ângulos das ligações e o fator de potência. Portanto, misturar fase–neutro e fase–fase pode produzir um total diferente da soma aritmética dos módulos. A ferramenta mostra a distribuição, mas não muda automaticamente as fases dos circuitos.",
+    ],
+  },
+  panelProtection: {
+    title: "Disjuntor informado e verificações",
+    paragraphs: [
+      "“Informado” é a escolha digitada ou trazida pelo CSV. “Sugerido” é uma seleção do motor a partir dos critérios implementados. Nenhum desses rótulos significa aprovação completa da proteção.",
+      "O CSV do exemplo não informa cabos, distância, temperatura ou agrupamento. Os nominais 10 A e 32 A ficam registrados enquanto o dimensionamento permanece pendente.",
+      "O disjuntor da linha TOTAL é preservado apenas como registro original. Escolher a proteção geral exige estudo do alimentador, demanda e demais condições que este quadro não verifica.",
+    ],
+  },
+  circuit: {
+    title: "Um circuito, vários equipamentos",
+    paragraphs: [
+      "O circuito pode alimentar equipamentos diferentes. Adicione uma linha para cada grupo com a mesma potência, fator de potência e posição.",
+      "Exemplo: 8 lâmpadas de 9 W a 10 m, 5 luminárias de 12 W a 20 m e 2 refletores de 20 W a 30 m. São 15 equipamentos, totalizando 172 W. Se estiverem em posições diferentes, separe as linhas.",
+    ],
+  },
+  power: {
+    title: "Potência de cada equipamento",
+    paragraphs: [
+      "W e kW representam potência ativa de entrada. VA e kVA representam potência aparente. CV e HP representam potência mecânica do eixo e exigem o rendimento do motor.",
+      "A potência é por unidade: 5 equipamentos de 12 W somam 60 W. O sistema combina os grupos do circuito; não é necessário transformar todas as cargas numa lâmpada equivalente.",
+    ],
+  },
+  powerFactor: {
+    title: "Fator de potência de cada grupo",
+    paragraphs: [
+      "Use a ficha técnica da lâmpada, driver ou equipamento. O valor 1 é uma hipótese inicial, não uma característica de toda iluminação. Para uma mesma potência ativa, um FP menor exige mais corrente.",
+      "Este modelo aproxima FP por cos φ e considera cargas indutivas, em regime senoidal. Harmônicas de drivers e outras cargas eletrônicas exigem estudo específico. Para cargas com FPs diferentes, o motor soma as componentes ativa e reativa antes de calcular a corrente.",
+    ],
+  },
+  efficiency: {
+    title: "Rendimento do motor",
+    paragraphs: [
+      "O rendimento relaciona a potência mecânica no eixo à potência elétrica de entrada. Exemplo: 0,90 significa 90%.",
+      "Só é usado na conversão de CV/HP. Se a potência já está em W/kW de entrada, não se aplica o rendimento novamente.",
+    ],
+  },
+  supply: {
+    title: "Alimentação da instalação × ligação do circuito",
+    paragraphs: [
+      "A instalação pode receber três fases e neutro, enquanto um circuito utiliza somente a fase A e o neutro. Outro circuito pode utilizar duas fases. Ter entrada trifásica não torna todos os circuitos trifásicos.",
+      "Na rede 127/220 V, há 127 V entre fase e neutro e 220 V entre fases. Na rede 220/380 V, esses valores são 220 V e 380 V. Confirme a rede disponível. A alimentação definida aqui vale para o projeto inteiro.",
+    ],
+  },
+  connection: {
+    title: "Como este circuito está ligado?",
+    paragraphs: [
+      "Fase–neutro: a carga fica entre uma fase e o neutro. Fase–fase: a carga fica entre duas fases, ligação frequentemente chamada de bifásica. Trifásico: cada grupo representa potência total equilibrada nas três fases.",
+      "Exemplo: 1.500 W a 220 V, FP 1, exigem cerca de 6,82 A em fase–fase. Os mesmos 1.500 W equilibrados nas três fases, a 220 V entre fases, exigem cerca de 3,94 A por fase.",
+      "Escolha a ligação real do circuito. Não selecione trifásico apenas porque a casa recebe três fases.",
+    ],
+  },
+  loaded: {
+    title: "O que são condutores carregados?",
+    paragraphs: [
+      "São os condutores que transportam corrente em operação. No circuito fase–neutro, ambos conduzem; em fase–fase, os dois condutores conduzem. Neste modelo, ambos usam a coluna de 2 carregados.",
+      "Trifásico equilibrado utiliza a coluna de 3. O condutor de proteção PE não é contado como condutor carregado normal. Correntes no neutro por desequilíbrio e harmônicas exigem análise adicional. Por isso, monofásico não significa 1 condutor carregado.",
+    ],
+  },
+  installation: {
+    title: "Por que a instalação altera o cabo?",
+    paragraphs: [
+      "O cabo produz calor ao conduzir corrente. Estar dentro de um eletroduto, encostado numa parede, enterrado ou exposto ao ar muda a dissipação desse calor.",
+      "Escolha a situação real e complete os detalhes. As figuras são uma orientação; bandejas, leitos e outras disposições ainda sem tabela implementada deixam a seção pendente.",
+    ],
+  },
+  wall: {
+    title: "Parede termicamente isolante",
+    paragraphs: [
+      "Uma parede com isolamento térmico dificulta a passagem de calor. O cabo pode aquecer mais que numa condição com melhor dissipação, e sua capacidade admissível pode diminuir.",
+      "O efeito principal considerado aqui é térmico. Confirme a composição da parede e a posição do eletroduto, não apenas sua aparência.",
+    ],
+  },
+  cableForm: {
+    title: "Unipolar, bipolar e multipolar",
+    paragraphs: [
+      "Condutores isolados ou cabos unipolares são elementos individuais. Um cabo multipolar reúne vários condutores isolados sob uma cobertura comum; bipolar é um caso com dois condutores.",
+      "A forma construtiva altera a troca de calor e a referência aplicável. Isso é diferente da quantidade de condutores efetivamente carregados.",
+    ],
+  },
+  conduitType: {
+    title: "Material do eletroduto",
+    paragraphs: [
+      "O eletroduto organiza e protege a fiação. Seu material, dimensões, ocupação e ambiente precisam corresponder às condições reais da instalação.",
+      "O material é registrado nesta versão. O motor não aplica um fator inventado para PVC ou metal: utiliza o método de instalação selecionado. Ocupação e efeitos específicos ainda precisam de verificação.",
+    ],
+  },
+  metal: {
+    title: "Material do condutor",
+    paragraphs: [
+      "Cobre e alumínio possuem propriedades elétricas diferentes. A seleção consulta a tabela do material escolhido e usa sua resistividade na estimativa de queda.",
+      "A disponibilidade de uma seção na tabela não verifica todas as restrições de uso, conexões ou terminais do material.",
+    ],
+  },
+  insulation: {
+    title: "PVC, EPR e XLPE",
+    paragraphs: [
+      "A isolação envolve o condutor. Nas tabelas usadas, PVC corresponde a 70 °C e EPR/XLPE a 90 °C no condutor em serviço contínuo.",
+      "Essas temperaturas não são a temperatura ambiente que você deve preencher. São condições de referência da isolação; terminais e equipamentos também precisam ser compatíveis.",
+    ],
+  },
+  groupCount: {
+    title: "Por que agrupar circuitos reduz a capacidade?",
+    paragraphs: [
+      "Cabos percorridos por corrente produzem calor. Circuitos próximos aquecem uns aos outros e dissipam esse calor com mais dificuldade. O fator de agrupamento representa a redução de capacidade nas condições cobertas.",
+      "Grupos de equipamentos são divisões do cadastro de um mesmo circuito. Não são circuitos adicionais. Conte circuitos, não lâmpadas nem fios: fase, neutro e PE de um único circuito não são três circuitos. Separação, disposição e solo podem exigir fatores específicos. Para dois ou mais circuitos enterrados, a tabela específica ainda não está implementada: o programa explica essa limitação sem inventar um fator.",
+    ],
+    source:
+      "https://www.electrical-installation.org/enwiki/General_method_for_cable_sizing",
+  },
+  temperature: {
+    title: "Temperatura no local dos cabos",
+    paragraphs: [
+      "Informe a temperatura ambiente junto ao percurso, ou a temperatura do solo para instalação enterrada. Não use automaticamente a temperatura interna máxima do condutor.",
+      "45 °C pode representar o seu caso, mas não é um máximo universal. Dentro da faixa disponível, uma temperatura intermediária usa a próxima entrada superior da tabela: 34 °C utiliza o fator de 35 °C. É uma escolha conservadora do programa, exibida na tela, sem alterar a temperatura informada. Não há interpolação nem extrapolação fora da faixa.",
+    ],
+  },
+  distance: {
+    title: "Como medir a distância com várias cargas?",
+    paragraphs: [
+      "Informe a distância de ida pelo percurso desde o quadro até cada grupo. Não some fase, neutro e terra e não use o total de cabo comprado.",
+      "Mesmo percurso: grupos a 10, 20 e 30 m geram trechos de 10 m. O primeiro trecho alimenta todos; depois de cada derivação, só ficam as cargas seguintes.",
+      "Caminhos separados: cada grupo tem seus próprios cabos desde a mesma proteção no quadro, sem trecho elétrico compartilhado. Esses cabos podem ficar fisicamente próximos: a topologia do percurso e o agrupamento térmico são informações distintas. Não use essa opção se houver um alimentador comum antes da divisão.",
+      "Cada grupo representa cargas na mesma posição. Há uma única seção e as mesmas condições de instalação para todo o circuito. Redes com tronco e ramificações intermediárias exigem outro modelo.",
+    ],
+    source:
+      "https://www.electrical-installation.org/enwiki/Calculation_of_voltage_drop_in_steady_load_conditions",
+  },
+  maxDrop: {
+    title: "Limite de queda de tensão",
+    paragraphs: [
+      "O valor inicial de 4% é um critério configurável para o circuito, não uma regra universal. Confirme o limite aplicável e a parcela já consumida nos alimentadores anteriores.",
+      "O resultado mostra a maior queda estimada entre os pontos cadastrados, partindo do quadro deste circuito. A queda anterior a esse quadro não é calculada aqui.",
+    ],
+  },
+  breakerMode: {
+    title: "Sugerir ou verificar disjuntor",
+    paragraphs: [
+      "Sugerir: o sistema procura uma corrente nominal na lista disponível e uma seção que atendam aos critérios implementados.",
+      "Verificar: informe, por exemplo, 10 A. O sistema verifica essa corrente e procura uma seção compatível. Se a carga já exigir mais de 10 A, aumentar o cabo não resolve a incompatibilidade.",
+      "A seleção continua parcial: partida, curva real, curto-circuito térmico, seletividade e outros requisitos dependem de dados adicionais.",
+    ],
+  },
+  breakerCurve: {
+    title: "Curva de atuação",
+    paragraphs: [
+      "A curva descreve características de atuação do disjuntor. A escolha depende da carga, correntes de partida e condições de proteção.",
+      "Selecionar B, C ou D apenas registra uma hipótese nesta versão. O motor não verifica a curva de um produto real nem muda automaticamente sua corrente nominal por causa da letra.",
+    ],
+  },
+  i2Factor: {
+    title: "Relação I₂/In",
+    paragraphs: [
+      "In é a corrente nominal do disjuntor. I₂ é a corrente convencional de atuação nas condições especificadas para o dispositivo. A relação I₂/In precisa vir da norma de produto ou documentação aplicável.",
+      "Com a hipótese 1,45 e In de 10 A, I₂ seria 14,5 A. O motor verifica I₂ ≤ 1,45 × Iz, além de Ib ≤ In ≤ Iz. O valor inicial não valida um fabricante ou curva.",
+    ],
+  },
+  breakerIcu: {
+    title: "Capacidade de interrupção em kA",
+    paragraphs: [
+      "É uma característica de interrupção de curto-circuito. Não confunda um disjuntor de 10 A com capacidade de interrupção de 6 kA: são grandezas com funções diferentes.",
+      "Use Icn ou Icu conforme a marcação e norma do dispositivo, na tensão aplicável. A comparação isolada com Ik não valida toda a proteção.",
+    ],
+    source:
+      "https://www.electrical-installation.org/enwiki/Fundamental_characteristics_of_a_circuit-breaker",
+  },
+  shortIk: {
+    title: "Corrente de curto-circuito presumida — Ik",
+    paragraphs: [
+      "É a corrente esperada durante um curto no ponto de instalação. Precisa ser calculada ou obtida de um estudo; não é a soma das correntes das lâmpadas.",
+      "Se não souber, deixe vazio. A verificação da capacidade de interrupção ficará pendente.",
+    ],
+  },
+  capacity: {
+    title: "Por que a capacidade tabelada é maior que a corrente da carga?",
+    paragraphs: [
+      "A corrente da carga é Ib. Temperatura e agrupamento podem reduzir a capacidade do cabo. Para consultar a tabela antes dessas reduções, divide-se Ib pelo produto FCT × FCA.",
+      "Exemplo: 3,94 A ÷ 0,87 ≈ 4,53 A. A carga continua consumindo 3,94 A; 4,53 A é a capacidade que se procura na tabela antes de aplicar o fator.",
+      "A seção final também precisa atender à queda, à seção mínima do modelo e à coordenação com o disjuntor. Por isso, pode ser maior que a seção indicada só pela corrente.",
+    ],
+  },
+  result: {
+    title: "Como ler o resultado",
+    paragraphs: [
+      "O resultado reúne corrente da carga, capacidade corrigida, queda nos pontos e verificações preliminares da proteção. A lista de critérios explica por que uma seção foi escolhida.",
+      "“Parcial” significa que somente as verificações descritas foram realizadas. A base é histórica, NBR 5410:1997; as demais condições do projeto continuam sujeitas a análise.",
+    ],
+  },
+  soilResistance: {
+    title: "Solo e dissipação de calor",
+    paragraphs: [
+      "A resistividade térmica descreve a dificuldade de o solo dissipar calor. Profundidade e disposição também influenciam a instalação enterrada.",
+      "Os campos de solo são documentais nesta versão. Informar outro valor não aplica uma correção automática.",
+    ],
+  },
+};

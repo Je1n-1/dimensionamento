@@ -1,0 +1,2131 @@
+{
+  "format": "voltcalc-industrial-project",
+  "version": 1,
+  "exportedAt": "2026-11-07T17:04:25.115142+00:00",
+  "contractVersion": 9,
+  "project": {
+    "id": "91c4b50e-fd78-56fc-bedd-70ebc09e06d4",
+    "schemaVersion": 9,
+    "revision": 0,
+    "name": "Exemplo completo — 9 cargas · 15.000 W",
+    "description": "EXEMPLO SINTÉTICO: 3 aquecedores de 2,5 kW + 3 aquecedores de 1,5 kW + 3 luminárias resistivas de 1 kW. 5 kW por fase; rede ideal 380/220 V, 60 Hz, FP=1. Percursos independentes. Origem de entrega BT assumida no QD. Não inclui alimentador externo, demanda ou proteção. R é hipótese didática a 70 °C: 22,5/seção em ohm/km; X=0. Não é catálogo. Ver docs/industrial/EXEMPLO_15000W.md antes de interpretar os resultados.",
+    "createdAt": null,
+    "updatedAt": null,
+    "normativeProfile": "nbr-5410-2004",
+    "supply": {
+      "phases": "three",
+      "voltageFN": 220,
+      "voltageFF": 380,
+      "frequency": 60,
+      "earthing": "TN-S"
+    },
+    "consumers": [
+      {
+        "id": "3effaede-6bbb-51c0-b94f-6de6782a7b57",
+        "type": "heating",
+        "tag": "AQ-A",
+        "description": "Aquecedor resistivo 2500 W",
+        "quantity": 1,
+        "power": 2500,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "A",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "994ac560-3357-5481-aa1b-3b1390937966",
+        "distance": 10,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-AQ-A",
+        "balanced": null
+      },
+      {
+        "id": "e39ebfa1-fb93-55f7-8735-951f74bb5005",
+        "type": "heating",
+        "tag": "AC-A",
+        "description": "Aquecedor resistivo 1500 W",
+        "quantity": 1,
+        "power": 1500,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "A",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "c08837d1-57df-554c-9e95-cffa21011704",
+        "distance": 11,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-AC-A",
+        "balanced": null
+      },
+      {
+        "id": "b5501bb3-4ceb-5509-882a-5332785d10cd",
+        "type": "lighting",
+        "tag": "IL-A",
+        "description": "Luminária resistiva 1.000 W",
+        "quantity": 1,
+        "power": 1000,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "A",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "da120e35-4ea1-5f23-a9af-3bbaacb6365b",
+        "distance": 12,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-IL-A",
+        "balanced": null
+      },
+      {
+        "id": "f3c06624-ba26-5bbf-adb9-5ab1bcfd5065",
+        "type": "heating",
+        "tag": "AQ-B",
+        "description": "Aquecedor resistivo 2500 W",
+        "quantity": 1,
+        "power": 2500,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "B",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "7456b377-4081-5bc6-96ca-542ca8eba4b3",
+        "distance": 11,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-AQ-B",
+        "balanced": null
+      },
+      {
+        "id": "1367fcca-7ae5-59e0-b071-3d85aa26ac7d",
+        "type": "heating",
+        "tag": "AC-B",
+        "description": "Aquecedor resistivo 1500 W",
+        "quantity": 1,
+        "power": 1500,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "B",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "b5345cb4-0b6b-59d3-878d-d8ce8b60a81c",
+        "distance": 12,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-AC-B",
+        "balanced": null
+      },
+      {
+        "id": "be617fdb-e7b3-5bef-80f3-4c11e16d1ca5",
+        "type": "lighting",
+        "tag": "IL-B",
+        "description": "Luminária resistiva 1.000 W",
+        "quantity": 1,
+        "power": 1000,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "B",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "45fcb884-b294-51e5-b107-5c45241eb37c",
+        "distance": 13,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-IL-B",
+        "balanced": null
+      },
+      {
+        "id": "21e338ba-1591-5752-835c-8a3a194a0298",
+        "type": "heating",
+        "tag": "AQ-C",
+        "description": "Aquecedor resistivo 2500 W",
+        "quantity": 1,
+        "power": 2500,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "C",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "5f30e283-60c4-51dd-8274-83735119f5d5",
+        "distance": 12,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-AQ-C",
+        "balanced": null
+      },
+      {
+        "id": "d70b3243-3b9c-59d6-9932-857eff8083b6",
+        "type": "heating",
+        "tag": "AC-C",
+        "description": "Aquecedor resistivo 1500 W",
+        "quantity": 1,
+        "power": 1500,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "C",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "929cb1c6-7e13-5f5b-ae0c-4ce3aba8a973",
+        "distance": 13,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-AC-C",
+        "balanced": null
+      },
+      {
+        "id": "d7266a39-7d36-5fb0-8c2a-23072e5d7e87",
+        "type": "lighting",
+        "tag": "IL-C",
+        "description": "Luminária resistiva 1.000 W",
+        "quantity": 1,
+        "power": 1000,
+        "unit": "W",
+        "powerBasis": "electrical",
+        "voltage": 220,
+        "frequency": 60,
+        "connection": "FN",
+        "hasPE": true,
+        "phaseSet": "C",
+        "powerFactor": 1,
+        "efficiency": null,
+        "panelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "plannedSegmentId": "18e6a6a7-0e26-50c7-8439-1415870d917c",
+        "distance": 14,
+        "distanceBasis": "cumulative",
+        "environment": "Interior, alvenaria, eletroduto exclusivo e sem radiação",
+        "temperature": 30,
+        "installationMethod": "B1",
+        "notes": "Hipótese didática: FP=1, regime permanente, sem harmônicas. Iluminação agregada no ponto final, não distribuída pelo percurso. Um consumidor por circuito. TN-S é hipótese, sem verificação do aterramento. Potência elétrica: rendimento não aplicável.",
+        "cableMaterial": "copper",
+        "cableType": "insulated",
+        "insulation": "PVC",
+        "insulationDescription": "PVC/A 70 °C",
+        "plannedSegmentTag": "T-IL-C",
+        "balanced": null
+      }
+    ],
+    "motors": [],
+    "panels": [
+      {
+        "id": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerId": null,
+        "tag": "QD-DIDATICO",
+        "description": "Quadro de distribuição do exercício",
+        "parentPanelId": null,
+        "supply": {
+          "phases": "three",
+          "voltageFN": 220,
+          "voltageFF": 380,
+          "frequency": 60,
+          "earthing": "TN-S"
+        }
+      }
+    ],
+    "circuits": [
+      {
+        "id": "47f4a5ff-02a2-54bf-9271-fd5927f20ff4",
+        "tag": "C-AQ-A",
+        "purpose": "power",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "3effaede-6bbb-51c0-b94f-6de6782a7b57"
+        ],
+        "segmentIds": [
+          "994ac560-3357-5481-aa1b-3b1390937966"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "db9bac39-a2bf-5db8-814a-c5e19d581091",
+        "tag": "C-AC-A",
+        "purpose": "power",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "e39ebfa1-fb93-55f7-8735-951f74bb5005"
+        ],
+        "segmentIds": [
+          "c08837d1-57df-554c-9e95-cffa21011704"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "0801727a-9f81-5761-835c-e5b30c48db93",
+        "tag": "C-IL-A",
+        "purpose": "lighting",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "b5501bb3-4ceb-5509-882a-5332785d10cd"
+        ],
+        "segmentIds": [
+          "da120e35-4ea1-5f23-a9af-3bbaacb6365b"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "600811ff-1cbb-54af-ad61-c1ff58d2b391",
+        "tag": "C-AQ-B",
+        "purpose": "power",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "f3c06624-ba26-5bbf-adb9-5ab1bcfd5065"
+        ],
+        "segmentIds": [
+          "7456b377-4081-5bc6-96ca-542ca8eba4b3"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "22327a7a-e0bd-5324-b623-6de37be08c6d",
+        "tag": "C-AC-B",
+        "purpose": "power",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "1367fcca-7ae5-59e0-b071-3d85aa26ac7d"
+        ],
+        "segmentIds": [
+          "b5345cb4-0b6b-59d3-878d-d8ce8b60a81c"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "50575e92-fb3b-520b-b5df-fc47a5b9fc02",
+        "tag": "C-IL-B",
+        "purpose": "lighting",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "be617fdb-e7b3-5bef-80f3-4c11e16d1ca5"
+        ],
+        "segmentIds": [
+          "45fcb884-b294-51e5-b107-5c45241eb37c"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "c735ecc7-cf3c-5953-b18a-9e29147b59c3",
+        "tag": "C-AQ-C",
+        "purpose": "power",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "21e338ba-1591-5752-835c-8a3a194a0298"
+        ],
+        "segmentIds": [
+          "5f30e283-60c4-51dd-8274-83735119f5d5"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "b5dd7971-d15d-5b42-8d4a-b6f0cc79d7a8",
+        "tag": "C-AC-C",
+        "purpose": "power",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "d70b3243-3b9c-59d6-9932-857eff8083b6"
+        ],
+        "segmentIds": [
+          "929cb1c6-7e13-5f5b-ae0c-4ce3aba8a973"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      },
+      {
+        "id": "c1b1c714-247f-5a78-ae85-85454e7e893a",
+        "tag": "C-IL-C",
+        "purpose": "lighting",
+        "role": "terminal",
+        "originPanelId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "consumerIds": [
+          "d7266a39-7d36-5fb0-8c2a-23072e5d7e87"
+        ],
+        "segmentIds": [
+          "18e6a6a7-0e26-50c7-8439-1415870d917c"
+        ],
+        "loadedConductors": null,
+        "voltageDropLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "destinationPanelIds": [],
+        "voltageStudy": {
+          "nominalVoltage": null,
+          "frequency": null,
+          "powerFactor": null,
+          "balanced": null,
+          "scopeConfirmed": true
+        }
+      }
+    ],
+    "nodes": [
+      {
+        "id": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "kind": "panel",
+        "entityId": "01e2af5f-5a03-57cb-b396-2b7f702078ce",
+        "label": "QD-DIDATICO",
+        "position": null
+      },
+      {
+        "id": "f1c6d247-2fc5-57a6-b511-69f37d3f5121",
+        "kind": "consumer",
+        "entityId": "3effaede-6bbb-51c0-b94f-6de6782a7b57",
+        "label": "AQ-A",
+        "position": null
+      },
+      {
+        "id": "03fcff4b-c47b-5857-80ef-79a6c8117a02",
+        "kind": "consumer",
+        "entityId": "e39ebfa1-fb93-55f7-8735-951f74bb5005",
+        "label": "AC-A",
+        "position": null
+      },
+      {
+        "id": "fc51279e-d175-548f-982a-11247cb72cd6",
+        "kind": "consumer",
+        "entityId": "b5501bb3-4ceb-5509-882a-5332785d10cd",
+        "label": "IL-A",
+        "position": null
+      },
+      {
+        "id": "2e062ec7-3b8f-5d84-a37d-f42ec754a198",
+        "kind": "consumer",
+        "entityId": "f3c06624-ba26-5bbf-adb9-5ab1bcfd5065",
+        "label": "AQ-B",
+        "position": null
+      },
+      {
+        "id": "436145f1-5292-58a6-86c1-c2b6ae4c26f5",
+        "kind": "consumer",
+        "entityId": "1367fcca-7ae5-59e0-b071-3d85aa26ac7d",
+        "label": "AC-B",
+        "position": null
+      },
+      {
+        "id": "47ee9ac8-f0d6-55cf-a3e2-680d6ef519f0",
+        "kind": "consumer",
+        "entityId": "be617fdb-e7b3-5bef-80f3-4c11e16d1ca5",
+        "label": "IL-B",
+        "position": null
+      },
+      {
+        "id": "f3988153-ba97-5269-9fce-6465c72ba66f",
+        "kind": "consumer",
+        "entityId": "21e338ba-1591-5752-835c-8a3a194a0298",
+        "label": "AQ-C",
+        "position": null
+      },
+      {
+        "id": "be750e34-5dfd-5f14-aad2-5fc969fffa45",
+        "kind": "consumer",
+        "entityId": "d70b3243-3b9c-59d6-9932-857eff8083b6",
+        "label": "AC-C",
+        "position": null
+      },
+      {
+        "id": "e0b3deb4-a82d-5e30-99dc-1a0586f8769a",
+        "kind": "consumer",
+        "entityId": "d7266a39-7d36-5fb0-8c2a-23072e5d7e87",
+        "label": "IL-C",
+        "position": null
+      }
+    ],
+    "segments": [
+      {
+        "id": "994ac560-3357-5481-aa1b-3b1390937966",
+        "tag": "T-AQ-A",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "f1c6d247-2fc5-57a6-b511-69f37d3f5121",
+        "length": 10,
+        "circuitIds": [
+          "47f4a5ff-02a2-54bf-9271-fd5927f20ff4"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "c08837d1-57df-554c-9e95-cffa21011704",
+        "tag": "T-AC-A",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "03fcff4b-c47b-5857-80ef-79a6c8117a02",
+        "length": 11,
+        "circuitIds": [
+          "db9bac39-a2bf-5db8-814a-c5e19d581091"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "da120e35-4ea1-5f23-a9af-3bbaacb6365b",
+        "tag": "T-IL-A",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "fc51279e-d175-548f-982a-11247cb72cd6",
+        "length": 12,
+        "circuitIds": [
+          "0801727a-9f81-5761-835c-e5b30c48db93"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "7456b377-4081-5bc6-96ca-542ca8eba4b3",
+        "tag": "T-AQ-B",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "2e062ec7-3b8f-5d84-a37d-f42ec754a198",
+        "length": 11,
+        "circuitIds": [
+          "600811ff-1cbb-54af-ad61-c1ff58d2b391"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "b5345cb4-0b6b-59d3-878d-d8ce8b60a81c",
+        "tag": "T-AC-B",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "436145f1-5292-58a6-86c1-c2b6ae4c26f5",
+        "length": 12,
+        "circuitIds": [
+          "22327a7a-e0bd-5324-b623-6de37be08c6d"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "45fcb884-b294-51e5-b107-5c45241eb37c",
+        "tag": "T-IL-B",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "47ee9ac8-f0d6-55cf-a3e2-680d6ef519f0",
+        "length": 13,
+        "circuitIds": [
+          "50575e92-fb3b-520b-b5df-fc47a5b9fc02"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "5f30e283-60c4-51dd-8274-83735119f5d5",
+        "tag": "T-AQ-C",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "f3988153-ba97-5269-9fce-6465c72ba66f",
+        "length": 12,
+        "circuitIds": [
+          "c735ecc7-cf3c-5953-b18a-9e29147b59c3"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "929cb1c6-7e13-5f5b-ae0c-4ce3aba8a973",
+        "tag": "T-AC-C",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "be750e34-5dfd-5f14-aad2-5fc969fffa45",
+        "length": 13,
+        "circuitIds": [
+          "b5dd7971-d15d-5b42-8d4a-b6f0cc79d7a8"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      },
+      {
+        "id": "18e6a6a7-0e26-50c7-8439-1415870d917c",
+        "tag": "T-IL-C",
+        "fromNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+        "toNodeId": "e0b3deb4-a82d-5e30-99dc-1a0586f8769a",
+        "length": 14,
+        "circuitIds": [
+          "c1b1c714-247f-5a78-ae85-85454e7e893a"
+        ],
+        "installationMethod": "B1",
+        "temperature": 30,
+        "groupingArrangement": null,
+        "soilResistivity": null,
+        "soilDepth": null,
+        "kind": "branch",
+        "environment": "Exercício: eletroduto independente, alvenaria, sem radiação",
+        "thermal": {
+          "methodConfirmed": true,
+          "noRadiation": true,
+          "groupingConfirmed": true,
+          "grouping": "bundle",
+          "layers": null,
+          "circuitsPerLayer": null,
+          "spacing": null
+        },
+        "notes": "Condições assumidas apenas para demonstração; sem infraestrutura compartilhada."
+      }
+    ],
+    "conductors": [
+      {
+        "id": "bb4bc66c-dfac-5384-bf0c-427ef47a850d",
+        "circuitId": "47f4a5ff-02a2-54bf-9271-fd5927f20ff4",
+        "role": "L1",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "72af406c-c7f5-53a6-8384-4e5e5652743d",
+        "physicalSignature": "0131795ca022af007323a336b95d7d682642c574eca79196ae4b4791dceb568e"
+      },
+      {
+        "id": "1716a3d0-b59a-5e93-ad6e-61e538e9d101",
+        "circuitId": "47f4a5ff-02a2-54bf-9271-fd5927f20ff4",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "72af406c-c7f5-53a6-8384-4e5e5652743d",
+        "physicalSignature": "948a66922aa2f3a3968862e0fdc52531861cf5468e589a797a34fd7a21e9804f"
+      },
+      {
+        "id": "953e1f8b-ada0-569c-9360-b6f51d051055",
+        "circuitId": "47f4a5ff-02a2-54bf-9271-fd5927f20ff4",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "72af406c-c7f5-53a6-8384-4e5e5652743d",
+        "physicalSignature": "24214cee6077329f8684308efd58a3a532f55f4073fb9025b327dea2ce9725e8"
+      },
+      {
+        "id": "6a15ce94-19b7-5f72-ac5a-3288c04fbfcf",
+        "circuitId": "db9bac39-a2bf-5db8-814a-c5e19d581091",
+        "role": "L1",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "65df3e61-5bcf-5ac6-8421-52e1fbc5ea99",
+        "physicalSignature": "0131795ca022af007323a336b95d7d682642c574eca79196ae4b4791dceb568e"
+      },
+      {
+        "id": "4d92ec1c-34ad-5e19-b3b8-5f668457ca39",
+        "circuitId": "db9bac39-a2bf-5db8-814a-c5e19d581091",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "65df3e61-5bcf-5ac6-8421-52e1fbc5ea99",
+        "physicalSignature": "948a66922aa2f3a3968862e0fdc52531861cf5468e589a797a34fd7a21e9804f"
+      },
+      {
+        "id": "004dcdea-35cc-5d0c-9ad3-63438a40853e",
+        "circuitId": "db9bac39-a2bf-5db8-814a-c5e19d581091",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "65df3e61-5bcf-5ac6-8421-52e1fbc5ea99",
+        "physicalSignature": "24214cee6077329f8684308efd58a3a532f55f4073fb9025b327dea2ce9725e8"
+      },
+      {
+        "id": "bba5916d-13d0-538c-b548-443c6874c6d7",
+        "circuitId": "0801727a-9f81-5761-835c-e5b30c48db93",
+        "role": "L1",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "a55fa603-2240-568e-b773-8c37de8b0a05",
+        "physicalSignature": "ffa1512fe5e13d682162c758c794883800247e89bee141311a3ebbab129ea4e2"
+      },
+      {
+        "id": "d5328969-830c-5f62-a169-005850d67246",
+        "circuitId": "0801727a-9f81-5761-835c-e5b30c48db93",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "a55fa603-2240-568e-b773-8c37de8b0a05",
+        "physicalSignature": "ed7b4b0b2d4470d7c7d43e5b16c290c744fb38408771d06388e965d0cc7ced8f"
+      },
+      {
+        "id": "6a7e123f-6fd9-51ed-acba-e057d385e0af",
+        "circuitId": "0801727a-9f81-5761-835c-e5b30c48db93",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "a55fa603-2240-568e-b773-8c37de8b0a05",
+        "physicalSignature": "6b21ff356dddd60cc1ec17f6f5b78b075c359f9f64507bfe6e5e462c1869ee46"
+      },
+      {
+        "id": "581822bd-9d31-5596-901b-57b30bb461be",
+        "circuitId": "600811ff-1cbb-54af-ad61-c1ff58d2b391",
+        "role": "L2",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "364308b9-9fb2-5d40-b539-6f8338dd20dc",
+        "physicalSignature": "e300a3ee0f006926c8bd501f09e81dbd38ed8e9ce4fd204fb31d1239e00b25aa"
+      },
+      {
+        "id": "6c2a7a5d-c2ae-5276-a078-63746e875d59",
+        "circuitId": "600811ff-1cbb-54af-ad61-c1ff58d2b391",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "364308b9-9fb2-5d40-b539-6f8338dd20dc",
+        "physicalSignature": "948a66922aa2f3a3968862e0fdc52531861cf5468e589a797a34fd7a21e9804f"
+      },
+      {
+        "id": "c887e1a8-cac7-566d-87d2-2a4a5829138b",
+        "circuitId": "600811ff-1cbb-54af-ad61-c1ff58d2b391",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "364308b9-9fb2-5d40-b539-6f8338dd20dc",
+        "physicalSignature": "24214cee6077329f8684308efd58a3a532f55f4073fb9025b327dea2ce9725e8"
+      },
+      {
+        "id": "be8386be-7f68-55ef-828a-1a1c7d176964",
+        "circuitId": "22327a7a-e0bd-5324-b623-6de37be08c6d",
+        "role": "L2",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "f2403616-1623-5bf3-b764-e179a5b26237",
+        "physicalSignature": "e300a3ee0f006926c8bd501f09e81dbd38ed8e9ce4fd204fb31d1239e00b25aa"
+      },
+      {
+        "id": "c7fca02f-4cdf-554d-a829-37cba3e66311",
+        "circuitId": "22327a7a-e0bd-5324-b623-6de37be08c6d",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "f2403616-1623-5bf3-b764-e179a5b26237",
+        "physicalSignature": "948a66922aa2f3a3968862e0fdc52531861cf5468e589a797a34fd7a21e9804f"
+      },
+      {
+        "id": "2140be0f-d9e3-5cf1-9cf4-9ea3ba561f31",
+        "circuitId": "22327a7a-e0bd-5324-b623-6de37be08c6d",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "f2403616-1623-5bf3-b764-e179a5b26237",
+        "physicalSignature": "24214cee6077329f8684308efd58a3a532f55f4073fb9025b327dea2ce9725e8"
+      },
+      {
+        "id": "3be8459d-cf0d-5c70-86ad-3bf6731f707f",
+        "circuitId": "50575e92-fb3b-520b-b5df-fc47a5b9fc02",
+        "role": "L2",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "08231565-514e-5217-b110-090c557b57cf",
+        "physicalSignature": "8f94a89f40bcf8c00cce40987c9262bb3e6dd04cf1706e9f1f788503e548e5d8"
+      },
+      {
+        "id": "800d602f-3801-561c-b5d4-52de8a1b4e33",
+        "circuitId": "50575e92-fb3b-520b-b5df-fc47a5b9fc02",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "08231565-514e-5217-b110-090c557b57cf",
+        "physicalSignature": "ed7b4b0b2d4470d7c7d43e5b16c290c744fb38408771d06388e965d0cc7ced8f"
+      },
+      {
+        "id": "a7ad699b-54b2-5d2f-a544-2668b970e6e0",
+        "circuitId": "50575e92-fb3b-520b-b5df-fc47a5b9fc02",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "08231565-514e-5217-b110-090c557b57cf",
+        "physicalSignature": "6b21ff356dddd60cc1ec17f6f5b78b075c359f9f64507bfe6e5e462c1869ee46"
+      },
+      {
+        "id": "236ed5f3-99a2-51ec-8a86-aea06fd8e003",
+        "circuitId": "c735ecc7-cf3c-5953-b18a-9e29147b59c3",
+        "role": "L3",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "c02a84e7-7b2c-5687-ac28-0a540066b621",
+        "physicalSignature": "2a3f2a5b06f1966da3ebde73eb31f24e82526626bd2ef55b6f18c095d02f83e6"
+      },
+      {
+        "id": "86acc9c4-bbcc-5c4e-8d96-4e6ebd6fc9be",
+        "circuitId": "c735ecc7-cf3c-5953-b18a-9e29147b59c3",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "c02a84e7-7b2c-5687-ac28-0a540066b621",
+        "physicalSignature": "948a66922aa2f3a3968862e0fdc52531861cf5468e589a797a34fd7a21e9804f"
+      },
+      {
+        "id": "8d871ab2-01ed-58bd-ba07-97271a06bd51",
+        "circuitId": "c735ecc7-cf3c-5953-b18a-9e29147b59c3",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "c02a84e7-7b2c-5687-ac28-0a540066b621",
+        "physicalSignature": "24214cee6077329f8684308efd58a3a532f55f4073fb9025b327dea2ce9725e8"
+      },
+      {
+        "id": "2437a5b1-5095-5aa8-8f0a-229404eb9b68",
+        "circuitId": "b5dd7971-d15d-5b42-8d4a-b6f0cc79d7a8",
+        "role": "L3",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "9b0b7e7e-db5b-5a53-a509-a8ae92c0ea39",
+        "physicalSignature": "2a3f2a5b06f1966da3ebde73eb31f24e82526626bd2ef55b6f18c095d02f83e6"
+      },
+      {
+        "id": "099a9d49-c526-5445-992d-8dc5e976d043",
+        "circuitId": "b5dd7971-d15d-5b42-8d4a-b6f0cc79d7a8",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "9b0b7e7e-db5b-5a53-a509-a8ae92c0ea39",
+        "physicalSignature": "948a66922aa2f3a3968862e0fdc52531861cf5468e589a797a34fd7a21e9804f"
+      },
+      {
+        "id": "0f9c0e79-7e57-5129-b4bc-9dfd444d20ca",
+        "circuitId": "b5dd7971-d15d-5b42-8d4a-b6f0cc79d7a8",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 2.5,
+        "outerDiameter": 3.55,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "9b0b7e7e-db5b-5a53-a509-a8ae92c0ea39",
+        "physicalSignature": "24214cee6077329f8684308efd58a3a532f55f4073fb9025b327dea2ce9725e8"
+      },
+      {
+        "id": "36d3a570-7aad-5164-82d9-1ac2e052ec5e",
+        "circuitId": "c1b1c714-247f-5a78-ae85-85454e7e893a",
+        "role": "L3",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "15f75fb2-6bcc-5cad-a238-018e2c293d5f",
+        "physicalSignature": "ca1d54aab1618f6c88d9faf15baba8e182e160a63be87644add62df67207ff86"
+      },
+      {
+        "id": "7a9b0a2c-236a-54f4-a3ca-4748730b8fcb",
+        "circuitId": "c1b1c714-247f-5a78-ae85-85454e7e893a",
+        "role": "N",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "15f75fb2-6bcc-5cad-a238-018e2c293d5f",
+        "physicalSignature": "ed7b4b0b2d4470d7c7d43e5b16c290c744fb38408771d06388e965d0cc7ced8f"
+      },
+      {
+        "id": "f2c429da-ebfc-5de1-8f92-5d0bf0bc16e1",
+        "circuitId": "c1b1c714-247f-5a78-ae85-85454e7e893a",
+        "role": "PE",
+        "material": "Cu",
+        "insulation": "PVC",
+        "formation": "insulated",
+        "section": 1.5,
+        "outerDiameter": 2.95,
+        "source": {
+          "kind": "catalog",
+          "manufacturer": "Corfio",
+          "model": "Cabo Flexível BWF 750 V",
+          "edition": "Página oficial consultada em 07/11/2026; sem edição declarada",
+          "reference": "https://www.corfio.com.br/pt/produto/cabo-flexivel-bwf-750v — tabela Dados construtivos: 2,5 mm² / Ø3,55 mm; 1,5 mm² / Ø2,95 mm. Fonte apenas dimensional; R AC continua hipótese didática."
+        },
+        "cableId": "15f75fb2-6bcc-5cad-a238-018e2c293d5f",
+        "physicalSignature": "6b21ff356dddd60cc1ec17f6f5b78b075c359f9f64507bfe6e5e462c1869ee46"
+      }
+    ],
+    "infrastructures": [
+      {
+        "id": "b7628fc3-7f54-5bd6-a263-cfbdbf0ca2b0",
+        "segmentId": "994ac560-3357-5481-aa1b-3b1390937966",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 10,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "0520b5fa-6bfc-5510-8f2d-ae6fc266c8af",
+        "segmentId": "c08837d1-57df-554c-9e95-cffa21011704",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 11,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "2319baa3-a28d-5638-9a93-f2ccb49fff4e",
+        "segmentId": "da120e35-4ea1-5f23-a9af-3bbaacb6365b",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 12,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "ce7babb2-1bff-577d-943d-154f458f8d64",
+        "segmentId": "7456b377-4081-5bc6-96ca-542ca8eba4b3",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 11,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "67c8ac98-715e-5e35-8d5c-1910f9af7261",
+        "segmentId": "b5345cb4-0b6b-59d3-878d-d8ce8b60a81c",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 12,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "fbb4bb85-6ca4-56f8-b956-2b417eb8a805",
+        "segmentId": "45fcb884-b294-51e5-b107-5c45241eb37c",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 13,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "4ad660e7-5738-553a-9d6a-cc870a7e7578",
+        "segmentId": "5f30e283-60c4-51dd-8274-83735119f5d5",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 12,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "a617058f-4581-5460-ad64-46c73504ba03",
+        "segmentId": "929cb1c6-7e13-5f5b-ae0c-4ce3aba8a973",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 13,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      },
+      {
+        "id": "c39c27e4-2c5d-5810-8c63-4dabf8a39555",
+        "segmentId": "18e6a6a7-0e26-50c7-8439-1415870d917c",
+        "type": "conduit",
+        "width": null,
+        "height": null,
+        "innerDiameter": 20,
+        "conductorIds": [],
+        "occupancyLimit": null,
+        "limitSource": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "dimensionSource": {
+          "kind": "manual",
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": "HIPÓTESE DIDÁTICA: diâmetro INTERNO útil de 20 mm, não bitola comercial; percurso retilíneo exclusivo entre QD e carga."
+        },
+        "arrangement": null,
+        "spacing": null,
+        "location": "indoor",
+        "continuousLength": 14,
+        "bends90": 0,
+        "routeConfirmed": true,
+        "arrangementConfirmed": null,
+        "notes": "Cada segmento é um percurso contínuo de até 14 m, sem curvas, sem trecho comum com outros circuitos.",
+        "candidateDiameters": []
+      }
+    ],
+    "results": [],
+    "storageRevision": 0,
+    "workflowStatus": "draft",
+    "currentStage": 10,
+    "cables": [
+      {
+        "id": "72af406c-c7f5-53a6-8384-4e5e5652743d",
+        "circuitId": "47f4a5ff-02a2-54bf-9271-fd5927f20ff4",
+        "tag": "F-AQ-A",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 9.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "f2decc922d868b4d79215dc5ed1454649850950767f0148dbc253a4802de12b1"
+        }
+      },
+      {
+        "id": "65df3e61-5bcf-5ac6-8421-52e1fbc5ea99",
+        "circuitId": "db9bac39-a2bf-5db8-814a-c5e19d581091",
+        "tag": "F-AC-A",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 9.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "f2decc922d868b4d79215dc5ed1454649850950767f0148dbc253a4802de12b1"
+        }
+      },
+      {
+        "id": "a55fa603-2240-568e-b773-8c37de8b0a05",
+        "circuitId": "0801727a-9f81-5761-835c-e5b30c48db93",
+        "tag": "F-IL-A",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 15.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "b8c6e1920f20713a32f23f79d1007409de51bb619eeae36105e255a4f5eef446"
+        }
+      },
+      {
+        "id": "364308b9-9fb2-5d40-b539-6f8338dd20dc",
+        "circuitId": "600811ff-1cbb-54af-ad61-c1ff58d2b391",
+        "tag": "F-AQ-B",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 9.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "79605d918b7f3d546dcdd6e0ead5e48ea24b7043abdbd3209fbbe7be9cf70d61"
+        }
+      },
+      {
+        "id": "f2403616-1623-5bf3-b764-e179a5b26237",
+        "circuitId": "22327a7a-e0bd-5324-b623-6de37be08c6d",
+        "tag": "F-AC-B",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 9.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "79605d918b7f3d546dcdd6e0ead5e48ea24b7043abdbd3209fbbe7be9cf70d61"
+        }
+      },
+      {
+        "id": "08231565-514e-5217-b110-090c557b57cf",
+        "circuitId": "50575e92-fb3b-520b-b5df-fc47a5b9fc02",
+        "tag": "F-IL-B",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 15.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "1471bc1658514a25009fceb20f881e287dfa691d1c07ad649d6b065e0ad5db61"
+        }
+      },
+      {
+        "id": "c02a84e7-7b2c-5687-ac28-0a540066b621",
+        "circuitId": "c735ecc7-cf3c-5953-b18a-9e29147b59c3",
+        "tag": "F-AQ-C",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 9.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "30f030c27ecb953ea25d6505a34942646a88e869d83ddfe6d86aa20c7afdf6a7"
+        }
+      },
+      {
+        "id": "9b0b7e7e-db5b-5a53-a509-a8ae92c0ea39",
+        "circuitId": "b5dd7971-d15d-5b42-8d4a-b6f0cc79d7a8",
+        "tag": "F-AC-C",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 9.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "30f030c27ecb953ea25d6505a34942646a88e869d83ddfe6d86aa20c7afdf6a7"
+        }
+      },
+      {
+        "id": "15f75fb2-6bcc-5cad-a238-018e2c293d5f",
+        "circuitId": "c1b1c714-247f-5a78-ae85-85454e7e893a",
+        "tag": "F-IL-C",
+        "formation": "insulated",
+        "quantity": 1,
+        "routeMode": "circuit",
+        "segmentIds": [],
+        "design": {
+          "manualIb": null,
+          "manualIbSource": "",
+          "manualIbConfirmed": null,
+          "connection": "FN",
+          "harmonicsPercent": 0,
+          "scopeConfirmed": true,
+          "aluminumConditionsConfirmed": null,
+          "arrangement": null,
+          "peLocation": "included"
+        },
+        "outerDiameter": null,
+        "source": {
+          "kind": null,
+          "manufacturer": "",
+          "model": "",
+          "edition": "",
+          "reference": ""
+        },
+        "physicalSignature": "",
+        "voltageImpedance": {
+          "resistance": 15.0,
+          "reactance": 0,
+          "temperature": 70,
+          "source": {
+            "kind": "manual",
+            "manufacturer": "",
+            "model": "",
+            "edition": "",
+            "reference": "HIPÓTESE DIDÁTICA, sem catálogo: R=22,5/S ohm/km a 70 °C; X=0. Não usar em projeto real sem fonte validada."
+          },
+          "confirmed": true,
+          "signature": "83089790b941b0e2755fba5bc6d349f4e1ec06f4360dd83cdf4ef6649be49aae"
+        }
+      }
+    ],
+    "voltagePolicy": {
+      "originNodeId": "35388156-1f14-5e0f-93b1-0807d1b7139d",
+      "originType": "delivery_lv",
+      "originConfirmed": true
+    }
+  }
+}
