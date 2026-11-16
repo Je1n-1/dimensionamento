@@ -1,5 +1,6 @@
 import { createEntity, validateEntity } from './model.js';
 import { createStore } from './state.js';
+import { consumerSegmentOptions } from './workflow.js';
 
 export const TYPES = { motor: 'Motor', panel: 'Painel / quadro', transformer: 'Transformador', drive: 'Inversor / acionamento', lighting: 'Iluminação', heating: 'Aquecimento', other: 'Outra carga' };
 export const CONNECTIONS = { FN: 'Fase + neutro', FF: 'Duas fases', '3F': 'Três fases, sem neutro', '3FN': 'Três fases + neutro' };
@@ -44,17 +45,20 @@ export function conductorLabel(consumer) {
   return phases + (['FN', '3FN'].includes(consumer.connection) ? ' + N' : '') + (consumer.hasPE ? ' + PE' : ' (sem PE informado)');
 }
 
-export function missingConsumerData(c) {
+export function missingConsumerData(c, project = null) {
+  if (project && c.type === 'panel') return [];
+  const linked = project?.circuits.some(r => r.consumerIds.includes(c.id));
   const missing = [];
   for (const [key, label] of [['power','potência'],['voltage','tensão'],['frequency','frequência'],['connection','ligação'],['phaseSet','fases'],['installationMethod','método'],['cableMaterial','material'],['cableType','tipo de cabo'],['insulation','isolação'],['distance','distância'],['temperature','temperatura']]) {
-    if (c[key] === null || c[key] === '') missing.push(label);
+    if (linked && ['installationMethod','cableMaterial','cableType','insulation','distance','temperature'].includes(key)) continue;
+    if (c[key] == null || c[key] === '') missing.push(label);
   }
   return missing;
 }
 
 export function filterConsumers(project, query = {}) {
   const search = (query.search || '').trim().toLocaleLowerCase('pt-BR');
-  return (project?.consumers || []).filter(c => (!query.type || c.type === query.type) && (!query.environment || c.environment === query.environment) && (!query.segment || (c.plannedSegmentId || c.plannedSegmentTag) === query.segment) &&
+  return (project?.consumers || []).filter(c => (!query.type || c.type === query.type) && (!query.environment || c.environment === query.environment) && (!query.segment || consumerSegmentOptions(project,c).some(([id]) => id === query.segment)) &&
     `${c.tag} ${c.description} ${c.notes} ${c.environment} ${c.plannedSegmentTag}`.toLocaleLowerCase('pt-BR').includes(search));
 }
 

@@ -28,13 +28,13 @@ export function createTopologyController({root, contract, store, repository, pro
     analysis=result.analysis;
     if (operation) await projects.refresh();
   }
-  function open(action,collection,id) {
+  function open(action,collection,id,consumerId='') {
     const p=store.snapshot();
     if (!p || projects.view.unavailable) throw new Error('Abra um projeto disponível.');
     const item=id?p[collection]?.find(i=>i.id===id):null;
     if (id && !item) throw new Error('Item não encontrado.');
     editing={project:p,action,collection,id};
-    const body=action==='prepare'?preparationForm(p):action==='path'?pathForm(p):action==='delete'?`<h2 id="topology-dialog-title">Excluir item?</h2><p>Excluir <strong>${esc(item.tag||item.label||'infraestrutura')}</strong>? Registros com vínculos serão preservados até que você remova os vínculos.</p>`:topologyForm(contract,p,collection,item||createEntity(contract,TOPOLOGY_MODELS[collection]));
+    const body=action==='prepare'?preparationForm(p,consumerId):action==='path'?pathForm(p):action==='delete'?`<h2 id="topology-dialog-title">Excluir item?</h2><p>Excluir <strong>${esc(item.tag||item.label||'infraestrutura')}</strong>? Registros com vínculos serão preservados até que você remova os vínculos.</p>`:topologyForm(contract,p,collection,item||createEntity(contract,TOPOLOGY_MODELS[collection]));
     dialog.innerHTML=`<form id="topology-form">${body}<p id="topology-error" class="form-error" role="alert"></p><div class="dialog-actions"><button type="button" class="button" data-topology-cancel>Cancelar</button><button type="submit" class="button ${action==='delete'?'danger':'primary'}">${action==='delete'?'Excluir':'Salvar estrutura'}</button></div></form>`;
     dialog.showModal();
   }
@@ -46,7 +46,7 @@ export function createTopologyController({root, contract, store, repository, pro
     const action=control?.dataset.topologyAction||'analyze';
     try {
       error='';
-      if (['edit','delete','path','prepare'].includes(action)) return open(action,control.dataset.collection,control.dataset.id);
+      if (['edit','delete','path','prepare'].includes(action)) return open(action,control.dataset.collection,control.dataset.id,control.dataset.consumerId);
       busy=true; render();
       await execute(action==='points'?{action:'points'}:undefined);
     } catch(e) { error=e.message; }
@@ -55,6 +55,15 @@ export function createTopologyController({root, contract, store, repository, pro
   dialog.addEventListener('click',event=>{
     if(busy)return;
     if(event.target.closest('[data-topology-cancel]'))dialog.close();
+    const select = event.target.closest('[data-preparation-select]');
+    if(select) {
+      const panelId=dialog.querySelector('[name="panelId"]').value;
+      for(const box of dialog.querySelectorAll('[name="consumerId"]')) {
+        const load=editing.project.consumers.find(c=>c.id===box.value);
+        box.checked=select.dataset.preparationSelect==='all' && !!panelId && !load.plannedSegmentId && (!load.panelId || load.panelId===panelId);
+      }
+      dialog.querySelector('#topology-error').textContent=select.dataset.preparationSelect==='all'&&!panelId?'Selecione primeiro o quadro de origem.':'';
+    }
     if(event.target.closest('[data-path-add]')) {
       const rows=dialog.querySelector('#path-rows');
       if(rows.children.length<100)rows.insertAdjacentHTML('beforeend',pathRow(editing.project,rows.children.length+1));

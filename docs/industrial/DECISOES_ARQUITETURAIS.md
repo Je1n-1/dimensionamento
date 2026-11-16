@@ -303,3 +303,21 @@ A Etapa 11 testa e documenta o escopo existente. Resultado de regressão positiv
 A potência da visão geral é soma de registros convertidos, sem balanço de energia em cadeias de transformação/acionamento nem demanda. Essa semântica fica explícita na apresentação. Nenhuma fórmula elétrica é alterada pela auditoria.
 
 PDF incorpora Noto Sans Regular para os quatro símbolos gregos ausentes na Vera, com licença OFL, origem e hashes em `voltcalc/industrial/fonts/`. A fonte é local e não depende da máquina do leitor; o restante da tipografia é preservado. O teste confere texto extraído e fonte incorporada, complementado por inspeção visual. A extensão excessiva do relatório permanece uma pendência editorial, sem omissão da memória técnica para encurtá-lo artificialmente.
+
+## DA-44 — perfis editoriais de PDF sem migração de projeto (06/11/2026)
+
+O resumo é uma projeção dos mesmos resultados usados pela memória completa, sem executar outro cálculo ou alterar regras. `summarySections` é aditivo no envelope `industrial-report-1`; o contrato do projeto permanece inalterado. A API usa `pdfDetail=summary|full` e conserva `full` quando o parâmetro é omitido. A interface inicia com resumo, envia o perfil explicitamente e exige confirmação correspondente na resposta, evitando exportação silenciosa de outro conteúdo com servidor antigo.
+
+A seleção fica apenas no controlador, sem gravação no projeto. Pendências idênticas podem ser agrupadas editorialmente, mantendo todas as origens e motivos. Valores ausentes, critérios não avaliados, seções sugeridas e limites de cobertura continuam explícitos. CSV e backup JSON preservam seus escopos completos. Detalhes e evidências em [RELATORIO_RESUMIDO.md](RELATORIO_RESUMIDO.md).
+
+## DA-45 — apresentar vínculos sem copiar dados de planejamento (07/11/2026)
+
+O índice `consumerWorkflow` lê circuitos, quadros, trechos, formações e condutores existentes. A tabela diferencia planejamento de dados da estrutura; não grava heranças, soma comprimentos de ramais ou replica cálculos elétricos. Critérios elétricos continuam nos serviços Python. Diagnósticos locais apenas direcionam a edição; possuir vínculos não equivale a validar topologia ou conformidade.
+
+Os atalhos reaproveitam transações existentes e preservam controle de revisão. Preparação independente continua explícita e confirmada. O contrato v9 não mudou. Seção adotada e seção sugerida são apresentadas separadamente, porque a queda usa a primeira e sua impedância declarada.
+
+## DA-46 — exemplo reproduzível e continuidade de proteção (07/11/2026)
+
+O exemplo de 15.000 W é gerado por Python com dados sintéticos, fontes manuais honestas e IDs determinísticos. Sua importação usa o fluxo normal de criação de cópia, sem alterar outros projetos. Não é um novo catálogo nem uma regra elétrica incorporada ao motor. Dimensões físicas desconhecidas permanecem pendentes.
+
+A preparação de proteção respeita a porta independente existente. A implementação futura usará capacidade correspondente à seção adotada, regras versionadas e dados identificados dos dispositivos, sem promover um resultado parcial de condutores a aprovação da proteção. Escopo e sequência em [PROTECAO_PLANEJAMENTO.md](PROTECAO_PLANEJAMENTO.md).

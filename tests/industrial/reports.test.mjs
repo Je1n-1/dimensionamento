@@ -52,3 +52,16 @@ const changed=structuredClone(latest);changed.nodes[0].position.x++;assert.notEq
 const csv=await service.generate(latest,'csv');assert.equal(csv.extension,'csv');assert.ok(csv.content.includes('Correntes')||csv.content.includes('correntes'));
 await assert.rejects(()=>new ReportService(contract,async()=>{throw Error();}).generate(latest),/servidor Python/);
 console.log('Etapa 10: backup, migração, importação sem sobrescrita, vínculos, posição, fechamento/reabertura, duplicação, quota, corrupção, conflitos, relatório, versões e CSV OK.');
+
+// PDF mode must be explicit and echoed, never silently downgraded by an older server.
+const pdfTransport=async(_url,o)=>{
+ const payload=JSON.parse(o.body);assert.equal(payload.format,'pdf');
+ return {ok:true,json:async()=>({...result,extension:'pdf',mime:'application/pdf',content:'JVBERg==',pdfDetail:payload.pdfDetail})};
+};
+const pdfService=new ReportService(contract,pdfTransport);
+assert.equal((await pdfService.generate(latest,'pdf')).pdfDetail,'summary');
+assert.equal((await pdfService.generate(latest,'pdf','full')).pdfDetail,'full');
+await assert.rejects(()=>new ReportService(contract,async()=>({ok:true,json:async()=>({...result,extension:'pdf',mime:'application/pdf',content:'JVBERg=='})})).generate(latest,'pdf'),/Detalhamento/);
+assert.match(reportsView(latest,{report:result.report}),/value="summary" selected/);
+assert.match(reportsView(latest,{report:result.report,pdfDetail:'full'}),/value="full" selected/);
+console.log('PDF: resumo padrão, memória completa selecionável e rejeição de servidor sem suporte OK.');

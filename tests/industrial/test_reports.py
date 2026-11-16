@@ -12,6 +12,54 @@ from voltcalc.industrial.reports import VERSION,build_report,report_request,csv_
 def token(p):return dict(projectId=p['id'],inputRevision=p['revision'],domain='reports',version=VERSION)
 
 class ReportTests(unittest.TestCase):
+    def test_summary_preserves_every_pending_reason_and_origin(self):
+        from industrial.audit_fixture import installation
+        p=installation();before=copy.deepcopy(p);r=build_report(p)
+        self.assertEqual(p,before)
+        full=r['sections'][0]['blocks'][0]['rows']
+        summary=next(s for s in r['summarySections'] if s['title'].startswith('Pendências'))['blocks'][0]['rows']
+        grouped={reason:origins for origins,reason in summary}
+        for origin,reason in full:
+            self.assertIn(reason,grouped)
+            if ' / ' in origin:
+                domain,item=origin.rsplit(' / ',1)
+                self.assertIn(domain,grouped[reason]);self.assertIn(item,grouped[reason])
+            elif origin.startswith('Corrente '):
+                self.assertIn('Corrente:',grouped[reason]);self.assertIn(origin[9:],grouped[reason])
+            else:self.assertIn(origin,grouped[reason])
+        self.assertLess(len(summary),len(full))
+        self.assertEqual(len(r['summarySections'][0]['blocks'][0]['rows']),30)
+
+    def test_summary_pdf_is_compact_and_keeps_all_consumers(self):
+        try:
+            from pypdf import PdfReader
+            import reportlab
+        except ImportError:self.skipTest('PDF: dependências ausentes.')
+        from industrial.audit_fixture import installation
+        from voltcalc.industrial.report_pdf import render_pdf
+        p=installation();r=build_report(p);original=copy.deepcopy(r)
+        reader=PdfReader(io.BytesIO(render_pdf(r,detail='summary')))
+        text='\n'.join(page.extract_text() for page in reader.pages)
+        self.assertEqual(r,original)
+        self.assertLessEqual(len(reader.pages),20)
+        for c in p['consumers']:self.assertIn(c['tag'],text)
+        for term in ['Resumo do projeto','Memória completa','Proteção','não verificadas','Transformador','Placa','Versões e rastreabilidade']:
+            self.assertIn(term,text)
+        self.assertTrue(all('Verificação parcial' in page.extract_text() for page in reader.pages))
+
+    def test_pdf_detail_contract_and_legacy_default(self):
+        from unittest.mock import patch
+        p=create_entity('Project',name='PDF vazio')
+        with patch('voltcalc.industrial.report_pdf.render_pdf',return_value=b'%PDF-test') as render:
+            for detail in ('summary','full'):
+                result=report_request(dict(project=p,request=token(p),format='pdf',pdfDetail=detail))
+                self.assertEqual(result['pdfDetail'],detail)
+                self.assertEqual(render.call_args.kwargs,{'detail':detail})
+            report_request(dict(project=p,request=token(p),format='pdf'))
+            self.assertEqual(render.call_args.kwargs,{'detail':'full'})
+        with self.assertRaises(ValueError):
+            report_request(dict(project=p,request=token(p),format='pdf',pdfDetail='invalid'))
+
     def test_motor_catalog_source_and_parameters_are_in_report(self):
         from industrial.test_currents import fixture as motor_fixture
         p,c,m=motor_fixture()

@@ -2,6 +2,8 @@ import { icon, metric, panel, emptyState, badge, escapeHTML as esc } from './com
 import { TYPES, CONNECTIONS, PHASES, MATERIALS, CABLES, BASES, DISTANCES, METHODS, conductorLabel, missingConsumerData, filterConsumers } from './core/consumers.js';
 import { activePowerSummary } from './core/currents.js';
 import { currentsView } from './currents-view.js';
+import { consumerWorkflow, consumerSegmentOptions } from './core/workflow.js';
+import { consumerLinks } from './workflow-view.js';
 
 const number = value => value === null ? '—' : new Intl.NumberFormat('pt-BR', { maximumFractionDigits: 4 }).format(value);
 function button(label, symbol, operation, id = '') {
@@ -17,19 +19,22 @@ export function consumersView(project, query = {}) {
   const rows = filterConsumers(project, query);
   const powerSummary = activePowerSummary(project);
   const environments = Object.fromEntries([...new Set(project.consumers.map(c => c.environment).filter(Boolean))].sort().map(v => [v,v]));
-  const segments = Object.fromEntries(project.consumers.filter(c => c.plannedSegmentId || c.plannedSegmentTag).map(c => [c.plannedSegmentId || c.plannedSegmentTag, project.segments.find(s => s.id === c.plannedSegmentId)?.tag || c.plannedSegmentTag || c.plannedSegmentId]));
-  const columns = ['Nº','Tipo','Tag / descrição','Quantidade','Potência por unidade','Tensão / frequência','Fases / condutores','Método','Cabo / isolação','Distância informada','Ambiente / temperatura','Origem / trecho','Cadastro','Ações'];
+  const segments = Object.fromEntries(project.consumers.flatMap(c => consumerSegmentOptions(project,c)));
+  const columns = ['Nº','Tipo','Tag / descrição','Quantidade','Potência por unidade','Tensão / frequência','Fases / condutores','Método / fonte','Cabo / fonte','Comprimentos / fonte','Ambiente / temperatura','Quadro / circuito / trechos','Cadastro','Ações'];
   const body = rows.map((c,index) => {
-    const missing = missingConsumerData(c);
+    const missing = missingConsumerData(c,project);
+    const workflow = consumerWorkflow(project,c);
     const motor = project.motors.find(m => m.consumerId === c.id);
     return `<tr><td>${index+1}</td><td><span class="consumer-type">${icon(c.type === 'motor' ? 'motor' : c.type === 'panel' ? 'infrastructure' : 'bolt')}${esc(TYPES[c.type])}</span></td>
       <td class="consumer-name"><strong>${esc(c.tag)}</strong><span>${esc(c.description || 'Sem descrição')}</span>${motor ? `<small>Placa informada: ${number(motor.plateCurrent)} A · ${motor.catalogId ? 'Tabela WEG W21 selecionada' : 'Catálogo manual: '+number(motor.catalogCurrent)+' A'}</small>` : ''}</td>
       <td>${number(c.quantity)}</td><td>${number(c.power)} ${esc(c.unit || '')}<small>${esc(BASES[c.powerBasis] || 'Tipo não informado')}</small></td>
       <td>${number(c.voltage)} V<small>${number(c.frequency)} Hz</small></td><td>${esc(conductorLabel(c))}</td>
-      <td>${esc(c.installationMethod || 'Não informado')}</td><td>${esc(MATERIALS[c.cableMaterial] || '—')}<small>${esc(CABLES[c.cableType] || '—')} · ${esc(c.insulation === 'other' ? c.insulationDescription : c.insulation || '—')}</small></td>
-      <td>${number(c.distance)} m<small>${esc(DISTANCES[c.distanceBasis] || 'Base não informada')}</small></td><td>${esc(c.environment || 'Não informado')}<small>${number(c.temperature)} °C</small></td>
-      <td>${esc(project.panels.find(p => p.id === c.panelId)?.tag || 'Origem não definida')}<small>${esc(project.segments.find(s => s.id === c.plannedSegmentId)?.tag || c.plannedSegmentTag || 'Trecho não definido')}</small></td>
-      <td>${badge(missing.length ? 'Dados pendentes' : 'Cadastrado', missing.length ? 'amber' : 'blue')}${missing.length ? `<details class="consumer-missing"><summary>${missing.length} campo(s) a completar</summary><p>Faltam: ${esc(missing.join(', '))}.</p></details>` : '<small>Preenchimento do cadastro</small>'}</td>
+      <td>${workflow.linked ? esc([...new Set(workflow.segments.map(s=>s.installationMethod || 'Pendente'))].join(' / ') || 'Sem trecho')+'<small>Nos trechos vinculados</small>' : esc(c.installationMethod || 'Não informado')+'<small>Planejamento</small>'}</td>
+      <td>${workflow.linked ? esc([...new Set(project.conductors.filter(w=>workflow.cables.some(f=>f.id===w.cableId)).map(w=>(w.material || 'Material pendente')+' / '+(w.insulation || 'Isolação pendente')))].join('; ') || 'Sem condutores')+'<small>Nas formações vinculadas</small>' : esc(MATERIALS[c.cableMaterial] || '—')+'<small>'+esc(CABLES[c.cableType] || '—')+' · '+esc(c.insulation || '—')+' · Planejamento</small>'}</td>
+      <td>${workflow.linked ? workflow.segments.map(s=>esc(s.tag)+': '+number(s.length)+' m').join('<br>')+'<small>Trechos declarados; percurso validado no cálculo</small>' : number(c.distance)+' m<small>'+esc(DISTANCES[c.distanceBasis] || 'Base não informada')+' · Planejamento</small>'}</td>
+      <td>${esc(c.environment || 'Não informado')}<small>${workflow.linked ? workflow.segments.map(s=>esc(s.tag)+': '+number(s.temperature)+' °C').join('<br>') : number(c.temperature)+' °C · Planejamento'}</small></td>
+      <td>${esc(workflow.panels.map(p=>p.tag).join(', ') || project.panels.find(p => p.id === c.panelId)?.tag || 'Origem não definida')}<small>${esc(workflow.circuits.map(r=>r.tag).join(', ') || 'Sem circuito vinculado')}</small>${consumerLinks(project,c)}</td>
+      <td>${badge(missing.length ? 'Dados da carga pendentes' : 'Cadastrado', missing.length ? 'amber' : 'blue')}${missing.length ? `<details class="consumer-missing"><summary>${missing.length} campo(s) a completar</summary><p>Faltam: ${esc(missing.join(', '))}.</p></details>` : '<small>Preenchimento do cadastro</small>'}</td>
       <td><div class="row-actions">${button(`Editar ${c.tag}`, 'edit','edit',c.id)}${button(`Duplicar ${c.tag}`,'copy','copy',c.id)}${button(`Excluir ${c.tag}`,'trash','delete',c.id)}</div></td></tr>`;
   }).join('');
   return `<section class="workflow-start" aria-label="Como começar"><div><strong>${esc(project.name)} · Quadro → cargas → circuitos → cálculo</strong><p>Cadastre o quadro de origem, inclua suas cargas e prepare os circuitos. Cada salvamento pertence a este projeto. Use quantidade para equipamentos iguais no mesmo ponto; para outra distância, use Duplicar.</p></div><div class="actions"><button type="button" class="button" data-topology-action="edit" data-collection="panels">${icon('plus')}Adicionar quadro</button><button type="button" class="button primary" data-topology-action="prepare">Preparar circuitos</button><a class="button" href="#/dimensionamento">Ver dimensionamento</a></div></section>
@@ -38,11 +43,11 @@ export function consumersView(project, query = {}) {
       ${metric('Potência ativa das cargas','bolt',powerSummary.reason,'blue',powerSummary.value === null ? 'Pendente' : number(powerSummary.value / 1000) + ' kW')}
       ${metric('Motores','motor','Registros no projeto','blue',project.consumers.filter(c => c.type === 'motor').length)}
       ${metric('Painéis e quadros','infrastructure','Registros no projeto','purple',project.panels.length)}
-      ${metric('Com trecho informado','nodes','Referência de planejamento','blue',project.consumers.filter(c => c.plannedSegmentId || c.plannedSegmentTag).length)}</div>
+      ${metric('Com circuito vinculado','nodes','Vínculos declarados; cálculo separado','blue',project.consumers.filter(c => c.type!=='panel' && consumerWorkflow(project,c).linked).length)}</div>
     ${panel('Consumidores e cargas','list', `<div class="consumer-filters">
       ${filter('Tipo','consumer-filter-type',TYPES,query.type,'Todos os tipos')}
       ${filter('Ambiente','consumer-filter-environment',environments,query.environment,'Todos os ambientes')}
-      ${filter('Trecho planejado','consumer-filter-segment',segments,query.segment,'Todos os trechos')}
+      ${filter('Trecho planejado ou vinculado','consumer-filter-segment',segments,query.segment,'Todos os trechos')}
       <label class="field consumer-search" for="consumer-search"><span>Buscar</span><input id="consumer-search" type="search" placeholder="Tag, descrição ou observações…" value="${esc(query.search || '')}"></label></div>
       <div id="consumer-results"><div class="table-scroll consumer-scroll" role="region" aria-label="Cadastro de consumidores" tabindex="0"><table class="consumer-table"><caption class="sr-only">Consumidores do projeto ${esc(project.name)}</caption><thead><tr>${columns.map(label => `<th scope="col">${label}</th>`).join('')}</tr></thead><tbody>${body || `<tr><td colspan="${columns.length}" class="empty-cell"><strong>${project.consumers.length ? 'Nenhum consumidor corresponde aos filtros' : 'Cadastre o primeiro consumidor'}</strong><span>Use Adicionar item para informar uma carga, motor ou painel.</span></td></tr>`}</tbody></table></div><p class="consumer-count">${rows.length} de ${project.consumers.length} registros · Dados salvos no projeto atual · Grandezas e pendências disponíveis abaixo</p></div>`,
       `<div class="actions">${button('Adicionar item','plus','add')}<button class="button" type="button" disabled title="Importação prevista para a Etapa 10">${icon('export')}Importar planilha</button><button id="calculate-currents" class="button primary" type="button" data-calculate-currents ${project.consumers.length ? '' : 'disabled'}>${icon('bolt')}Calcular potências e correntes</button></div>`)}
@@ -91,6 +96,7 @@ export function consumerForm(project, consumer, motor, editing) {
   const s = (label,key,choices,config={}) => input(label,key,c[key],{choices,...config});
   const panels = Object.fromEntries(project.panels.filter(p => p.consumerId !== c.id).map(p => [p.id,p.tag]));
   const segments = Object.fromEntries(project.segments.map(s => [s.id,s.tag || s.id]));
+  const linked = consumerWorkflow(project,c).linked;
   const mn = (label,key,config={}) => input(label,`motor.${key}`,m[key],{type:'number',...config});
   return `<form id="consumer-form"><header class="consumer-dialog-heading"><div><span class="eyebrow">${esc(project.name)}</span><h2 id="consumer-dialog-title">${editing ? 'Editar consumidor' : 'Adicionar consumidor'}</h2></div><button type="button" class="icon-button" data-consumer-cancel aria-label="Fechar cadastro">${icon('close')}</button></header>
     <p class="dialog-note">Informe os dados conhecidos. Os campos com * são obrigatórios; dados ausentes ficam pendentes. Ao salvar, os resultados anteriores serão invalidados.</p>
@@ -127,7 +133,7 @@ export function consumerForm(project, consumer, motor, editing) {
     </div></details><details class="consumer-advanced"><summary>Partida e medição (opcional)</summary><div class="consumer-form-grid">
       ${mn('Corrente de partida informada (A)','startingCurrent',{min:0})}${mn('Corrente medida informada (A)','measuredCurrent',{min:0})}
     </div></details><p class="field-hint">A corrente de placa tem prioridade no modo automático. Escolher uma fonte explicitamente impede substituição silenciosa quando ela estiver incompleta. Partida e medição não substituem a corrente nominal. Valores da tabela são por motor.</p></fieldset>
-    <fieldset><legend data-common-legend="Instalação e percurso">Instalação e percurso</legend><div class="consumer-form-grid">
+    <details class="consumer-advanced" ${linked ? '' : 'open'}><summary>Planejamento da instalação e percurso${linked ? ' — circuito já vinculado' : ''}</summary><p>Estes campos auxiliam a preparação inicial. Depois de criar o circuito, os cálculos usam os trechos, as formações e os condutores. Editar o planejamento não altera esses registros. Acesse os vínculos na tabela de consumidores para editar a estrutura efetiva.</p><fieldset><legend data-common-legend="Instalação e percurso">Instalação e percurso</legend><div class="consumer-form-grid">
       ${s('Método de instalação','installationMethod',{...METHODS,...(c.installationMethod && !METHODS[c.installationMethod] ? {[c.installationMethod]:c.installationMethod+' — valor cadastrado'} : {})},{hint:'Descrição resumida. A disposição física deve ser conferida na tabela 33 ao dimensionar; o nome do ambiente não determina o método.'})}
       ${s('Material do condutor','cableMaterial',MATERIALS)}${s('Tipo de cabo','cableType',CABLES)}${s('Isolação','insulation',{PVC:'PVC — serviço até 70 °C',XLPE:'XLPE — serviço até 90 °C',EPR:'EPR — serviço até 90 °C',other:'Outra'},{hint:'Limite de temperatura do condutor em serviço contínuo, não a temperatura do ambiente.'})}
       <div id="consumer-other-insulation" ${c.insulation === 'other' ? '' : 'hidden'}>${input('Descreva a isolação','insulationDescription',c.insulationDescription)}</div>
@@ -135,7 +141,7 @@ export function consumerForm(project, consumer, motor, editing) {
       ${input('Ambiente / setor','environment',c.environment)}${n('Temperatura do ambiente (°C)','temperature',{min:-100,max:200})}
       ${s('Painel de origem','panelId',panels)}${input('Identificação do trecho planejado','plannedSegmentTag',c.plannedSegmentTag,{hint:'Referência de planejamento, como T-01. Não cria um segmento físico.'})}
       ${project.segments.length ? s('Vincular trecho existente','plannedSegmentId',segments) : ''}
-    </div><p class="field-hint">Exemplo: quadro → ponto A a 10 m → ponto B a 25 m do quadro. Distâncias acumuladas: 10 e 25 m; comprimentos físicos: 10 e 15 m. Para lâmpadas em posições diferentes, duplique o registro e ajuste a distância. “Preparar circuitos” cria saídas independentes; percursos compartilhados são definidos em Caminhos e circuitos.</p></fieldset>
+    </div><p class="field-hint">Exemplo: quadro → ponto A a 10 m → ponto B a 25 m do quadro. Distâncias acumuladas: 10 e 25 m; comprimentos físicos: 10 e 15 m. Para lâmpadas em posições diferentes, duplique o registro e ajuste a distância. “Preparar circuitos” cria saídas independentes; percursos compartilhados são definidos em Caminhos e circuitos.</p></fieldset></details>
     <fieldset><legend>Observações</legend>${input('Observações do consumidor','notes',c.notes,{type:'textarea',maxLength:2000})}</fieldset>
     <p class="form-error" id="consumer-form-error" role="alert"></p><footer class="dialog-actions"><button type="button" class="button" data-consumer-cancel>Cancelar</button><button type="submit" class="button primary">${icon('save')}Salvar consumidor</button></footer></form>`;
 }

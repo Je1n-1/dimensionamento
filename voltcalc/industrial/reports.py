@@ -178,9 +178,11 @@ def build_report(p):
             pending.extend([title,c.get('message') or c.get('reason') or c.get('code','')] for c in r.get('criteria',[]) if c['status'] in ('failed','pending'))
         sections.append(dict(title=title,blocks=blocks))
     sections.insert(0,dict(title='Pendências e limites de cobertura',blocks=[block('Revisão necessária',pending,['Origem','Pendência / limite'])]))
+    from .report_summary import summary_sections
     return dict(version=VERSION,projectId=p['id'],inputRevision=p['revision'],inputDigest=input_digest(p),
         generatedAt=datetime.now(timezone.utc).isoformat(),projectName=p['name'],summary=a['summary'],versions=versions(),
-        status='partial',disclaimer=LIMITS,sections=sections,diagram=diagram(p))
+        status='partial',disclaimer=LIMITS,sections=sections,diagram=diagram(p),
+        summarySections=summary_sections(p,a,pending,versions()))
 
 
 def csv_report(report):
@@ -198,6 +200,8 @@ def csv_report(report):
 
 def report_request(payload):
     p=payload.get('project');token=payload.get('request');format=payload.get('format','view')
+    detail=payload.get('pdfDetail','full')
+    if detail not in ('summary','full'):raise ValueError('Detalhamento do PDF inválido.')
     if not isinstance(p,dict) or format not in ('view','pdf','csv'):raise ValueError('Formato de relatório inválido.')
     expected=dict(projectId=p.get('id'),inputRevision=p.get('revision'),domain='reports',version=VERSION)
     if token!=expected or type(token.get('inputRevision')) is not int:raise ValueError('Requisição de relatório desatualizada.')
@@ -206,5 +210,5 @@ def report_request(payload):
     if format=='csv':result.update(content=csv_report(report),mime='text/csv;charset=utf-8',extension='csv')
     if format=='pdf':
         from .report_pdf import render_pdf
-        result.update(content=base64.b64encode(render_pdf(report)).decode(),mime='application/pdf',extension='pdf')
+        result.update(content=base64.b64encode(render_pdf(report,detail=detail)).decode(),mime='application/pdf',extension='pdf',pdfDetail=detail)
     return result

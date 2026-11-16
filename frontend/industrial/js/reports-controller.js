@@ -5,18 +5,21 @@ import {escapeHTML as esc} from './components.js';
 export function createReportController({root,contract,previousContract,store,repository,projects,render}) {
   const service=new ReportService(contract);
   let state={key:null,report:null,busy:false,error:'',message:'',attempted:false},ticket=0,imported=null,importBusy=false;
+  let pdfDetail='summary';
   const dialog=document.createElement('dialog');dialog.id='import-project-dialog';dialog.setAttribute('aria-labelledby','import-project-title');root.append(dialog);
   function same(project){const current=store.snapshot();return current&&reportKey(current)===reportKey(project);}
   async function generate(project,format='view') {
     if(!same(project))return;
     const turn=++ticket;state.busy=true;state.error='';state.message='';state.attempted=true;render();
     try {
-      const body=await service.generate(project,format);
+      const selectedDetail=pdfDetail;
+      const body=await service.generate(project,format,selectedDetail);
       if(turn!==ticket||!same(project))return;
       state.report=body.report;
       if(format!=='view') {
         const data=format==='pdf'?Uint8Array.from(atob(body.content),c=>c.charCodeAt(0)):body.content;
-        downloadFile(data,body.mime,`${fileStem(project)}-r${project.revision}.${body.extension}`);
+        const suffix=format==='pdf'?(selectedDetail==='summary'?'-resumo':'-memoria-completa'):'';
+        downloadFile(data,body.mime,`${fileStem(project)}-r${project.revision}${suffix}.${body.extension}`);
         state.message='Arquivo gerado. Confira os downloads do navegador. Pendências permanecem explícitas no relatório.';
       }
     }catch(error){if(turn===ticket&&same(project))state.error=error.message;}
@@ -28,7 +31,7 @@ export function createReportController({root,contract,previousContract,store,rep
     if(p&&location.hash==='#/relatorios'&&!state.attempted&&!projects.view.unavailable) {
       state.attempted=true;queueMicrotask(()=>generate(p));
     }
-    return state;
+    return {...state,pdfDetail};
   }
   function openImport() {
     imported=null;
@@ -59,6 +62,11 @@ export function createReportController({root,contract,previousContract,store,rep
   });
   dialog.addEventListener('click',e=>{if(e.target.closest('[data-import-cancel]')&&!importBusy)dialog.close();});
   dialog.addEventListener('cancel',e=>{if(importBusy)e.preventDefault();});
+  root.addEventListener('change',e=>{
+    if(e.target.matches('[data-report-detail]')&&!state.busy&&['summary','full'].includes(e.target.value)){
+      pdfDetail=e.target.value;render();
+    }
+  });
   root.addEventListener('click',e=>{
     const button=e.target.closest('[data-report-action],[data-action="export-report"],[data-action="import-project"]');if(!button)return;
     if(button.dataset.action==='import-project'){if(!projects.view.unavailable)openImport();return;}

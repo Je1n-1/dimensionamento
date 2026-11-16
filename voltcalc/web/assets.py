@@ -20,6 +20,7 @@ ASSETS['/VoltCalc_Guiado_Abrir.html'] = ASSETS['/index.html']
 
 # Industrial: isolated shell, project repository and shared contracts and isolated current service.
 INDUSTRIAL_FILES = (
+    'js/core/workflow.js', 'js/workflow-view.js',
     'js/reports-controller.js', 'js/reports-view.js', 'js/core/reports.js', 'js/core/project-files.js',
     'js/overview-controller.js', 'js/overview-view.js', 'js/core/overview.js',
     'js/voltage-controller.js', 'js/voltage-view.js',

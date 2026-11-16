@@ -220,3 +220,15 @@ Auditoria executada conforme [ETAPA_11.md](ETAPA_11.md) e [MATRIZ_VALIDACAO.md](
 Correções encerradas nesta auditoria: mensagem histórica de condutores, quadro destino no alimentador, descrição do total de cargas especiais e símbolos gregos no PDF. As demais limitações IND-27 a IND-59 não foram automaticamente encerradas. Particularmente proteção, curto-circuito, coordenação e partida continuam não implementados. Nenhuma alteração no motor residencial ou nas ressalvas SENAI.
 
 Roteiro 0–11 encerrado no escopo documentado, com ressalvas. Novas funcionalidades dependem de definição e autorização de escopo, sem criação automática de Etapa 12.
+
+## Acompanhamento editorial — 06/11/2026
+
+IND-62 atendido **quanto ao resumo selecionável**, conforme [RELATORIO_RESUMIDO.md](RELATORIO_RESUMIDO.md): o cenário de 30 consumidores exporta 12 páginas no resumo e mantém 396 na memória completa. Todas as pendências e origens permanecem disponíveis, com agrupamento de motivos repetidos no resumo. A compactação da própria memória completa permanece pendente em IND-57; mapa denso pequeno continua em IND-64. As demais pendências e limitações normativas não foram encerradas por esta melhoria de apresentação.
+
+## Vínculos e exemplo didático — 07/11/2026
+
+IND-63 atendido no escopo de apresentação e navegação: dados dos trechos/condutores aparecem como fonte efetiva, planejamento vazio não exige repetição após o vínculo, faltas estruturais têm motivos e atalhos e divergências de quadro permanecem explícitas. Não houve sincronização ou criação automática de vínculos. Ver [FLUXO_VINCULOS.md](FLUXO_VINCULOS.md).
+
+Exemplo de 15.000 W criado a pedido do usuário e salvo como projeto independente na origem 8000. Seis circuitos com condutores e queda calculados sob hipóteses sintéticas; ocupação e proteção continuam pendentes. Não encerra IND-60 nem valida proteção pelo simples fato de haver PE cadastrado. Ver [EXEMPLO_15000W.md](EXEMPLO_15000W.md).
+
+Continuidade do módulo separado de proteção preparada em [PROTECAO_PLANEJAMENTO.md](PROTECAO_PLANEJAMENTO.md), após autorização de prosseguimento. Contrato e serviços de proteção funcional ainda não implementados; nenhuma seleção definitiva de disjuntor foi acrescentada. As etapas originais não foram renumeradas.

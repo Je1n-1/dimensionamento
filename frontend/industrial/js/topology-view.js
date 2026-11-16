@@ -11,14 +11,16 @@ const label = item => item?.tag || item?.label || 'Sem identificação';
 const find = (p, collection, id) => label(p[collection].find(i => i.id === id));
 const button = (text, action, collection = '', id = '', primary = false) => `<button type="button" class="button${primary ? ' primary' : ''}" data-topology-action="${action}" data-collection="${collection}" data-id="${esc(id)}">${esc(text)}</button>`;
 
-export function preparationForm(p) {
+export function preparationForm(p, selectedConsumerId = '') {
+  const selected = p.consumers.find(c => c.id === selectedConsumerId);
   const loads = p.consumers.filter(c => c.type !== 'panel' && !p.circuits.some(r => r.consumerIds.includes(c.id)));
   return `<h2 id="topology-dialog-title">Preparar circuitos a partir das cargas</h2>
     <p>Crie um circuito terminal e um percurso independente para cada registro selecionado. Equipamentos com quantidade maior que 1 serão tratados no mesmo ponto de destino. Para lâmpadas ao longo de um percurso comum, use Caminhos e circuitos.</p>
-    <label class="field">Quadro de origem<select name="panelId" required><option value="">Selecione o quadro</option>${p.panels.map(q=>`<option value="${esc(q.id)}">${esc(q.tag)}</option>`).join('')}</select></label>
+    <label class="field">Quadro de origem<select name="panelId" required><option value="">Selecione o quadro</option>${p.panels.map(q=>`<option value="${esc(q.id)}" ${q.id===selected?.panelId?'selected':''}>${esc(q.tag)}</option>`).join('')}</select></label>
     ${!p.panels.length ? '<p class="form-error">Feche esta janela e use Adicionar quadro para cadastrar a origem.</p>' : ''}
+    <div class="actions"><button type="button" class="button" data-preparation-select="all">Selecionar cargas deste quadro / sem origem</button><button type="button" class="button" data-preparation-select="none">Limpar seleção</button></div>
     <div class="preparation-loads">${loads.map(c=>`<div class="preparation-row" data-preparation-row>
-      <label><input type="checkbox" name="consumerId" value="${esc(c.id)}"> <strong>${esc(c.tag)}</strong> · ${esc(c.description || '')}<small>${esc(c.quantity)} equipamento(s) no mesmo ponto · ${esc(c.connection || 'Ligação pendente')} · ${esc(c.plannedSegmentTag || 'Trecho será identificado pela tag')}</small></label>
+      <label><input type="checkbox" name="consumerId" value="${esc(c.id)}" ${c.id===selectedConsumerId?'checked':''}> <strong>${esc(c.tag)}</strong> · ${esc(c.description || '')}<small>${esc(c.quantity)} equipamento(s) no mesmo ponto · ${esc(c.connection || 'Ligação pendente')} · ${esc(c.plannedSegmentTag || 'Trecho será identificado pela tag')}</small></label>
       <label class="field">Percurso completo desde o quadro (m)<input type="number" name="distance-${esc(c.id)}" min="0.001" step="any" value="${c.distanceBasis==='cumulative' ? esc(c.distance??'') : ''}"></label>
     </div>`).join('') || '<p>Todas as cargas já têm circuito, ou ainda não há cargas cadastradas.</p>'}</div>
     <label class="conductor-check"><input type="checkbox" name="independentConfirmed" required> Confirmo: cada registro selecionado tem seu próprio circuito e percurso desde este quadro, sem compartilhar trechos físicos com outros circuitos.</label>
